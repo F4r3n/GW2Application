@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/style_button"
+                android:text="Account"
+                android:id="@+id/accountButton"
+                android:onClick="changeVisibility"
+                android:layout_marginBottom="@dimen/button_bottom"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+
+                android:layout_height="fill_parent"
+                android:paddingLeft="@dimen/button_left"
+                android:paddingRight="0dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="@dimen/button_bottom"
+                android:paddingStart="@dimen/button_left"
+                android:id="@+id/AccountLinear"
+                android:visibility="gone">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/black_button"
+                    android:text="Info"
+                    android:id="@+id/infoButton"
+                    android:textColor="#FFFFFF"
+                    android:onClick="getInfo"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+
+                android:background="@drawable/style_button"
+                android:text="2" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
