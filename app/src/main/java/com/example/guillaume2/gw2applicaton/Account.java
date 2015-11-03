@@ -12,13 +12,15 @@ import java.util.List;
  */
 //{"id":"F51F143E-F2A7-E211-8756-78E7D1936222","name":"Farenheight.3869",
 // "world":2105,"guilds":["CD67104F-0D19-4418-BCAE-5EE2B4BF4505","BBCD95EF-B266-E411-AEFB-AC162DC05865","0D0BBAD7-EBFA-E411-A3E6-AC162DC0E835","37A2CEE2-2E3C-E411-AEFB-AC162DC05865"],"created":"2013-04-18T06:30:00Z"}
-public class Account  implements Container{
+public class Account{
     private String result;
-    private String name;
-    private String id;
-    private String world;
-    private String dateCreation;
-    private List<String> guilds = new ArrayList<String>();
+    public String name = null;
+    public String id = null;
+    public String world = null;
+    public String dateCreation = null;
+
+    public List<String> guilds = new ArrayList<String>();
+
 
     public Account(String result) {
         this.result = result;
@@ -34,14 +36,24 @@ public class Account  implements Container{
 
             //Iterate the jsonArray and print the info of JSONObjects
             for(int i=0; i < jsonArray.length(); i++) {
-                System.out.println(jsonArray.getString(i));
+
                 guilds.add(jsonArray.getString(i));
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Name "+name);
+
+    }
+
+    @Override
+    public String toString() {
+        String s = "id "+id+"\n";
+        s+="name "+name+"\n";
+        s+="world "+world+"\n";
+        for(String g : guilds)
+            s += "Guild "+g+"\n";
+        return s;
     }
 
 

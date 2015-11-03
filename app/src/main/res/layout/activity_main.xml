@@ -37,7 +37,8 @@
                 android:paddingBottom="@dimen/button_bottom"
                 android:paddingStart="@dimen/button_left"
                 android:id="@+id/AccountLinear"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:orientation="vertical">
 
                 <Button
                     android:layout_width="fill_parent"
@@ -47,6 +48,47 @@
                     android:id="@+id/infoButton"
                     android:textColor="#FFFFFF"
                     android:onClick="getInfo"
+                    android:visibility="visible" />
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/black_button"
+                    android:text="Bank"
+                    android:id="@+id/bankButton"
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/black_button"
+                    android:text="Dyes"
+                    android:id="@+id/dyesButton"
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/black_button"
+                    android:text="Materials"
+                    android:id="@+id/materialsButton"
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/black_button"
+                    android:text="Skins"
+                    android:id="@+id/skinsButton"
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/black_button"
+                    android:text="Wallet"
+                    android:id="@+id/walletButton"
+                    android:textColor="#FFFFFF"
                     android:visibility="visible" />
             </LinearLayout>
 
