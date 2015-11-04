@@ -45,7 +45,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
         switch (view.getId()) {
             case R.id.infoButton:
-                requestManager.execute(CATEGORIES.ACCOUNT);
+                requestManager.execute(new Account());
+                break;
+            case R.id.bankButton:
+                requestManager.execute(new Bank());
         }
     }
 
@@ -80,12 +83,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -96,10 +95,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable observable, Object data) {
-        System.out.println(data);
         if (observable instanceof RequestManager) {
             if (data == CATEGORIES.ACCOUNT) {
                 alertView(((Account)requestManager.getContainer(CATEGORIES.ACCOUNT)).name);
+                requestManager.overNotify();
+            }
+            if (data == CATEGORIES.BANK) {
+
+                Bank b = (Bank)requestManager.getContainer(CATEGORIES.BANK);
+
                 requestManager.overNotify();
             }
         }

@@ -11,9 +11,17 @@ public class Container {
 
     public Account account = null;
 
-    public Container() {
-
+    public Bank getBank() {
+        return bank;
     }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
+    public Bank bank = null;
+
+    public Container() {}
 
 
 }

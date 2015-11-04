@@ -21,8 +21,8 @@ public class RequestManager extends Observable {
         clearChanged();
     }
 
-    public void notifyFinish(CATEGORIES param, Object cont) {
-        switch (param) {
+    public void notifyFinish(CATEGORIES param, GWObject cont) {
+        switch (cont.getCat()) {
             case ACCOUNT:
                 containers.get(0).setAccount((Account) cont);
                 break;
@@ -33,11 +33,12 @@ public class RequestManager extends Observable {
             case PVP:
                 break;
             case BANK:
+                containers.get(0).setBank((Bank) cont);
                 break;
         }
 
         setChanged();
-        notifyObservers(param);
+        notifyObservers(cont.getCat());
     }
 
     public Object getContainer(CATEGORIES cat) {
@@ -51,14 +52,14 @@ public class RequestManager extends Observable {
             case PVP:
                 break;
             case BANK:
-                break;
+                return containers.get(0).getBank();
+
         }
         return null;
     }
 
-    public void execute(CATEGORIES cat) {
+    public void execute(GWObject cat) {
         Request r = new Request(this);
-
         r.execute(cat);
 
     }

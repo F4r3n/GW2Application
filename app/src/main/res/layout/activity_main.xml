@@ -55,6 +55,8 @@
                     android:background="@drawable/black_button"
                     android:text="Bank"
                     android:id="@+id/bankButton"
+                    android:onClick="getInfo"
+
                     android:textColor="#FFFFFF"
                     android:visibility="visible" />
                 <Button
