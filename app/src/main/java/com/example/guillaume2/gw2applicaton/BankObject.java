@@ -1,5 +1,7 @@
 package com.example.guillaume2.gw2applicaton;
 
+import com.example.guillaume2.gw2applicaton.item.GWItem;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,13 +39,16 @@ public class BankObject {
 
     private List<String> upgrades;
     private List<String> infusions;
+    private List<GWItem> items;
 
     public BankObject(JSONObject json) {
-        
-        upgrades = new ArrayList<>();
-        infusions = new ArrayList<>();
+        items = new ArrayList<GWItem>();
+        upgrades = new ArrayList<String>();
+        infusions = new ArrayList<String>();
         try {
             id = json.getString("id");
+            //System.out.println(id);
+            items.add(new GWItem(id));
             count = json.getInt("count");
             if (!json.isNull("skin"))
                 idSkin = json.getString("skin");
