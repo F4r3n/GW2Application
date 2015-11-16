@@ -19,7 +19,7 @@ public class Account extends GWObject {
     public String id = null;
     public String world = null;
     public String dateCreation = null;
-
+    private CallerBack parent;
     public List<String> guilds = new ArrayList<>();
 
     public Account() {
@@ -28,8 +28,9 @@ public class Account extends GWObject {
     }
 
     @Override
-    protected void readFile(String results) {
-
+    protected void readFile(CallerBack parent, String results) {
+        this.parent = parent;
+        parent.notifyUpdate(0.0f);
         try {
             JSONObject reader = new JSONObject(results);
             id = reader.getString("id");
@@ -39,7 +40,7 @@ public class Account extends GWObject {
 
             JSONArray jsonArray = reader.optJSONArray("guilds");
 
-            //Iterate the jsonArray and print the info of JSONObjects
+
             for (int i = 0; i < jsonArray.length(); i++) {
 
                 guilds.add(jsonArray.getString(i));
@@ -48,6 +49,7 @@ public class Account extends GWObject {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        parent.notifyUpdate(1.0f);
     }
 
 
@@ -62,4 +64,8 @@ public class Account extends GWObject {
     }
 
 
+    @Override
+    public void cancel() {
+
+    }
 }

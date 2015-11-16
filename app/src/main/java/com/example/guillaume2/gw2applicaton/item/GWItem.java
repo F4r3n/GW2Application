@@ -1,6 +1,9 @@
 package com.example.guillaume2.gw2applicaton.item;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
+
+import com.example.guillaume2.gw2applicaton.CallerBack;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,12 +19,12 @@ import java.util.List;
 /**
  * Created by guillaume2 on 10/11/15.
  */
-public class GWItem {
+public class GWItem implements CallerBack {
     String id;
     String url = "https://api.guildwars2.com/v2/items/";
     String chat_link;
-    String name;
-    String icon;
+    public String name;
+    public String icon;
     String description;
     GWITEM_TYPE type;
     GWITEM_RARITY rarity;
@@ -32,13 +35,19 @@ public class GWItem {
     int vendor_value;
     String default_skin;
     GWItemDetailObject object;
+    private CallerBack callerBack;
+    public Bitmap image;
+    public static final int MAX_WIDTH = 20;
+    public static final int MAX_HEIGHT = 20;
 
-    public GWItem(String id) {
+
+    public GWItem(CallerBack cb, String id) {
+        callerBack = cb;
         this.id = id;
-        game_types = new ArrayList<GWITEM_GAMETYPES>();
-        flags = new ArrayList<GWITEM_FLAGS>();
-        restrictions = new ArrayList<GWITEM_RESTRICTIONS>();
-        System.out.println("Item " + this.id);
+        game_types = new ArrayList<>();
+        flags = new ArrayList<>();
+        restrictions = new ArrayList<>();
+        //System.out.println("Item " + this.id);
         new DownloadDetail().execute(id);
     }
 
@@ -48,34 +57,45 @@ public class GWItem {
         type = GWITEM_TYPE.valueOf(reader.getString("type").toUpperCase());
         level = reader.getInt("level");
         rarity = GWITEM_RARITY.valueOf(reader.getString("rarity").toUpperCase());
-        System.out.println(rarity);
+        //System.out.println(rarity);
         vendor_value = reader.getInt("vendor_value");
         JSONArray game_typesJSON = reader.getJSONArray("game_types");
-        for(int i = 0; i < game_typesJSON.length(); i++) {
+        for (int i = 0; i < game_typesJSON.length(); i++) {
             game_types.add(GWITEM_GAMETYPES.valueOf(game_typesJSON.getString(i).toUpperCase()));
         }
         JSONArray flagsJSON = reader.getJSONArray("flags");
-        for(int i = 0; i < flagsJSON.length(); i++) {
+        for (int i = 0; i < flagsJSON.length(); i++) {
             flags.add(GWITEM_FLAGS.valueOf(flagsJSON.getString(i).toUpperCase()));
         }
         JSONArray restrictionsJSON = reader.getJSONArray("restrictions");
-        for(int i = 0; i < restrictionsJSON.length(); i++) {
+        for (int i = 0; i < restrictionsJSON.length(); i++) {
             restrictions.add(GWITEM_RESTRICTIONS.valueOf(restrictionsJSON.getString(i).toUpperCase()));
         }
         chat_link = reader.getString("chat_link");
         icon = reader.getString("icon");
+        //new DownloadImage(this).execute(icon);
+        callerBack.notifyUpdate(this, 0.0f, name);
 
     }
 
+    @Override
+    public void notifyUpdate(Object... o) {
+
+    }
+
+    @Override
+    public void cancel() {
+
+    }
 
 
     public class DownloadDetail extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
-            System.out.println("in");
+
             URL url;
-            StringBuffer response = new StringBuffer();
+            StringBuilder response = new StringBuilder();
 
             HttpURLConnection urlConnection = null;
             try {
@@ -99,15 +119,16 @@ public class GWItem {
                 try {
                     urlConnection.disconnect();
                 } catch (Exception e) {
-                    e.printStackTrace(); //If you want further info on failure...
+                    e.printStackTrace();
                 }
             }
             return response.toString();
         }
+
         @Override
         protected void onPostExecute(String result) {
-            System.out.println("Item " + GWItem.this.id);
-            System.out.println("Item " + result);
+            //  System.out.println("Item " + GWItem.this.id);
+            //System.out.println("Item " + result);
             try {
                 GWItem.this.readFile(result);
             } catch (JSONException e) {
@@ -117,6 +138,8 @@ public class GWItem {
 
 
     }
+
+
 
 
 }

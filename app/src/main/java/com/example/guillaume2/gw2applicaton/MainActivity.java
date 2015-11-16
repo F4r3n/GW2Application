@@ -26,16 +26,20 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestManager = new RequestManager();
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+
+        requestManager = new RequestManager(this);
         requestManager.addObserver(this);
         connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         linearLayoutAccount = (LinearLayout) findViewById(R.id.AccountLinear);
         accountButton = (Button) findViewById(R.id.accountButton);
         infoButton = (Button) findViewById(R.id.infoButton);
     }
+
+
 
     public void getInfo(View view) {
         NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
@@ -45,10 +49,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
         switch (view.getId()) {
             case R.id.infoButton:
-                requestManager.execute(new Account());
+                requestManager.execute( new Account(), true);
                 break;
             case R.id.bankButton:
-                requestManager.execute(new Bank());
+                requestManager.execute( new Bank(), true);
         }
     }
 
@@ -101,9 +105,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 requestManager.overNotify();
             }
             if (data == CATEGORIES.BANK) {
-
                 Bank b = (Bank)requestManager.getContainer(CATEGORIES.BANK);
-
                 requestManager.overNotify();
             }
         }

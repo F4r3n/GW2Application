@@ -10,12 +10,13 @@ import java.net.URL;
 /**
  * Created by guillaume2 on 01/11/15.
  */
-public final class Request extends AsyncTask<GWObject, Void, String> {
+public final class Request extends AsyncTask<GWObject, Integer, String> {
     private String key = "12C8EE8F-92B6-ED4C-9D8C-EEE086172362A540E7AE-2957-4F7A-BBD0-EAE8960DD48B";
     private String result;
     private CATEGORIES param;
     private RequestManager rqm;
     private GWObject object;
+
 
     public Request(RequestManager rqm) {
         this.rqm = rqm;
@@ -28,12 +29,14 @@ public final class Request extends AsyncTask<GWObject, Void, String> {
     @Override
     protected String doInBackground(GWObject... object) {
         this.object = object[0];
+        this.param = this.object.getCat();
         String p = this.object.getUrl();
-
-
-
         return send(p);
+
+
     }
+
+
 
     public String send(String m) {
         URL url;
@@ -41,7 +44,7 @@ public final class Request extends AsyncTask<GWObject, Void, String> {
 
         HttpURLConnection urlConnection = null;
         try {
-            url = new URL("https://api.guildwars2.com/v2/" + m + "?access_token=12C8EE8F-92B6-ED4C-9D8C-EEE086172362A540E7AE-2957-4F7A-BBD0-EAE8960DD48B");
+            url = new URL("https://api.guildwars2.com/v2/" + m + "?access_token=" + key);
 
             urlConnection = (HttpURLConnection) url
                     .openConnection();
@@ -53,6 +56,7 @@ public final class Request extends AsyncTask<GWObject, Void, String> {
 
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
+
             }
             in.close();
         } catch (Exception e) {
@@ -68,12 +72,14 @@ public final class Request extends AsyncTask<GWObject, Void, String> {
     }
 
     protected void onPostExecute(String result) {
-        object.readFile(result);
-        rqm.notifyFinish(param, object);
+        object.readFile(rqm, result);
 
     }
 
 
     protected void onPreExecute() {
+
     }
+
+
 }

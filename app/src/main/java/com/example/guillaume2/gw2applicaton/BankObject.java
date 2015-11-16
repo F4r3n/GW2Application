@@ -1,5 +1,7 @@
 package com.example.guillaume2.gw2applicaton;
 
+import android.graphics.Bitmap;
+
 import com.example.guillaume2.gw2applicaton.item.GWItem;
 
 import org.json.JSONArray;
@@ -16,6 +18,7 @@ public class BankObject {
     private String id;
     private int count;
     private String idSkin;
+    private float progression;
 
     public List<String> getInfusions() {
         return infusions;
@@ -39,16 +42,30 @@ public class BankObject {
 
     private List<String> upgrades;
     private List<String> infusions;
-    private List<GWItem> items;
+    private GWItem item;
 
-    public BankObject(JSONObject json) {
-        items = new ArrayList<GWItem>();
+    public String getUrl() {
+       return item.icon;
+    }
+
+    public String getName() {
+        return item.name;
+    }
+
+    public void setImage(Bitmap b) {
+        item.image = b;
+    }
+
+
+    public BankObject(CallerBack cb, JSONObject json) {
+        //items = new ArrayList<GWItem>();
         upgrades = new ArrayList<String>();
         infusions = new ArrayList<String>();
         try {
             id = json.getString("id");
-            //System.out.println(id);
-            items.add(new GWItem(id));
+
+            item = new GWItem(cb, id);
+
             count = json.getInt("count");
             if (!json.isNull("skin"))
                 idSkin = json.getString("skin");
@@ -70,4 +87,6 @@ public class BankObject {
         }
 
     }
+
+
 }
