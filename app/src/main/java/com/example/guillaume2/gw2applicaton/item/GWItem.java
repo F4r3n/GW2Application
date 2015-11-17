@@ -1,7 +1,6 @@
 package com.example.guillaume2.gw2applicaton.item;
 
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 
 import com.example.guillaume2.gw2applicaton.CallerBack;
 
@@ -9,10 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +30,10 @@ public class GWItem implements CallerBack {
     int vendor_value;
     String default_skin;
     GWItemDetailObject object;
-    private CallerBack callerBack;
+    transient private CallerBack callerBack;
     public Bitmap image;
-    public static final int MAX_WIDTH = 20;
-    public static final int MAX_HEIGHT = 20;
+    transient public static final int MAX_WIDTH = 20;
+    transient public static final int MAX_HEIGHT = 20;
 
 
     public GWItem(CallerBack cb, String id) {
@@ -47,8 +42,8 @@ public class GWItem implements CallerBack {
         game_types = new ArrayList<>();
         flags = new ArrayList<>();
         restrictions = new ArrayList<>();
-        //System.out.println("Item " + this.id);
-        new DownloadDetail().execute(id);
+
+
     }
 
     public void readFile(String result) throws JSONException {
@@ -73,6 +68,7 @@ public class GWItem implements CallerBack {
         }
         chat_link = reader.getString("chat_link");
         icon = reader.getString("icon");
+        System.out.println("icon " + icon);
         //new DownloadImage(this).execute(icon);
         callerBack.notifyUpdate(this, 0.0f, name);
 
@@ -87,59 +83,6 @@ public class GWItem implements CallerBack {
     public void cancel() {
 
     }
-
-
-    public class DownloadDetail extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            URL url;
-            StringBuilder response = new StringBuilder();
-
-            HttpURLConnection urlConnection = null;
-            try {
-                url = new URL(GWItem.this.url + params[0]);
-
-                urlConnection = (HttpURLConnection) url
-                        .openConnection();
-
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(urlConnection.getInputStream()));
-
-                String inputLine;
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    urlConnection.disconnect();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            return response.toString();
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            //  System.out.println("Item " + GWItem.this.id);
-            //System.out.println("Item " + result);
-            try {
-                GWItem.this.readFile(result);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-    }
-
-
 
 
 }

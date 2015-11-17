@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void update(Observable observable, Object data) {
         if (observable instanceof RequestManager) {
             if (data == CATEGORIES.ACCOUNT) {
-                alertView(((Account)requestManager.getContainer(CATEGORIES.ACCOUNT)).name);
+                alertView(((Account)requestManager.getContainer(CATEGORIES.ACCOUNT)).accountData.name);
                 requestManager.overNotify();
             }
             if (data == CATEGORIES.BANK) {

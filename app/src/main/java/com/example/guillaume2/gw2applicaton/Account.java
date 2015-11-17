@@ -1,11 +1,19 @@
 package com.example.guillaume2.gw2applicaton;
 
+import android.os.Environment;
+
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Created by guillaume2 on 01/11/15.
@@ -15,50 +23,93 @@ import java.util.List;
 public class Account extends GWObject {
 
 
-    public String name = null;
-    public String id = null;
-    public String world = null;
-    public String dateCreation = null;
     private CallerBack parent;
-    public List<String> guilds = new ArrayList<>();
+    public AccountData accountData;
+
 
     public Account() {
+        accountData = new AccountData();
         super.url = "account";
         super.cat = CATEGORIES.ACCOUNT;
+        super.directoryFile += "Account";
+        super.directoryName = "account.data";
     }
+
+    public void readData() {
+        Gson gson = new Gson();
+        File sdcard = Environment.getExternalStorageDirectory();
+        File dir = new File(sdcard.getAbsolutePath() + directoryFile);
+        File file = new File(dir, directoryName);
+        if (!file.exists()) return;
+
+        StringBuilder text = new StringBuilder();
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            accountData = gson.fromJson(br, AccountData.class);
+
+
+            br.close();
+        } catch (IOException e) {
+        }
+
+    }
+
+    public void writeData() {
+        File sdCard = Environment.getExternalStorageDirectory();
+        File dir = new File(sdCard.getAbsolutePath() + directoryFile);
+        dir.mkdirs();
+        File file = new File(dir, directoryName);
+
+        try {
+
+            FileOutputStream outputStream = new FileOutputStream(file);
+
+            Gson gson = new Gson();
+            String json = gson.toJson(accountData);
+            outputStream.write(json.getBytes());
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     protected void readFile(CallerBack parent, String results) {
         this.parent = parent;
-        parent.notifyUpdate(0.0f);
+        accountData.guilds.clear();
+        parent.notifyUpdate(this, 0.0f, "Info");
         try {
             JSONObject reader = new JSONObject(results);
-            id = reader.getString("id");
-            name = reader.getString("name");
-            world = reader.getString("world");
-            dateCreation = reader.getString("created");
+            accountData.id = reader.getString("id");
+            accountData.name = reader.getString("name");
+            accountData.world = reader.getString("world");
+            accountData.dateCreation = reader.getString("created");
 
             JSONArray jsonArray = reader.optJSONArray("guilds");
 
 
             for (int i = 0; i < jsonArray.length(); i++) {
 
-                guilds.add(jsonArray.getString(i));
+                accountData.guilds.add(jsonArray.getString(i));
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        parent.notifyUpdate(1.0f);
+        parent.notifyUpdate(this, 1.0f, "Info end");
     }
 
 
     @Override
     public String toString() {
-        String s = "id " + id + "\n";
-        s += "name " + name + "\n";
-        s += "world " + world + "\n";
-        for (String g : guilds)
+        String s = "id " + accountData.id + "\n";
+        s += "name " + accountData.name + "\n";
+        s += "world " + accountData.world + "\n";
+        for (String g : accountData.guilds)
             s += "Guild " + g + "\n";
         return s;
     }

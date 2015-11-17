@@ -9,7 +9,6 @@ import com.example.guillaume2.gw2applicaton.item.GWItem;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -82,8 +81,6 @@ public class DownloadImage extends AsyncTask<String , Void, Void> {
 
             callerBack.notifyUpdate(this, result, index);
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

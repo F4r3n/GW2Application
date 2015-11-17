@@ -18,7 +18,10 @@ public class BankObject {
     private String id;
     private int count;
     private String idSkin;
-    private float progression;
+    public GWItem item;
+    private List<String> upgrades;
+    private List<String> infusions;
+
 
     public List<String> getInfusions() {
         return infusions;
@@ -40,12 +43,15 @@ public class BankObject {
         return id;
     }
 
-    private List<String> upgrades;
-    private List<String> infusions;
-    private GWItem item;
 
-    public String getUrl() {
-       return item.icon;
+
+    public GWItem getItem() {
+        return item;
+    }
+
+    public void setItem(GWItem item) {
+
+        this.item = item;
     }
 
     public String getName() {
@@ -58,13 +64,13 @@ public class BankObject {
 
 
     public BankObject(CallerBack cb, JSONObject json) {
-        //items = new ArrayList<GWItem>();
+
         upgrades = new ArrayList<String>();
         infusions = new ArrayList<String>();
         try {
             id = json.getString("id");
 
-            item = new GWItem(cb, id);
+
 
             count = json.getInt("count");
             if (!json.isNull("skin"))

@@ -102,22 +102,23 @@ public class RequestManager extends Observable implements CallerBack {
     @Override
     public void notifyUpdate(Object... o) {
 
-        int progress = (int) ((float) o[1] * 100);
-        System.out.println("Progress " + progress);
+        final int progress = (int) ((float) o[1] * 100);
+
         if (o.length > 2) {
             final String s = (String) o[2];
             if (dialogBoxDisplay) {
 
                 act.runOnUiThread(new Runnable() {
                     public void run() {
-                        progressDialog.setMessage( s);
+                        progressDialog.setMessage(s);
+                        progressDialog.setProgress(progress);
                     }
                 });
             }
 
 
             if (dialogBoxDisplay) {
-                progressDialog.setProgress(progress);
+
                 if (progress == 100) {
 
                     if (progressDialog.isShowing()) {
@@ -126,8 +127,10 @@ public class RequestManager extends Observable implements CallerBack {
                 }
             }
         }
-        if (progress == 100)
+        if (progress == 100) {
+            object.writeData();
             notifyFinish(object.getCat());
+        }
 
     }
 
