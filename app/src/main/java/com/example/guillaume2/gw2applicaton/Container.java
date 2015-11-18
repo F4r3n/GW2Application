@@ -1,6 +1,6 @@
 package com.example.guillaume2.gw2applicaton;
 
-public class Container {
+public class Container  {
     public Account getAccount() {
         return account;
     }

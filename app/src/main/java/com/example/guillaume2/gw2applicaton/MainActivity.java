@@ -2,6 +2,7 @@ package com.example.guillaume2.gw2applicaton;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
 
-
     public void getInfo(View view) {
         NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
         if (ni == null) {
@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
         switch (view.getId()) {
             case R.id.infoButton:
-                requestManager.execute( new Account(), true);
+                requestManager.execute(new Account(), true);
                 break;
             case R.id.bankButton:
-                requestManager.execute( new Bank(), true);
+                requestManager.execute(new Bank(), true);
         }
     }
 
@@ -101,12 +101,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void update(Observable observable, Object data) {
         if (observable instanceof RequestManager) {
             if (data == CATEGORIES.ACCOUNT) {
-                alertView(((Account)requestManager.getContainer(CATEGORIES.ACCOUNT)).accountData.name);
+                alertView(((Account) requestManager.getContainer(CATEGORIES.ACCOUNT)).accountData.name);
                 requestManager.overNotify();
             }
             if (data == CATEGORIES.BANK) {
-                Bank b = (Bank)requestManager.getContainer(CATEGORIES.BANK);
+                Bank b = (Bank) requestManager.getContainer(CATEGORIES.BANK);
+
+                Intent intent = new Intent(this, CollectionList.class);
+                startActivity(intent);
+
                 requestManager.overNotify();
+
             }
         }
     }

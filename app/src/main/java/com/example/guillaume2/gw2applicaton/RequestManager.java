@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Observable;
 
 /**
@@ -14,7 +12,7 @@ import java.util.Observable;
  */
 public class RequestManager extends Observable implements CallerBack {
 
-    private List<Container> containers = new ArrayList<Container>();
+    //private List<Container> containers = new ArrayList<Container>();
     int index = 0;
     public Activity act;
     private boolean dialogBoxDisplay = false;
@@ -30,7 +28,9 @@ public class RequestManager extends Observable implements CallerBack {
         progressDialog.setMax(100);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setCancelable(false);
-        containers.add(new Container());
+        Collection c =(Collection) act.getApplication();
+        c.addContainer(new Container());
+
 
     }
 
@@ -46,9 +46,11 @@ public class RequestManager extends Observable implements CallerBack {
 
     public void notifyFinish(CATEGORIES param) {
         categoriesDownloaded.put(param, true);
+        Collection c =(Collection) act.getApplication();
+
         switch (object.getCat()) {
             case ACCOUNT:
-                containers.get(index).setAccount((Account) object);
+                c.getContainer(index).setAccount((Account) object);
                 break;
             case DYES:
                 break;
@@ -57,7 +59,7 @@ public class RequestManager extends Observable implements CallerBack {
             case PVP:
                 break;
             case BANK:
-                containers.get(index).setBank((Bank) object);
+                c.getContainer(index).setBank((Bank) object);
                 break;
         }
         notifyChange(object.getCat());
@@ -65,9 +67,11 @@ public class RequestManager extends Observable implements CallerBack {
     }
 
     public Object getContainer(CATEGORIES cat) {
+        Collection c =(Collection) act.getApplication();
+
         switch (cat) {
             case ACCOUNT:
-                return containers.get(index).getAccount();
+                return c.getContainer(index).getAccount();
             case DYES:
                 break;
             case SKINS:
@@ -75,7 +79,7 @@ public class RequestManager extends Observable implements CallerBack {
             case PVP:
                 break;
             case BANK:
-                return containers.get(index).getBank();
+                return c.getContainer(index).getBank();
 
         }
         return null;
@@ -85,6 +89,15 @@ public class RequestManager extends Observable implements CallerBack {
         object = cat;
         progressDialog.setProgress(0);
         this.dialogBoxDisplay = displayProgressDialog;
+        if(cat.isExists()) {
+            cat.readData();
+            System.out.println(cat.getCat());
+            notifyFinish(cat.getCat());
+            categoriesDownloaded.put(cat.getCat(),true);
+            return categoriesDownloaded.get(cat.getCat());
+        }
+
+
         if (categoriesDownloaded.containsKey(cat.getCat()) && categoriesDownloaded.get(cat.getCat())) {
             notifyChange(cat.getCat());
             Toast.makeText(act, "Already updated", Toast.LENGTH_SHORT).show();

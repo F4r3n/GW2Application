@@ -1,6 +1,7 @@
 package com.example.guillaume2.gw2applicaton;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.example.guillaume2.gw2applicaton.item.GWItem;
 
@@ -43,6 +44,13 @@ public class BankObject {
         return id;
     }
 
+    public String getDesc() {
+        return item.description;
+    }
+
+    public Bitmap getIcon() {
+        return BitmapFactory.decodeFile(item.imagePath);
+    }
 
 
     public GWItem getItem() {
@@ -58,8 +66,8 @@ public class BankObject {
         return item.name;
     }
 
-    public void setImage(Bitmap b) {
-        item.image = b;
+    public void setImagePath(String b) {
+        item.imagePath = b;
     }
 
 

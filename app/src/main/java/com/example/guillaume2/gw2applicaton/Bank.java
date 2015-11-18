@@ -10,9 +10,11 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +24,7 @@ import java.util.List;
  */
 public class Bank extends GWObject implements CallerBack {
 
-    public List<BankObject> objects = new ArrayList<>();
-
+    private BankData bankData;
     private int itemsToSearch = 0;
     public int itemsFound = 0;
     private int imagesToSearch = 0;
@@ -31,12 +32,47 @@ public class Bank extends GWObject implements CallerBack {
     private CallerBack parent;
     private boolean isSearchingImages = false;
     private List<String> itemsId = new ArrayList<>();
+    private List<String> imagesUrlToDl = new ArrayList<>();
+    private String pathImages = "";
+    private String imageDir = "/images/";
 
     public Bank() {
         super.directoryFile = "/GW2App/Bank";
         super.directoryName = "bank.data";
         super.url = "account/bank";
         super.cat = CATEGORIES.BANK;
+        File sdCard = Environment.getExternalStorageDirectory();
+        File dir = new File(sdCard.getAbsolutePath() + directoryFile + imageDir);
+        pathImages = dir.getAbsolutePath();
+        bankData = new BankData();
+    }
+
+    public BankData getBankData() {
+        return bankData;
+    }
+
+    public String saveImage(Bitmap bmp, String id, String path) {
+        File sdCard = Environment.getExternalStorageDirectory();
+        File dir = new File(sdCard.getAbsolutePath() + directoryFile + path);
+        dir.mkdirs();
+
+        File file = new File(dir, id + ".png");
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file.getAbsolutePath();
     }
 
     public void writeData() {
@@ -50,7 +86,7 @@ public class Bank extends GWObject implements CallerBack {
             FileOutputStream outputStream = new FileOutputStream(file);
 
             Gson gson = new Gson();
-            String json = gson.toJson(objects);
+            String json = gson.toJson(bankData);
             outputStream.write(json.getBytes());
             outputStream.close();
         } catch (FileNotFoundException e) {
@@ -58,14 +94,58 @@ public class Bank extends GWObject implements CallerBack {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    @Override
+    public boolean isExists() {
+        File file = new File(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + directoryFile), directoryName);
+        if (file.exists()) return true;
+
+        return false;
+    }
+
+    @Override
+    public void readData() {
+
+        Gson gson = new Gson();
+        File sdcard = Environment.getExternalStorageDirectory();
+        File dir = new File(sdcard.getAbsolutePath() + directoryFile);
+        File file = new File(dir, directoryName);
+        if (!file.exists()) {
+            System.out.println("File does not exist");
+
+            return;
+        } else {
+            System.out.println("File does exist");
+        }
+
+
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            bankData = gson.fromJson(br, BankData.class);
+            br.close();
+        } catch (IOException e) {
+        }
+
     }
 
     public void retrieveImages() {
-        List<String> s = new ArrayList<>();
-        for (BankObject b : objects) {
-            s.add(b.item.icon);
+        imagesUrlToDl.clear();
+        for (BankObject b : bankData.objects) {
+            if (!(new File(b.item.imagePath).exists())) {
+                imagesUrlToDl.add(b.item.iconUrl);
+                System.out.println("!path " + b.item.imagePath);
+                imagesToSearch = imagesUrlToDl.size();
+            } else {
+                System.out.println("path " + b.item.imagePath);
+
+                imagesFound++;
+            }
         }
-        new DownloadImage(this, s).execute();
+        if (!imagesUrlToDl.isEmpty())
+            new DownloadImage(this, imagesUrlToDl).execute();
     }
 
     public void readFile(CallerBack parent, String result) {
@@ -80,11 +160,11 @@ public class Bank extends GWObject implements CallerBack {
             for (int i = 0; i < reader.length(); i++) {
                 if (!reader.get(i).toString().equals("null")) {
                     itemsId.add(reader.getJSONObject(i).getString("id"));
-                    objects.add(new BankObject(this, reader.getJSONObject(i)));
+                    bankData.objects.add(new BankObject(this, reader.getJSONObject(i)));
                 } else itemsToSearch--;
 
             }
-            imagesToSearch = itemsToSearch;
+            //imagesToSearch = itemsToSearch;
 
             new DownloadDetail(this, itemsId).execute();
 
@@ -100,29 +180,36 @@ public class Bank extends GWObject implements CallerBack {
         float progress = 0.0f;
 
         String s = "";
-        //System.out.println("Bank " + o[2]);
         if (o[0] != null) {
             if (o[0] instanceof DownloadImage) {
-                objects.get((Integer) o[2]).setImage((Bitmap) o[1]);
-                s = "Picture " + objects.get((Integer) o[2]).getName() + "\n";
-                System.out.print(s);
+                s = "Picture " + bankData.objects.get((Integer) o[2]).getName() + "\n";
+
+                saveImage((Bitmap) o[1], bankData.objects.get((Integer) o[2]).getId(), imageDir);
+
+                if (imagesFound == imagesToSearch) isSearchingImages = false;
 
                 imagesFound++;
             } else if (o[0] instanceof DownloadDetail) {
                 System.out.println("index " + (int) o[2]);
-                objects.get((int) o[2]).item = new GWItem(this, itemsId.get((int) o[2]));
+                bankData.objects.get((int) o[2]).item = new GWItem(this, itemsId.get((int) o[2]));
+
                 try {
-                    objects.get((int) o[2]).item.readFile((String) o[1]);
+                    bankData.objects.get((int) o[2]).item.readFile((String) o[1]);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+
                 //itemsFound++;
 
             } else {
                 if (o[0] instanceof GWItem) {
-                    s = objects.get(itemsFound).getName();
+                    s = bankData.objects.get(itemsFound).getName();
                     System.out.println("GWItem " + s);
-                    System.out.println("Url " + objects.get(0).item.icon);
+                    System.out.println("Url " + bankData.objects.get(0).item.iconUrl);
+                    bankData.objects.get(itemsFound).setImagePath(pathImages + "/" + bankData.objects.get(itemsFound).getId() + ".png");
+
+
                     itemsFound++;
 
                     if (itemsFound == itemsToSearch && !isSearchingImages) {
@@ -132,6 +219,8 @@ public class Bank extends GWObject implements CallerBack {
                 }
             }
         }
+        imagesToSearch = itemsToSearch;
+
         if (itemsToSearch != 0) {
             progress = ((float) itemsFound + (float) imagesFound) / ((float) itemsToSearch + (float) imagesToSearch);
         }

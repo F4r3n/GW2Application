@@ -31,24 +31,33 @@ public class Account extends GWObject {
         accountData = new AccountData();
         super.url = "account";
         super.cat = CATEGORIES.ACCOUNT;
-        super.directoryFile += "Account";
+        super.directoryFile = "/GW2App/Account";
         super.directoryName = "account.data";
     }
 
+
+
     public void readData() {
+
+        System.out.println(directoryFile);
+
         Gson gson = new Gson();
         File sdcard = Environment.getExternalStorageDirectory();
         File dir = new File(sdcard.getAbsolutePath() + directoryFile);
         File file = new File(dir, directoryName);
-        if (!file.exists()) return;
+        if (!file.exists()) {
+            System.out.println("File does not exist");
 
-        StringBuilder text = new StringBuilder();
+            return;
+        } else {
+            System.out.println("File does exist");
+        }
+
+
         BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(file));
             accountData = gson.fromJson(br, AccountData.class);
-
-
             br.close();
         } catch (IOException e) {
         }
@@ -74,6 +83,14 @@ public class Account extends GWObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean isExists() {
+        File file = new File(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + directoryFile), directoryName);
+        if (file.exists()) return true;
+
+        return false;
     }
 
 
