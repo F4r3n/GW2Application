@@ -120,6 +120,11 @@ public class Account extends GWObject {
         parent.notifyUpdate(this, 1.0f, "Info end");
     }
 
+    @Override
+    protected void deleteFileData() {
+
+    }
+
 
     @Override
     public String toString() {

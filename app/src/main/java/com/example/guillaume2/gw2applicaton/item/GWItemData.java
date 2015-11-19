@@ -20,7 +20,7 @@ public class GWItemData {
     public int level;
     public int vendor_value;
     public String default_skin;
-    public GWItemDetailObject object;
+    public GWItemDetailObject detailObject;
     public String imagePath;
     public String dataPath;
 

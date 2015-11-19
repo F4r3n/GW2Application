@@ -2,6 +2,7 @@ package com.example.guillaume2.gw2applicaton;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 
 import com.example.guillaume2.gw2applicaton.item.GWItem;
 
@@ -78,7 +79,7 @@ public class BankObject {
         try {
             id = json.getString("id");
 
-
+            pathGWItem = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/item/data/"+id+".json";
 
             count = json.getInt("count");
             if (!json.isNull("skin"))

@@ -65,6 +65,8 @@ public class GWItem implements CallerBack {
         gwItemData.chat_link = reader.getString("chat_link");
         gwItemData.iconUrl = reader.getString("icon");
         System.out.println("icon " + gwItemData.iconUrl);
+
+
         //new DownloadImage(this).execute(icon);
         callerBack.notifyUpdate(this, 0.0f, gwItemData.name);
 
@@ -77,10 +79,6 @@ public class GWItem implements CallerBack {
     }
 
     public void writeData() {
-        System.out.println("Write "+gwItemData.dataPath);
-
-        System.out.println("Write "+gwItemData.dataPath.substring(0,gwItemData.dataPath.lastIndexOf("/")+1));
-
         File dir = new File(gwItemData.dataPath.substring(0,gwItemData.dataPath.lastIndexOf("/")+1));
         dir.mkdirs();
         File file = new File(dir, gwItemData.id+".json");

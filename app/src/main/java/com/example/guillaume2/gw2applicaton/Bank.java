@@ -47,7 +47,6 @@ public class Bank extends GWObject implements CallerBack {
     }
 
 
-
     public void writeData() {
         File sdCard = Environment.getExternalStorageDirectory();
         File dir = new File(sdCard.getAbsolutePath() + directoryFile);
@@ -135,12 +134,26 @@ public class Bank extends GWObject implements CallerBack {
             itemsToSearch = reader.length();
             for (int i = 0; i < reader.length(); i++) {
                 if (!reader.get(i).toString().equals("null")) {
-                    itemsId.add(reader.getJSONObject(i).getString("id"));
                     bankData.objects.add(new BankObject(reader.getJSONObject(i)));
+
+                    if (!new File(bankData.objects.get(bankData.objects.size() - 1).pathGWItem).exists()) {
+                        itemsId.add(reader.getJSONObject(i).getString("id"));
+                    } else {
+                        bankData.objects.get(bankData.objects.size() - 1).item = new GWItem(this,reader.getJSONObject(i).getString("id"));
+                        bankData.objects.get(bankData.objects.size() - 1).item.readData();
+                        itemsToSearch--;
+                    }
                 } else itemsToSearch--;
 
             }
+
+            if(itemsToSearch == 0) {
+                parent.notifyUpdate(this, 1.0f, "Over");
+                return;
+            }
+
             //imagesToSearch = itemsToSearch;
+
 
             new DownloadDetail(this, itemsId).execute();
 
@@ -148,6 +161,15 @@ public class Bank extends GWObject implements CallerBack {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void deleteFileData() {
+        File sdCard = Environment.getExternalStorageDirectory();
+        File dir = new File(sdCard.getAbsolutePath() + directoryFile);
+        File file = new File(dir, directoryName);
+        file.delete();
+
     }
 
 
@@ -181,8 +203,6 @@ public class Bank extends GWObject implements CallerBack {
                     e.printStackTrace();
                 }
 
-
-                //itemsFound++;
 
             } else {
                 if (o[0] instanceof GWItem) {

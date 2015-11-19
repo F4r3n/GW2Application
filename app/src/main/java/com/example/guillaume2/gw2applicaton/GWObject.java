@@ -24,7 +24,7 @@ public abstract class GWObject implements CallerBack, DataUpdater {
     protected void readFile(CallerBack parent, String results) {
     }
 
-    ;
+    abstract protected void deleteFileData();
 
     @Override
     public void notifyUpdate(Object... o) {

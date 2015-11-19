@@ -11,6 +11,8 @@ import java.util.List;
 public class Collection extends Application {
     int index = 0;
     List<Container> containers;
+    RequestManager requestManager;
+
     public Collection() {
         containers = new ArrayList<>();
 
@@ -23,6 +25,15 @@ public class Collection extends Application {
 
     public Container getContainer(int index) {
         return containers.get(index);
+    }
+
+    public void setRequestManager(RequestManager rqm) {
+        requestManager = rqm;
+    }
+
+    public RequestManager getRequestManager() {
+        return requestManager;
+
     }
 
 
