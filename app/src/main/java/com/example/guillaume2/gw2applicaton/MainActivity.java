@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 requestManager.overNotify();
             }
             if (data == CATEGORIES.BANK) {
-                Bank b = (Bank) requestManager.getContainer(CATEGORIES.BANK);
 
                 Intent intent = new Intent(this, CollectionList.class);
                 startActivity(intent);

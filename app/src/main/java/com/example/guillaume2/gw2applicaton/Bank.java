@@ -12,7 +12,6 @@ import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -33,17 +32,13 @@ public class Bank extends GWObject implements CallerBack {
     private boolean isSearchingImages = false;
     private List<String> itemsId = new ArrayList<>();
     private List<String> imagesUrlToDl = new ArrayList<>();
-    private String pathImages = "";
-    private String imageDir = "/images/";
+
 
     public Bank() {
         super.directoryFile = "/GW2App/Bank";
         super.directoryName = "bank.data";
         super.url = "account/bank";
         super.cat = CATEGORIES.BANK;
-        File sdCard = Environment.getExternalStorageDirectory();
-        File dir = new File(sdCard.getAbsolutePath() + directoryFile + imageDir);
-        pathImages = dir.getAbsolutePath();
         bankData = new BankData();
     }
 
@@ -51,34 +46,13 @@ public class Bank extends GWObject implements CallerBack {
         return bankData;
     }
 
-    public String saveImage(Bitmap bmp, String id, String path) {
-        File sdCard = Environment.getExternalStorageDirectory();
-        File dir = new File(sdCard.getAbsolutePath() + directoryFile + path);
-        dir.mkdirs();
 
-        File file = new File(dir, id + ".png");
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return file.getAbsolutePath();
-    }
 
     public void writeData() {
         File sdCard = Environment.getExternalStorageDirectory();
         File dir = new File(sdCard.getAbsolutePath() + directoryFile);
         dir.mkdirs();
+
         File file = new File(dir, directoryName);
 
         try {
@@ -89,8 +63,6 @@ public class Bank extends GWObject implements CallerBack {
             String json = gson.toJson(bankData);
             outputStream.write(json.getBytes());
             outputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,9 +72,8 @@ public class Bank extends GWObject implements CallerBack {
     @Override
     public boolean isExists() {
         File file = new File(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + directoryFile), directoryName);
-        if (file.exists()) return true;
+        return file.exists();
 
-        return false;
     }
 
     @Override
@@ -127,6 +98,11 @@ public class Bank extends GWObject implements CallerBack {
             bankData = gson.fromJson(br, BankData.class);
             br.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (BankObject o : bankData.objects) {
+            o.item = new GWItem(null, o.getId());
+            o.item.readData();
         }
 
     }
@@ -134,12 +110,12 @@ public class Bank extends GWObject implements CallerBack {
     public void retrieveImages() {
         imagesUrlToDl.clear();
         for (BankObject b : bankData.objects) {
-            if (!(new File(b.item.imagePath).exists())) {
-                imagesUrlToDl.add(b.item.iconUrl);
-                System.out.println("!path " + b.item.imagePath);
+            if (!(new File(b.item.gwItemData.imagePath).exists())) {
+                imagesUrlToDl.add(b.item.gwItemData.iconUrl);
+                System.out.println("!path " + b.item.gwItemData.imagePath);
                 imagesToSearch = imagesUrlToDl.size();
             } else {
-                System.out.println("path " + b.item.imagePath);
+                System.out.println("path " + b.item.gwItemData.imagePath);
 
                 imagesFound++;
             }
@@ -160,7 +136,7 @@ public class Bank extends GWObject implements CallerBack {
             for (int i = 0; i < reader.length(); i++) {
                 if (!reader.get(i).toString().equals("null")) {
                     itemsId.add(reader.getJSONObject(i).getString("id"));
-                    bankData.objects.add(new BankObject(this, reader.getJSONObject(i)));
+                    bankData.objects.add(new BankObject(reader.getJSONObject(i)));
                 } else itemsToSearch--;
 
             }
@@ -183,15 +159,21 @@ public class Bank extends GWObject implements CallerBack {
         if (o[0] != null) {
             if (o[0] instanceof DownloadImage) {
                 s = "Picture " + bankData.objects.get((Integer) o[2]).getName() + "\n";
+                System.out.println("Saving " + bankData.objects.get((Integer) o[2]).getName() + "...");
+                bankData.objects.get((Integer) o[2]).item.saveImage((Bitmap) o[1], bankData.objects.get((Integer) o[2]).getId());
+                System.out.println("Saving Done");
 
-                saveImage((Bitmap) o[1], bankData.objects.get((Integer) o[2]).getId(), imageDir);
 
                 if (imagesFound == imagesToSearch) isSearchingImages = false;
 
                 imagesFound++;
             } else if (o[0] instanceof DownloadDetail) {
                 System.out.println("index " + (int) o[2]);
-                bankData.objects.get((int) o[2]).item = new GWItem(this, itemsId.get((int) o[2]));
+                BankObject object = bankData.objects.get((int) o[2]);
+                object.item = new GWItem(this, itemsId.get((int) o[2]));
+                object.pathGWItem = object.item.gwItemData.dataPath;
+                // object.pathGWItem = object.item.gwItemData.dataPath + object.getId() + ".json";
+
 
                 try {
                     bankData.objects.get((int) o[2]).item.readFile((String) o[1]);
@@ -206,8 +188,8 @@ public class Bank extends GWObject implements CallerBack {
                 if (o[0] instanceof GWItem) {
                     s = bankData.objects.get(itemsFound).getName();
                     System.out.println("GWItem " + s);
-                    System.out.println("Url " + bankData.objects.get(0).item.iconUrl);
-                    bankData.objects.get(itemsFound).setImagePath(pathImages + "/" + bankData.objects.get(itemsFound).getId() + ".png");
+                    if (!bankData.objects.get(itemsFound).item.dataExists())
+                        bankData.objects.get(itemsFound).item.writeData();
 
 
                     itemsFound++;

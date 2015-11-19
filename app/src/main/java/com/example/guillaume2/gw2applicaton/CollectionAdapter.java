@@ -54,8 +54,8 @@ public class CollectionAdapter extends BaseAdapter {
 
         BankObject currentListData = getItem(position);
 
-        mViewHolder.itemDesc.setText(currentListData.getName());
-        mViewHolder.itemName.setText(currentListData.getDesc());
+        mViewHolder.itemDesc.setText(currentListData.getDesc());
+        mViewHolder.itemName.setText(currentListData.getName());
         mViewHolder.itemIcon.setImageBitmap(currentListData.getIcon());
 
         return convertView;

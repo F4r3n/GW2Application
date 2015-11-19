@@ -19,10 +19,12 @@ public class BankObject {
     private String id;
     private int count;
     private String idSkin;
-    public GWItem item;
+    transient public GWItem item;
+    public String pathGWItem;
     private List<String> upgrades;
     private List<String> infusions;
 
+    public String getPathGWItem() { return pathGWItem;}
 
     public List<String> getInfusions() {
         return infusions;
@@ -45,11 +47,11 @@ public class BankObject {
     }
 
     public String getDesc() {
-        return item.description;
+        return item.gwItemData.description;
     }
 
     public Bitmap getIcon() {
-        return BitmapFactory.decodeFile(item.imagePath);
+        return BitmapFactory.decodeFile(item.gwItemData.imagePath);
     }
 
 
@@ -63,18 +65,16 @@ public class BankObject {
     }
 
     public String getName() {
-        return item.name;
-    }
-
-    public void setImagePath(String b) {
-        item.imagePath = b;
+        return item.gwItemData.name;
     }
 
 
-    public BankObject(CallerBack cb, JSONObject json) {
 
-        upgrades = new ArrayList<String>();
-        infusions = new ArrayList<String>();
+
+    public BankObject(JSONObject json) {
+
+        upgrades = new ArrayList<>();
+        infusions = new ArrayList<>();
         try {
             id = json.getString("id");
 
