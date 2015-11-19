@@ -38,6 +38,7 @@ public class GWItem implements CallerBack {
         gwItemData.game_types = new ArrayList<>();
         gwItemData.flags = new ArrayList<>();
         gwItemData.restrictions = new ArrayList<>();
+        gwItemData.detailObject = new GWItemDetailObject();
 
 
     }
@@ -64,8 +65,15 @@ public class GWItem implements CallerBack {
         }
         gwItemData.chat_link = reader.getString("chat_link");
         gwItemData.iconUrl = reader.getString("icon");
-        System.out.println("icon " + gwItemData.iconUrl);
-
+        System.out.println("id " + gwItemData.id);
+        switch (gwItemData.type) {
+            case ARMOR:
+                gwItemData.detailObject = new GWItemArmor(reader.getJSONObject("details"));
+                break;
+            case CONSUMABLE:
+                gwItemData.detailObject = new GWItemConsumable(reader.getJSONObject("details"));
+                break;
+        }
 
         //new DownloadImage(this).execute(icon);
         callerBack.notifyUpdate(this, 0.0f, gwItemData.name);
@@ -116,6 +124,7 @@ public class GWItem implements CallerBack {
         BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(file));
+
             gwItemData = gson.fromJson(br, GWItemData.class);
             br.close();
         } catch (IOException e) {

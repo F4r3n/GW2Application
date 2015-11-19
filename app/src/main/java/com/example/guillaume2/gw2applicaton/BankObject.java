@@ -48,7 +48,7 @@ public class BankObject {
     }
 
     public String getDesc() {
-        return item.gwItemData.description;
+        return item.gwItemData.detailObject.description;
     }
 
     public Bitmap getIcon() {

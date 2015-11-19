@@ -157,11 +157,8 @@ public class RequestManager extends Observable implements CallerBack {
                 }
             }
         }
-        System.out.println("rqm " + progress);
         if (progress == 100) {
             object.writeData();
-            System.out.println("rqm write data");
-
             notifyFinish(object.getCat());
         }
 
