@@ -25,10 +25,18 @@ public class MainActivity extends AppCompatActivity implements CallerBack {
         setContentView(R.layout.activity_main);
 
         requestManager = new RequestManager(this);
+        requestManager.initProgressDialog(this);
 
         linearLayoutAccount = (LinearLayout) findViewById(R.id.AccountLinear);
         accountButton = (Button) findViewById(R.id.accountButton);
         infoButton = (Button) findViewById(R.id.infoButton);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requestManager.initProgressDialog(this);
+
     }
 
 

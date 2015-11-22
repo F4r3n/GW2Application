@@ -31,14 +31,14 @@ public class GWItem implements CallerBack {
 
     public GWItem(CallerBack cb, String id) {
         gwItemData = new GWItemData();
-        gwItemData.dataPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/item/data/"+id+".json";
-        gwItemData.imagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/item/images/"+id+".png";
+        gwItemData.dataPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/item/data/" + id + ".json";
+        gwItemData.imagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/item/images/" + id + ".png";
         callerBack = cb;
         gwItemData.id = id;
         gwItemData.game_types = new ArrayList<>();
         gwItemData.flags = new ArrayList<>();
         gwItemData.restrictions = new ArrayList<>();
-        gwItemData.detailObject = new GWItemDetailObject();
+
 
 
     }
@@ -67,29 +67,33 @@ public class GWItem implements CallerBack {
         gwItemData.iconUrl = reader.getString("icon");
         System.out.println("id " + gwItemData.id);
         switch (gwItemData.type) {
-            case ARMOR:
-                gwItemData.detailObject = new GWItemArmor(reader.getJSONObject("details"));
-                break;
             case CONSUMABLE:
-                gwItemData.detailObject = new GWItemConsumable(reader.getJSONObject("details"));
+                gwItemData.consumableObject = new GWItemConsumable(reader.getJSONObject("details"));
+                break;
+            case ARMOR:
+                gwItemData.armorObject = new GWItemArmor(reader.getJSONObject("details"));
                 break;
         }
 
         //new DownloadImage(this).execute(icon);
-        callerBack.notifyUpdate(this, 0.0f, gwItemData.name);
+        callerBack.notifyUpdate(this, 0.0f, gwItemData.name, gwItemData.id);
 
     }
 
     public boolean dataExists() {
         File file = new File(gwItemData.dataPath);
-        if (file.exists()) return true;
-        return false;
+        return file.exists();
+    }
+
+    public boolean imageExists() {
+        File file = new File(gwItemData.imagePath);
+        return file.exists();
     }
 
     public void writeData() {
-        File dir = new File(gwItemData.dataPath.substring(0,gwItemData.dataPath.lastIndexOf("/")+1));
+        File dir = new File(gwItemData.dataPath.substring(0, gwItemData.dataPath.lastIndexOf("/") + 1));
         dir.mkdirs();
-        File file = new File(dir, gwItemData.id+".json");
+        File file = new File(dir, gwItemData.id + ".json");
 
         try {
 
@@ -124,7 +128,6 @@ public class GWItem implements CallerBack {
         BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(file));
-
             gwItemData = gson.fromJson(br, GWItemData.class);
             br.close();
         } catch (IOException e) {
@@ -133,7 +136,7 @@ public class GWItem implements CallerBack {
     }
 
     public String saveImage(Bitmap bmp, String id) {
-        File dir = new File(gwItemData.imagePath.substring(0,gwItemData.imagePath.lastIndexOf("/")+1));
+        File dir = new File(gwItemData.imagePath.substring(0, gwItemData.imagePath.lastIndexOf("/") + 1));
         dir.mkdirs();
 
         File file = new File(dir, id + ".png");

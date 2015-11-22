@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -31,8 +32,8 @@ public class Bank extends GWObject implements CallerBack {
     private CallerBack parent;
     private boolean isSearchingImages = false;
     private List<String> itemsId = new ArrayList<>();
-    private List<String> imagesUrlToDl = new ArrayList<>();
-
+    private List<DataImageToDl> imagesUrlToDl = new ArrayList<>();
+    private HashMap<String, Integer> indexObject = new HashMap<>();
 
     public Bank() {
         super.directoryFile = "/GW2App/Bank";
@@ -107,24 +108,20 @@ public class Bank extends GWObject implements CallerBack {
     }
 
     public void retrieveImages() {
-        imagesUrlToDl.clear();
-        for (BankObject b : bankData.objects) {
-            if (!(new File(b.item.gwItemData.imagePath).exists())) {
-                imagesUrlToDl.add(b.item.gwItemData.iconUrl);
-                System.out.println("!path " + b.item.gwItemData.imagePath);
-                imagesToSearch = imagesUrlToDl.size();
-            } else {
-                System.out.println("path " + b.item.gwItemData.imagePath);
 
-                imagesFound++;
-            }
+        for (BankObject o : bankData.objects) {
+            System.out.println(o.item);
+            if (o.item.imageExists()) imagesFound++;
+            else imagesUrlToDl.add(new DataImageToDl(o.item.gwItemData.iconUrl, o.getId()));
         }
+
         if (!imagesUrlToDl.isEmpty())
             new DownloadImage(this, imagesUrlToDl).execute();
     }
 
     public void readFile(CallerBack parent, String result) {
         this.parent = parent;
+        boolean hasToDownloadImages = false;
         itemsId.clear();
         itemsFound = 0;
         imagesFound = 0;
@@ -135,19 +132,23 @@ public class Bank extends GWObject implements CallerBack {
             for (int i = 0; i < reader.length(); i++) {
                 if (!reader.get(i).toString().equals("null")) {
                     bankData.objects.add(new BankObject(reader.getJSONObject(i)));
-
+                    indexObject.put(reader.getJSONObject(i).getString("id"), i);
                     if (!new File(bankData.objects.get(bankData.objects.size() - 1).pathGWItem).exists()) {
                         itemsId.add(reader.getJSONObject(i).getString("id"));
                     } else {
-                        bankData.objects.get(bankData.objects.size() - 1).item = new GWItem(this,reader.getJSONObject(i).getString("id"));
-                        bankData.objects.get(bankData.objects.size() - 1).item.readData();
+                        BankObject object = bankData.objects.get(bankData.objects.size() - 1);
+                        object.item = new GWItem(this, reader.getJSONObject(i).getString("id"));
+                        object.item.readData();
                         itemsToSearch--;
+                        if (!object.item.imageExists()) {
+                            hasToDownloadImages = true;
+                            imagesToSearch++;
+                        }
                     }
                 } else itemsToSearch--;
-
             }
-
-            if(itemsToSearch == 0) {
+            System.out.println("items " + itemsToSearch + "images" + imagesUrlToDl.size());
+            if (itemsToSearch == 0 && !hasToDownloadImages) {
                 parent.notifyUpdate(this, 1.0f, "Over");
                 return;
             }
@@ -157,10 +158,16 @@ public class Bank extends GWObject implements CallerBack {
 
             new DownloadDetail(this, itemsId).execute();
 
+            if (itemsToSearch == 0 && hasToDownloadImages) {
+                isSearchingImages = true;
+                retrieveImages();
+            }
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -180,25 +187,28 @@ public class Bank extends GWObject implements CallerBack {
         String s = "";
         if (o[0] != null) {
             if (o[0] instanceof DownloadImage) {
-                s = "Picture " + bankData.objects.get((Integer) o[2]).getName() + "\n";
-                System.out.println("Saving " + bankData.objects.get((Integer) o[2]).getName() + "...");
-                bankData.objects.get((Integer) o[2]).item.saveImage((Bitmap) o[1], bankData.objects.get((Integer) o[2]).getId());
+                BankObject bankObject = bankData.objects.get(indexObject.get(o[3]));
+                s = "Picture " + bankObject.getName() + "\n";
+                System.out.println("Saving " + bankObject.getName() + "...");
+                bankObject.item.saveImage((Bitmap) o[1], bankObject.getId());
                 System.out.println("Saving Done");
-
-
+                imagesFound++;
+                System.out.println(imagesFound + " " + itemsFound + " " + imagesToSearch + " " + itemsToSearch);
                 if (imagesFound == imagesToSearch) isSearchingImages = false;
 
-                imagesFound++;
-            } else if (o[0] instanceof DownloadDetail) {
-                System.out.println("index " + (int) o[2]);
-                BankObject object = bankData.objects.get((int) o[2]);
-                object.item = new GWItem(this, itemsId.get((int) o[2]));
-                object.pathGWItem = object.item.gwItemData.dataPath;
-                // object.pathGWItem = object.item.gwItemData.dataPath + object.getId() + ".json";
 
+            } else if (o[0] instanceof DownloadDetail) {
+                System.out.println("index " + indexObject.get(o[3]));
+
+                BankObject object = bankData.objects.get(indexObject.get(o[3]));
+                object.item = new GWItem(this, (String) o[3]);
+                object.pathGWItem = object.item.gwItemData.dataPath;
+                if (!object.item.imageExists()) {
+                    imagesToSearch++;
+                }
 
                 try {
-                    bankData.objects.get((int) o[2]).item.readFile((String) o[1]);
+                    object.item.readFile((String) o[1]);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -206,28 +216,32 @@ public class Bank extends GWObject implements CallerBack {
 
             } else {
                 if (o[0] instanceof GWItem) {
-                    s = bankData.objects.get(itemsFound).getName();
+                    s = bankData.objects.get(indexObject.get(o[3])).getName();
                     System.out.println("GWItem " + s);
-                    if (!bankData.objects.get(itemsFound).item.dataExists())
-                        bankData.objects.get(itemsFound).item.writeData();
+                    if (!bankData.objects.get(indexObject.get(o[3])).item.dataExists())
+                        bankData.objects.get(indexObject.get(o[3])).item.writeData();
 
 
                     itemsFound++;
 
-                    if (itemsFound == itemsToSearch && !isSearchingImages) {
+                    if (itemsFound == itemsToSearch && !isSearchingImages && imagesToSearch!=0) {
                         isSearchingImages = true;
                         retrieveImages();
                     }
                 }
             }
         }
-        imagesToSearch = itemsToSearch;
 
-        if (itemsToSearch != 0) {
+
+        if (itemsToSearch != 0 || imagesToSearch!=0) {
             progress = ((float) itemsFound + (float) imagesFound) / ((float) itemsToSearch + (float) imagesToSearch);
         }
         //  System.out.println("s " + s);
         //  System.out.println("o " + o[0]);
+        if(progress == 1.0f) {
+            parent.notifyUpdate(this, progress, s);
+            return;
+        }
 
         if (!(o[0] instanceof DownloadDetail))
             parent.notifyUpdate(this, progress, s);

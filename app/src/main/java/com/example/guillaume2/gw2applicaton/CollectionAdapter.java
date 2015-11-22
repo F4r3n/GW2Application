@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.guillaume2.gw2applicaton.item.GWItemArmor;
+import com.example.guillaume2.gw2applicaton.item.GWItemConsumable;
+
 /**
  * Created by guillaume2 on 17/11/15.
  */
@@ -16,13 +19,15 @@ public class CollectionAdapter extends BaseAdapter {
     Bank bank;
     private Activity activity;
     LayoutInflater inflater;
+
     public CollectionAdapter(Activity activity) {
         this.activity = activity;
-        Collection collection = (Collection)activity.getApplication();
+        Collection collection = (Collection) activity.getApplication();
         bank = collection.getContainer(0).getBank();
         System.out.println(bank);
         inflater = LayoutInflater.from(activity);
     }
+
     @Override
     public int getCount() {
         return bank.getBankData().objects.size();
@@ -53,6 +58,21 @@ public class CollectionAdapter extends BaseAdapter {
         }
 
         BankObject currentListData = getItem(position);
+       // System.out.println("type " +currentListData.item.gwItemData.detailObject);
+        switch (currentListData.item.gwItemData.type) {
+            case CONSUMABLE:
+                GWItemConsumable consumable = currentListData.item.gwItemData.consumableObject;
+                mViewHolder.itemType.setText(consumable.description);
+                break;
+            case ARMOR:
+                GWItemArmor armor = currentListData.item.gwItemData.armorObject;
+                mViewHolder.itemType.setText(armor.weight_class.toString().toLowerCase());
+                break;
+            default:
+                mViewHolder.itemType.setText("");
+                break;
+
+        }
 
         mViewHolder.itemDesc.setText(currentListData.getDesc());
         mViewHolder.itemName.setText(currentListData.getName());
@@ -60,11 +80,13 @@ public class CollectionAdapter extends BaseAdapter {
 
         return convertView;
     }
+
     private class MyViewHolder {
-        TextView itemName, itemDesc;
+        TextView itemName, itemDesc, itemType;
         ImageView itemIcon;
 
         public MyViewHolder(View item) {
+            itemType = (TextView) item.findViewById(R.id.itemSub);
             itemIcon = (ImageView) item.findViewById(R.id.itemIcon);
             itemName = (TextView) item.findViewById(R.id.itemName);
             itemDesc = (TextView) item.findViewById(R.id.itemDesc);

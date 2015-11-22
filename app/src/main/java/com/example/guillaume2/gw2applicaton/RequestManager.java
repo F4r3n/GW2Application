@@ -26,6 +26,15 @@ public class RequestManager extends Observable implements CallerBack {
 
 
     public RequestManager(Activity act) {
+
+        Collection c = (Collection) act.getApplication();
+        c.addContainer(new Container());
+        connectivityManager = (ConnectivityManager) act.getSystemService(act.CONNECTIVITY_SERVICE);
+        c.setRequestManager(this);
+
+    }
+
+    public void initProgressDialog(Activity act) {
         this.act = act;
         progressDialog = new ProgressDialog(act);
         progressDialog.setProgress(0);
@@ -33,11 +42,6 @@ public class RequestManager extends Observable implements CallerBack {
         progressDialog.setMax(100);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setCancelable(false);
-        Collection c = (Collection) act.getApplication();
-        c.addContainer(new Container());
-        connectivityManager = (ConnectivityManager) act.getSystemService(act.CONNECTIVITY_SERVICE);
-        c.setRequestManager(this);
-
     }
 
 

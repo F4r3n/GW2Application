@@ -40,6 +40,8 @@ public class GWItemConsumable extends GWItemDetailObject {
     public String recipe_id;
 
     public GWItemConsumable(JSONObject jo) {
+        super.typeObject = GWITEM_TYPE.CONSUMABLE;
+
         try {
             readFile(jo);
         } catch (JSONException e) {

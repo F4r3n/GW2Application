@@ -15,12 +15,12 @@ import java.util.List;
 /**
  * Created by guillaume2 on 16/11/15.
  */
-public class DownloadImage extends AsyncTask<String , Void, Void> {
+public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
 
     private CallerBack callerBack;
-    private List<String> urls;
-    private int index;
-    public DownloadImage(CallerBack callerBack, List<String> urls) {
+    private List<DataImageToDl> urls;
+    private String id;
+    public DownloadImage(CallerBack callerBack, List<DataImageToDl> urls) {
         this.urls = urls;
         this.callerBack = callerBack;
     }
@@ -30,10 +30,10 @@ public class DownloadImage extends AsyncTask<String , Void, Void> {
         //currentDownloadImage = imagesToDownload.get(0);
     }
 
-    protected Void doInBackground(String ... url) {
+    protected Void doInBackground(DataImageToDl ... data) {
         for(int i = 0; i < urls.size(); i++) {
-            index = i;
-            retrieveImage(urls.get(i));
+            id = urls.get(i).id;
+            retrieveImage(urls.get(i).url);
         }
         return null;
     }
@@ -53,8 +53,9 @@ public class DownloadImage extends AsyncTask<String , Void, Void> {
 
 
         try {
-            URL url = new URL(urlImage);
             System.out.println("Image " + urlImage);
+
+            URL url = new URL(urlImage);
             // Get the image dimensions
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -79,7 +80,7 @@ public class DownloadImage extends AsyncTask<String , Void, Void> {
             }
             connection.disconnect();
 
-            callerBack.notifyUpdate(this, result, index);
+            callerBack.notifyUpdate(this, result, 0, id);
 
         } catch (IOException e) {
             e.printStackTrace();

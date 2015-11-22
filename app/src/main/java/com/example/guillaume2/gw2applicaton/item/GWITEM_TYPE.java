@@ -18,6 +18,7 @@ public enum GWITEM_TYPE {
     TRINKET,
     TROPHY,
     UPGRADECOMPONENT,
-    WEAPON
+    WEAPON,
+    NONE
 }
 

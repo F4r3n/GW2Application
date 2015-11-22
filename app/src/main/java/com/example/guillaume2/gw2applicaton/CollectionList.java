@@ -21,8 +21,15 @@ public class CollectionList extends ListActivity implements CallerBack {
         Collection c = (Collection) getApplication();
         bank = c.getContainer(0).getBank();
         rqm = c.getRequestManager();
-        rqm.act = this;
+        rqm.initProgressDialog(this);
         setListAdapter(new CollectionAdapter(this));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        rqm.initProgressDialog(this);
+
     }
 
     @Override
@@ -37,7 +44,7 @@ public class CollectionList extends ListActivity implements CallerBack {
 
         if (id == R.id.action_update) {
             rqm.deleteFileData(bank);
-            rqm.execute(new Bank(), false, this);
+            rqm.execute(new Bank(), true, this);
             return true;
         }
 

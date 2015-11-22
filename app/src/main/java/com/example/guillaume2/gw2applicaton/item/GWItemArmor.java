@@ -24,14 +24,16 @@ public class GWItemArmor extends GWItemDetailObject {
         CLOTHING
     }
 
-    int defense;
+    public int defense;
+
     //GWItemSubObject subObject;
-    String suffix_item_id;
-    String secondary_suffix_item_id;
-    TYPE type;
-    WEIGHT_CLASS weight_class;
+    public String suffix_item_id;
+    public String secondary_suffix_item_id;
+    public TYPE type;
+    public WEIGHT_CLASS weight_class;
 
     public GWItemArmor(JSONObject jo) {
+        super.typeObject = GWITEM_TYPE.ARMOR;
         try {
             readFile(jo);
         } catch (JSONException e) {
