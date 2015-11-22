@@ -20,8 +20,8 @@ public class GWItemData {
     public int level;
     public int vendor_value;
     public String default_skin;
-    public GWItemArmor armorObject;
-    public GWItemConsumable consumableObject;
+    public GWItemConsumable gwItemConsumable;
+    public GWItemArmor gwItemArmor;
     public String imagePath;
     public String dataPath;
 

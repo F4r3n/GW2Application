@@ -19,6 +19,7 @@ public class DownloadDetail extends AsyncTask<Void, Void, Void> {
     private CallerBack callerBack;
     String url = "https://api.guildwars2.com/v2/items/";
     private String id = "";
+    private int index = 0;
     public DownloadDetail(CallerBack callerBack, List<String> ids) {
         this.ids = ids;
         this.callerBack = callerBack;
@@ -28,6 +29,7 @@ public class DownloadDetail extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void ... v) {
         for(int i = 0; i < ids.size(); ++i) {
             id = ids.get(i);
+            index = i;
             retrieveData(ids.get(i));
 
         }
@@ -63,7 +65,7 @@ public class DownloadDetail extends AsyncTask<Void, Void, Void> {
                 e.printStackTrace();
             }
         }
-        callerBack.notifyUpdate(this, response.toString(), 0, id);
+        callerBack.notifyUpdate(this, response.toString(), index, id);
 
     }
 

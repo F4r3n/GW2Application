@@ -68,15 +68,15 @@ public class GWItem implements CallerBack {
         System.out.println("id " + gwItemData.id);
         switch (gwItemData.type) {
             case CONSUMABLE:
-                gwItemData.consumableObject = new GWItemConsumable(reader.getJSONObject("details"));
+                gwItemData.gwItemConsumable = new GWItemConsumable(reader.getJSONObject("details"));
                 break;
             case ARMOR:
-                gwItemData.armorObject = new GWItemArmor(reader.getJSONObject("details"));
+                gwItemData.gwItemArmor = new GWItemArmor(reader.getJSONObject("details"));
                 break;
         }
 
         //new DownloadImage(this).execute(icon);
-        callerBack.notifyUpdate(this, 0.0f, gwItemData.name, gwItemData.id);
+//        callerBack.notifyUpdate(this, 0.0f, gwItemData.name, gwItemData.id);
 
     }
 

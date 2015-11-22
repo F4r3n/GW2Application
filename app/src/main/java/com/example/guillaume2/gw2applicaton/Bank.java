@@ -34,6 +34,9 @@ public class Bank extends GWObject implements CallerBack {
     private List<String> itemsId = new ArrayList<>();
     private List<DataImageToDl> imagesUrlToDl = new ArrayList<>();
     private HashMap<String, Integer> indexObject = new HashMap<>();
+    private List<String> allItemsId = new ArrayList<>();
+    private List<Integer> indexSent = new ArrayList<>();
+
 
     public Bank() {
         super.directoryFile = "/GW2App/Bank";
@@ -131,10 +134,12 @@ public class Bank extends GWObject implements CallerBack {
             itemsToSearch = reader.length();
             for (int i = 0; i < reader.length(); i++) {
                 if (!reader.get(i).toString().equals("null")) {
+                    allItemsId.add(reader.getJSONObject(i).getString("id"));
                     bankData.objects.add(new BankObject(reader.getJSONObject(i)));
                     indexObject.put(reader.getJSONObject(i).getString("id"), i);
                     if (!new File(bankData.objects.get(bankData.objects.size() - 1).pathGWItem).exists()) {
                         itemsId.add(reader.getJSONObject(i).getString("id"));
+                        indexSent.add(i);
                     } else {
                         BankObject object = bankData.objects.get(bankData.objects.size() - 1);
                         object.item = new GWItem(this, reader.getJSONObject(i).getString("id"));
@@ -148,6 +153,7 @@ public class Bank extends GWObject implements CallerBack {
                 } else itemsToSearch--;
             }
             System.out.println("items " + itemsToSearch + "images" + imagesUrlToDl.size());
+            System.out.println("Objects " + indexObject.size());
             if (itemsToSearch == 0 && !hasToDownloadImages) {
                 parent.notifyUpdate(this, 1.0f, "Over");
                 return;
@@ -198,9 +204,9 @@ public class Bank extends GWObject implements CallerBack {
 
 
             } else if (o[0] instanceof DownloadDetail) {
-                System.out.println("index " + indexObject.get(o[3]));
+                System.out.println("index " + o[2]);
 
-                BankObject object = bankData.objects.get(indexObject.get(o[3]));
+                BankObject object = bankData.objects.get(indexSent.get((int) o[2]));
                 object.item = new GWItem(this, (String) o[3]);
                 object.pathGWItem = object.item.gwItemData.dataPath;
                 if (!object.item.imageExists()) {
@@ -213,38 +219,28 @@ public class Bank extends GWObject implements CallerBack {
                     e.printStackTrace();
                 }
 
-
-            } else {
-                if (o[0] instanceof GWItem) {
-                    s = bankData.objects.get(indexObject.get(o[3])).getName();
-                    System.out.println("GWItem " + s);
-                    if (!bankData.objects.get(indexObject.get(o[3])).item.dataExists())
-                        bankData.objects.get(indexObject.get(o[3])).item.writeData();
+                System.out.println("GWItem number " + indexSent.get((int) o[2]));
+                s = bankData.objects.get(indexSent.get((int) o[2])).getName();
+                System.out.println("GWItem " + s);
+                if (!bankData.objects.get(indexSent.get((int) o[2])).item.dataExists())
+                    bankData.objects.get(indexSent.get((int) o[2])).item.writeData();
 
 
-                    itemsFound++;
+                itemsFound++;
 
-                    if (itemsFound == itemsToSearch && !isSearchingImages && imagesToSearch!=0) {
-                        isSearchingImages = true;
-                        retrieveImages();
-                    }
+                if (itemsFound == itemsToSearch && !isSearchingImages && imagesToSearch != 0) {
+                    isSearchingImages = true;
+                    retrieveImages();
                 }
             }
         }
 
 
-        if (itemsToSearch != 0 || imagesToSearch!=0) {
+        if (itemsToSearch != 0 || imagesToSearch != 0) {
             progress = ((float) itemsFound + (float) imagesFound) / ((float) itemsToSearch + (float) imagesToSearch);
         }
-        //  System.out.println("s " + s);
-        //  System.out.println("o " + o[0]);
-        if(progress == 1.0f) {
-            parent.notifyUpdate(this, progress, s);
-            return;
-        }
 
-        if (!(o[0] instanceof DownloadDetail))
-            parent.notifyUpdate(this, progress, s);
+        parent.notifyUpdate(this, progress, s);
     }
 
     @Override

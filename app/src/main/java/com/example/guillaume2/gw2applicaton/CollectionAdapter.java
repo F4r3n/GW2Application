@@ -61,11 +61,11 @@ public class CollectionAdapter extends BaseAdapter {
        // System.out.println("type " +currentListData.item.gwItemData.detailObject);
         switch (currentListData.item.gwItemData.type) {
             case CONSUMABLE:
-                GWItemConsumable consumable = currentListData.item.gwItemData.consumableObject;
+                GWItemConsumable consumable = currentListData.item.gwItemData.gwItemConsumable;
                 mViewHolder.itemType.setText(consumable.description);
                 break;
             case ARMOR:
-                GWItemArmor armor = currentListData.item.gwItemData.armorObject;
+                GWItemArmor armor = currentListData.item.gwItemData.gwItemArmor;
                 mViewHolder.itemType.setText(armor.weight_class.toString().toLowerCase());
                 break;
             default:
