@@ -12,6 +12,7 @@ public class Collection extends Application {
     int index = 0;
     List<Container> containers;
     RequestManager requestManager;
+    public SpecializationManager specializationManager;
 
     public Collection() {
         containers = new ArrayList<>();

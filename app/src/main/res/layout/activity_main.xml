@@ -100,9 +100,45 @@
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-
+                android:id="@+id/builderButton"
                 android:background="@drawable/style_button"
-                android:text="2" />
+                android:onClick="changeVisibility"
+
+                android:text="Build Editor" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+
+                android:layout_height="fill_parent"
+                android:paddingLeft="@dimen/button_left"
+                android:paddingRight="0dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="@dimen/button_bottom"
+                android:paddingStart="@dimen/button_left"
+                android:id="@+id/linearBuildEditor"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/black_button"
+                    android:text="Editor"
+                    android:id="@+id/editorButton"
+                    android:textColor="#FFFFFF"
+                    android:onClick="getInfo"
+                    android:visibility="visible" />
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/black_button"
+                    android:text="Watch Builds"
+                    android:id="@+id/watchBuild"
+                    android:onClick="getInfo"
+
+                    android:textColor="#FFFFFF"
+                    android:visibility="visible" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

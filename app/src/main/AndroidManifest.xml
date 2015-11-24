@@ -24,7 +24,7 @@
         </activity>
         <activity
             android:name="com.example.guillaume2.gw2applicaton.CollectionList"
-            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+            android:theme="@style/Theme.AppCompat.Light">
 
         </activity>
 

@@ -34,7 +34,6 @@ public class Bank extends GWObject implements CallerBack {
     private List<String> itemsId = new ArrayList<>();
     private List<DataImageToDl> imagesUrlToDl = new ArrayList<>();
     private HashMap<String, Integer> indexObject = new HashMap<>();
-    private List<String> allItemsId = new ArrayList<>();
     private List<Integer> indexSent = new ArrayList<>();
 
 
@@ -128,13 +127,16 @@ public class Bank extends GWObject implements CallerBack {
         itemsId.clear();
         itemsFound = 0;
         imagesFound = 0;
+        imagesToSearch = 0;
+        itemsToSearch = 0;
+        imagesUrlToDl.clear();
 
         try {
             JSONArray reader = new JSONArray(result);
             itemsToSearch = reader.length();
             for (int i = 0; i < reader.length(); i++) {
                 if (!reader.get(i).toString().equals("null")) {
-                    allItemsId.add(reader.getJSONObject(i).getString("id"));
+                    //allItemsId.add(reader.getJSONObject(i).getString("id"));
                     bankData.objects.add(new BankObject(reader.getJSONObject(i)));
                     indexObject.put(reader.getJSONObject(i).getString("id"), i);
                     if (!new File(bankData.objects.get(bankData.objects.size() - 1).pathGWItem).exists()) {

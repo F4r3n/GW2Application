@@ -8,5 +8,6 @@ public enum CATEGORIES {
     DYES,
     SKINS,
     PVP,
-    BANK
+    BANK,
+    SPECIALIZATION
 }

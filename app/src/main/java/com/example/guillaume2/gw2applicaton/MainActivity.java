@@ -16,7 +16,10 @@ public class MainActivity extends AppCompatActivity implements CallerBack {
     private Button accountButton;
     private Button infoButton;
     private RequestManager requestManager;
+    private SpecializationManager specializationManager;
     private LinearLayout linearLayoutAccount;
+    private LinearLayout linearLayoutBuilder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +28,12 @@ public class MainActivity extends AppCompatActivity implements CallerBack {
         setContentView(R.layout.activity_main);
 
         requestManager = new RequestManager(this);
+        specializationManager = new SpecializationManager();
         requestManager.initProgressDialog(this);
 
         linearLayoutAccount = (LinearLayout) findViewById(R.id.AccountLinear);
+        linearLayoutBuilder = (LinearLayout) findViewById(R.id.linearBuildEditor);
+
         accountButton = (Button) findViewById(R.id.accountButton);
         infoButton = (Button) findViewById(R.id.infoButton);
     }
@@ -48,7 +54,13 @@ public class MainActivity extends AppCompatActivity implements CallerBack {
                 break;
             case R.id.bankButton:
                 requestManager.execute(new Bank(), true, this);
+
+            case R.id.editorButton:
+                specializationManager.request();
+                break;
+
         }
+
     }
 
     public void changeVisibility(View view) {
@@ -57,6 +69,11 @@ public class MainActivity extends AppCompatActivity implements CallerBack {
                 if (linearLayoutAccount.getVisibility() == View.VISIBLE)
                     linearLayoutAccount.setVisibility(View.GONE);
                 else linearLayoutAccount.setVisibility(View.VISIBLE);
+                break;
+            case R.id.builderButton:
+                if (linearLayoutBuilder.getVisibility() == View.VISIBLE)
+                    linearLayoutBuilder.setVisibility(View.GONE);
+                else linearLayoutBuilder.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -92,13 +109,11 @@ public class MainActivity extends AppCompatActivity implements CallerBack {
     }
 
 
-
-
     @Override
     public void notifyUpdate(Object... o) {
-        System.out.println("notify " +o[0]);
-        if(o[0] instanceof MainActivity) {
-            if(o[1] == CATEGORIES.BANK){
+        System.out.println("notify " + o[0]);
+        if (o[0] instanceof MainActivity) {
+            if (o[1] == CATEGORIES.BANK) {
 
                 Intent intent = new Intent(this, CollectionList.class);
                 startActivity(intent);
