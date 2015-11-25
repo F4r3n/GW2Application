@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements CallerBack {
         setContentView(R.layout.activity_main);
 
         requestManager = new RequestManager(this);
-        specializationManager = new SpecializationManager();
+        specializationManager = new SpecializationManager(this);
         requestManager.initProgressDialog(this);
 
         linearLayoutAccount = (LinearLayout) findViewById(R.id.AccountLinear);

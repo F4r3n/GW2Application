@@ -2,6 +2,10 @@ package com.example.guillaume2.gw2applicaton;
 
 import android.os.AsyncTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -16,15 +20,12 @@ public class RequestTrait extends AsyncTask<Integer, Void, Void> {
 
     private CallerBack parent;
     private int index = 0;
-    private List<Trait> minorTraits;
-    private List<Trait> majorTraits;
+    private Trait currentTrait;
     private List<Trait> unionTraits;
 
 
-
     public RequestTrait(CallerBack cb, List<Trait> majorTraits, List<Trait> minorTraits) {
-        this.majorTraits = majorTraits;
-        this.minorTraits = minorTraits;
+
         unionTraits = new ArrayList<>(majorTraits);
         unionTraits.addAll(minorTraits);
         this.parent = cb;
@@ -36,6 +37,7 @@ public class RequestTrait extends AsyncTask<Integer, Void, Void> {
         int i = 0;
         for (Trait t : unionTraits) {
             index = i;
+            currentTrait = t;
             send("traits/" + t.id);
             i++;
         }
@@ -73,11 +75,34 @@ public class RequestTrait extends AsyncTask<Integer, Void, Void> {
                 e.printStackTrace(); //If you want further info on failure...
             }
         }
-        System.out.println("index " +index);
-        readData();
+        System.out.println("index " + index);
+        readData(response.toString());
     }
 
-    public void readData() {
+    public void readData(String data) {
+        try {
+            JSONObject reader = new JSONObject(data);
+            currentTrait.name = reader.getString("name");
+            currentTrait.description = reader.getString("description");
+            currentTrait.slot = Trait.SLOT.valueOf(reader.getString("slot").toUpperCase());
+            currentTrait.specialization = reader.getInt("specialization");
+            if (reader.has("facts")) {
+                JSONArray facts = reader.getJSONArray("facts");
+                for (int i = 0; i < facts.length(); ++i) {
+                    TraitFact traitFact = new TraitFact(facts.getJSONObject(i));
+                    currentTrait.traits.add(traitFact);
+                }
+            }
+            if (reader.has("traited_facts")) {
+                JSONArray facts = reader.getJSONArray("traited_facts");
+                for (int i = 0; i < facts.length(); ++i) {
+                    TraitFact traitFact = new TraitFact(facts.getJSONObject(i));
+                    currentTrait.traited_facts.add(traitFact);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         parent.notifyUpdate(this, true, index);
     }
 

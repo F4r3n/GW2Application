@@ -1,5 +1,11 @@
 package com.example.guillaume2.gw2applicaton;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,13 +23,36 @@ public class SpecializationManager implements CallerBack {
     private HashMap<Professions, List<Specialization>> specializations;
     private int index = 0;
     private int size = 54;
+    private ConnectivityManager connectivityManager;
+    private Activity activity;
+    private float progress = 0;
+    private int speFound = 0;
+    private ProgressDialog progressDialog;
 
-    public SpecializationManager() {
+    public SpecializationManager(Activity activity) {
         specializations = new HashMap<>();
+        this.activity = activity;
+        connectivityManager = (ConnectivityManager) activity.getSystemService(activity.CONNECTIVITY_SERVICE);
+        initProgressDialog();
 
     }
 
+    public void initProgressDialog() {
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setProgress(0);
+
+        progressDialog.setMax(100);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setCancelable(false);
+    }
+
     public void request() {
+        NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
+        if (ni == null) {
+            Toast.makeText(activity, "No connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         new RequestSpecialization(this, size).execute();
     }
 
@@ -34,9 +63,8 @@ public class SpecializationManager implements CallerBack {
             if (specializations.get(profession) == null) {
                 specializations.put(profession, new ArrayList<Specialization>());
             }
-            Specialization specialization = new Specialization();
+            Specialization specialization = new Specialization(profession, reader.getString("id"));
             specialization.name = reader.getString("name");
-            specialization.id = reader.getInt("id");
             specialization.elite = reader.getBoolean("elite");
             specialization.iconUrl = reader.getString("icon");
             specialization.backgroundUrl = reader.getString("background");
@@ -61,9 +89,9 @@ public class SpecializationManager implements CallerBack {
 
             List<Specialization> value = entry.getValue();
             int i = 0;
-            for(Specialization v: value) {
+            for (Specialization v : value) {
                 System.out.println("Request traits spe " + i);
-                v.requestTrait();
+                v.requestTrait(this);
             }
             // ...
         }
@@ -76,9 +104,23 @@ public class SpecializationManager implements CallerBack {
             readReceived((String) o[1]);
             index++;
             System.out.println("Spe " + index);
-            if(index == size) {
+            if (index == size) {
                 requestTraits();
             }
+        }
+
+        if(o[0] instanceof Specialization) {
+            speFound++;
+            progress = (float)speFound/(float)size;
+            final  String message = (String)o[1];
+            activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    progressDialog.setMessage(message);
+                    int p = (int) (progress*100);
+                    progressDialog.setProgress(p);
+                }
+            });
+            System.out.println("SpecializationManager " + progress);
         }
     }
 
