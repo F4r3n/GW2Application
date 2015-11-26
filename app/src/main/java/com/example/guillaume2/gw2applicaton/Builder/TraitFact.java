@@ -1,9 +1,12 @@
-package com.example.guillaume2.gw2applicaton;
+package com.example.guillaume2.gw2applicaton.Builder;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 
 /**
  * Created by guillaume2 on 25/11/15.
@@ -34,11 +37,12 @@ public class TraitFact {
         FIRE,
         ICE,
         LIGHT,
-        LIGHTING,
+        LIGHTNING,
         POISON,
         SMOKE,
         ETHERAL,
-        WATER
+        WATER,
+
     }
 
     public enum FINISHER_TYPE {
@@ -50,6 +54,7 @@ public class TraitFact {
 
 
     public String iconUrl;
+    public String iconPath;
     public TYPE type;
     public String text;
     transient public Bitmap icon;
@@ -71,10 +76,18 @@ public class TraitFact {
     public Time time;
     public Unblockable unblockable;
 
+    public boolean iconExists() {
+        return new File(iconPath).exists();
+    }
 
     public TraitFact(JSONObject object) {
+
         try {
             type = TYPE.valueOf(object.getString("type").toUpperCase());
+            iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                    "/GW2App/spe/trait/icon/" +
+                    type.toString().toLowerCase() + "-icon.png";
+
             if (object.has("icon"))
                 iconUrl = object.getString("icon");
             if (object.has("text"))
@@ -93,7 +106,8 @@ public class TraitFact {
 
                     if (object.has("description"))
                         buff.description = object.getString("description");
-                    buff.duration = object.getInt("duration");
+                    if (object.has("duration"))
+                        buff.duration = object.getInt("duration");
                     buff.status = object.getString("status");
                     break;
                 case BUFFCONVERSION:
@@ -104,7 +118,8 @@ public class TraitFact {
                     break;
                 case COMBOFIELD:
                     comboField = new ComboField();
-                    comboField.fieldType = FIELD_TYPE.valueOf(object.getString("filed_type").toUpperCase());
+                    if (object.has("field_type"))
+                        comboField.fieldType = FIELD_TYPE.valueOf(object.getString("field_type").toUpperCase());
                     break;
                 case COMBOFINISHER:
                     comboFinisher = new ComboFinisher();

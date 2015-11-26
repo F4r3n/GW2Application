@@ -1,6 +1,8 @@
-package com.example.guillaume2.gw2applicaton;
+package com.example.guillaume2.gw2applicaton.Builder;
 
 import android.os.AsyncTask;
+
+import com.example.guillaume2.gw2applicaton.CallerBack;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,9 +85,11 @@ public class RequestTrait extends AsyncTask<Integer, Void, Void> {
         try {
             JSONObject reader = new JSONObject(data);
             currentTrait.name = reader.getString("name");
+            currentTrait.tier = reader.getInt("tier");
             currentTrait.description = reader.getString("description");
             currentTrait.slot = Trait.SLOT.valueOf(reader.getString("slot").toUpperCase());
             currentTrait.specialization = reader.getInt("specialization");
+            currentTrait.iconUrl = reader.getString("icon");
             if (reader.has("facts")) {
                 JSONArray facts = reader.getJSONArray("facts");
                 for (int i = 0; i < facts.length(); ++i) {

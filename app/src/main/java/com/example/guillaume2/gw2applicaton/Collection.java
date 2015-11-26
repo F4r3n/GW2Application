@@ -2,6 +2,8 @@ package com.example.guillaume2.gw2applicaton;
 
 import android.app.Application;
 
+import com.example.guillaume2.gw2applicaton.Builder.SpecializationManager;
+
 import java.util.ArrayList;
 import java.util.List;
 

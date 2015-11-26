@@ -1,6 +1,8 @@
-package com.example.guillaume2.gw2applicaton;
+package com.example.guillaume2.gw2applicaton.Builder;
 
 import android.os.AsyncTask;
+
+import com.example.guillaume2.gw2applicaton.CallerBack;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
