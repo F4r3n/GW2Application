@@ -37,58 +37,84 @@ public class SpecializationManager implements CallerBack {
     private ProgressDialog progressDialog;
     private int sizeImages = 0;
     private int imagesFound = 0;
+    private HashMap<String, Boolean> imagesChecked = new HashMap<>();
 
     public SpecializationManager(Activity activity) {
-
-
         specializations = new HashMap<>();
         this.activity = activity;
         connectivityManager = (ConnectivityManager) activity.getSystemService(activity.CONNECTIVITY_SERVICE);
         initProgressDialog();
-
     }
 
     private void retrieveImage() {
         ArrayList<DataImageToDl> images = new ArrayList<>();
+        progress = 0.0f;
         for (Map.Entry<Professions, List<Specialization>> entry : specializations.entrySet()) {
             List<Specialization> specializations = entry.getValue();
             for (Specialization specialization : specializations) {
-                if (!specialization.backgroundExists())
-                    images.add(new DataImageToDl(specialization.specializationData.backgroundUrl, specialization.specializationData.backgroundPath));
-                if (!specialization.iconExists())
-                    images.add(new DataImageToDl(specialization.specializationData.iconUrl, specialization.specializationData.iconPath));
+                if (!specialization.backgroundExists()
+                        && !imagesChecked.containsKey(specialization.specializationData.backgroundImage.iconPath)) {
+                    images.add(new DataImageToDl(specialization.specializationData.backgroundImage,
+                            specialization.specializationData.backgroundImage.iconPath, 0));
+                    imagesChecked.put(specialization.specializationData.backgroundImage.iconPath, true);
+                }
+                if (!specialization.iconExists() && !imagesChecked.containsKey(specialization.specializationData.iconImage.iconPath)) {
+                    images.add(new DataImageToDl(specialization.specializationData.iconImage,
+                            specialization.specializationData.iconImage.iconPath, 0));
+                    imagesChecked.put(specialization.specializationData.iconImage.iconPath, true);
+                }
                 for (Trait t : specialization.specializationData.majorTraits) {
-                    if (!t.iconExists())
-                        images.add(new DataImageToDl(t.iconUrl, t.iconPath));
+                    if (!t.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && t.iconImage.iconUrl != null) {
+                        images.add(new DataImageToDl(t.iconImage, t.iconImage.iconPath, 0));
+                        imagesChecked.put(t.iconImage.iconPath, true);
+                    }
+
                     for (TraitFact traitFact : t.traited_facts) {
-                        if (!traitFact.iconExists())
-                            images.add(new DataImageToDl(traitFact.iconUrl, traitFact.iconPath));
+                        if (!traitFact.iconExists() && !imagesChecked.containsKey(traitFact.iconImage.iconPath) && traitFact.iconImage.iconUrl != null) {
+                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
+                            imagesChecked.put(t.iconImage.iconPath, true);
+                        }
                     }
                     for (TraitFact traitFact : t.traits) {
-                        if (!traitFact.iconExists())
-                            images.add(new DataImageToDl(traitFact.iconUrl, traitFact.iconPath));
+                        if (!traitFact.iconExists() && !imagesChecked.containsKey(traitFact.iconImage.iconPath) && traitFact.iconImage.iconUrl != null)
+                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
                     }
                 }
+
                 for (Trait t : specialization.specializationData.minorTraits) {
-                    if (!t.iconExists())
-                        images.add(new DataImageToDl(t.iconUrl, t.iconPath));
+                    if (!t.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && t.iconImage.iconUrl != null) {
+                        images.add(new DataImageToDl(t.iconImage, t.iconImage.iconPath, 0));
+                        imagesChecked.put(t.iconImage.iconPath, true);
+                    }
                     for (TraitFact traitFact : t.traited_facts) {
-                        if (!traitFact.iconExists())
-                            images.add(new DataImageToDl(traitFact.iconUrl, traitFact.iconPath));
+                        if (!traitFact.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && t.iconImage.iconUrl != null) {
+                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
+                            imagesChecked.put(t.iconImage.iconPath, true);
+                        }
                     }
                     for (TraitFact traitFact : t.traits) {
-                        if (!traitFact.iconExists())
-                            images.add(new DataImageToDl(traitFact.iconUrl, traitFact.iconPath));
+                        if (!traitFact.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && traitFact.iconImage.iconUrl != null) {
+                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
+                            imagesChecked.put(t.iconImage.iconPath, true);
+                        }
+
                     }
                 }
 
             }
+        }
+        NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
+        if (ni == null) {
+            Toast.makeText(activity, "No connection but " + images.size() + " missing", Toast.LENGTH_SHORT).show();
+            return;
         }
         sizeImages = images.size();
         new DownloadImage(this, images).execute();
     }
 
     public void readFiles() {
+        progress = 0.0f;
+        progressDialog.setProgress(0);
         progressDialog.show();
         for (int i = 1; i <= size; ++i) {
             Specialization s = new Specialization(Integer.toString(i));
@@ -100,7 +126,6 @@ public class SpecializationManager implements CallerBack {
             }
             specializations.get(profession).add(s);
         }
-        //retrieveImage();
     }
 
     public void initProgressDialog() {
@@ -113,6 +138,7 @@ public class SpecializationManager implements CallerBack {
     }
 
     public void request() {
+        progress = 0.0f;
         NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
         if (ni == null) {
             Toast.makeText(activity, "No connection", Toast.LENGTH_SHORT).show();
@@ -132,8 +158,8 @@ public class SpecializationManager implements CallerBack {
             Specialization specialization = new Specialization(profession, reader.getString("id"));
             specialization.specializationData.name = reader.getString("name");
             specialization.specializationData.elite = reader.getBoolean("elite");
-            specialization.specializationData.iconUrl = reader.getString("icon");
-            specialization.specializationData.backgroundUrl = reader.getString("background");
+            specialization.specializationData.iconImage.iconUrl = reader.getString("icon");
+            specialization.specializationData.backgroundImage.iconUrl = reader.getString("background");
             JSONArray minor = reader.getJSONArray("minor_traits");
             for (int i = 0; i < minor.length(); i++) {
                 specialization.specializationData.minorTraits.add(new Trait(minor.getInt(i)));
@@ -154,9 +180,7 @@ public class SpecializationManager implements CallerBack {
         for (Map.Entry<Professions, List<Specialization>> entry : specializations.entrySet()) {
 
             List<Specialization> value = entry.getValue();
-            int i = 0;
             for (Specialization v : value) {
-                System.out.println("Request traits spe " + i);
                 v.requestTrait(this);
             }
         }
@@ -176,8 +200,11 @@ public class SpecializationManager implements CallerBack {
 
         if (o[0] instanceof DownloadImage) {
             imagesFound++;
+            System.out.println("images progress " + imagesFound);
+
             progress = (float) imagesFound / (float) sizeImages;
-            FileManagerTool.saveImage((Bitmap) o[1], (String) o[3]);
+            if (o[1] != null)
+                FileManagerTool.saveImage((Bitmap) o[1], (String) o[3]);
             activity.runOnUiThread(new Runnable() {
                 public void run() {
                     progressDialog.setMessage("");

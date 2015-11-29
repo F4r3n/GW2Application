@@ -1,7 +1,6 @@
 package com.example.guillaume2.gw2applicaton.Builder;
 
-import android.graphics.Bitmap;
-
+import com.example.guillaume2.gw2applicaton.ImageResource;
 import com.example.guillaume2.gw2applicaton.Professions;
 
 import java.util.ArrayList;
@@ -13,20 +12,15 @@ import java.util.List;
 public class SpecializationData {
     public String name;
     public String path;
-    transient public Bitmap background;
-    transient public Bitmap icon;
-    public String backgroundUrl;
-    public String iconUrl;
-    public String backgroundPath;
-    public String iconPath;
 
     public String id;
     public Professions profession;
     public boolean elite = false;
     public List<Trait> majorTraits = new ArrayList<>();
     public List<Trait> minorTraits = new ArrayList<>();
+    public ImageResource backgroundImage = new ImageResource(1000,1000);
+    public ImageResource iconImage = new ImageResource(50,50);
 
-    public SpecializationData() {
+    public SpecializationData() {}
 
-    }
 }

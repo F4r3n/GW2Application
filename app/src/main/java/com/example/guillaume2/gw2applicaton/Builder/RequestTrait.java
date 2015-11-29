@@ -89,7 +89,7 @@ public class RequestTrait extends AsyncTask<Integer, Void, Void> {
             currentTrait.description = reader.getString("description");
             currentTrait.slot = Trait.SLOT.valueOf(reader.getString("slot").toUpperCase());
             currentTrait.specialization = reader.getInt("specialization");
-            currentTrait.iconUrl = reader.getString("icon");
+            currentTrait.iconImage.iconUrl = reader.getString("icon");
             if (reader.has("facts")) {
                 JSONArray facts = reader.getJSONArray("facts");
                 for (int i = 0; i < facts.length(); ++i) {

@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by guillaume2 on 10/11/15.
@@ -23,22 +22,15 @@ import java.util.ArrayList;
 public class GWItem implements CallerBack {
 
     public GWItemData gwItemData;
-    private CallerBack callerBack;
     public static final int MAX_WIDTH = 100;
     public static final int MAX_HEIGHT = 100;
 
 
-    public GWItem(CallerBack cb, String id) {
-        gwItemData = new GWItemData();
+    public GWItem(String id) {
+        gwItemData = new GWItemData(id);
         gwItemData.dataPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/item/data/" + id + ".json";
-        gwItemData.imagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/item/images/" + id + ".png";
-        callerBack = cb;
+
         gwItemData.id = id;
-        gwItemData.game_types = new ArrayList<>();
-        gwItemData.flags = new ArrayList<>();
-        gwItemData.restrictions = new ArrayList<>();
-
-
 
     }
 
@@ -63,8 +55,8 @@ public class GWItem implements CallerBack {
             gwItemData.restrictions.add(GWITEM_RESTRICTIONS.valueOf(restrictionsJSON.getString(i).toUpperCase()));
         }
         gwItemData.chat_link = reader.getString("chat_link");
-        gwItemData.iconUrl = reader.getString("icon");
-        System.out.println("id " + gwItemData.id);
+        gwItemData.imageResource.iconUrl = reader.getString("icon");
+        System.out.println("id " + gwItemData.imageResource.iconUrl);
         switch (gwItemData.type) {
             case CONSUMABLE:
                 gwItemData.gwItemConsumable = new GWItemConsumable(reader.getJSONObject("details"));
@@ -74,9 +66,6 @@ public class GWItem implements CallerBack {
                 break;
         }
 
-        //new DownloadImage(this).execute(icon);
-//        callerBack.notifyUpdate(this, 0.0f, gwItemData.name, gwItemData.id);
-
     }
 
     public boolean dataExists() {
@@ -85,7 +74,8 @@ public class GWItem implements CallerBack {
     }
 
     public boolean imageExists() {
-        File file = new File(gwItemData.imagePath);
+        System.out.println(gwItemData.imageResource);
+        File file = new File(gwItemData.imageResource.iconPath);
         return file.exists();
     }
 
@@ -133,7 +123,7 @@ public class GWItem implements CallerBack {
     }
 
     public String saveImage(Bitmap bmp, String id) {
-        File dir = new File(gwItemData.imagePath.substring(0, gwItemData.imagePath.lastIndexOf("/") + 1));
+        File dir = new File(gwItemData.imageResource.iconPath.substring(0, gwItemData.imageResource.iconPath.lastIndexOf("/") + 1));
         dir.mkdirs();
 
         File file = new File(dir, id + ".png");

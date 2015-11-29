@@ -52,7 +52,7 @@ public class BankObject {
     }
 
     public Bitmap getIcon() {
-        return BitmapFactory.decodeFile(item.gwItemData.imagePath);
+        return BitmapFactory.decodeFile(item.gwItemData.imageResource.iconPath);
     }
 
 

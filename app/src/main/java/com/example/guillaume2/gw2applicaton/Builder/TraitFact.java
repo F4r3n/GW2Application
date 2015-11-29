@@ -3,6 +3,8 @@ package com.example.guillaume2.gw2applicaton.Builder;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
+import com.example.guillaume2.gw2applicaton.ImageResource;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,13 +55,12 @@ public class TraitFact {
     }
 
 
-    public String iconUrl;
-    public String iconPath;
+
     public TYPE type;
     public String text;
     transient public Bitmap icon;
-    public int requires_trait;
-    public int overrides;
+    public ImageResource iconImage = new ImageResource(50,50);
+
 
     public AttributeAdjust attributeAdjust;
     public Buff buff;
@@ -77,19 +78,19 @@ public class TraitFact {
     public Unblockable unblockable;
 
     public boolean iconExists() {
-        return new File(iconPath).exists();
+        return new File(iconImage.iconPath).exists();
     }
 
     public TraitFact(JSONObject object) {
 
         try {
             type = TYPE.valueOf(object.getString("type").toUpperCase());
-            iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
+
+            iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
                     "/GW2App/spe/trait/icon/" +
                     type.toString().toLowerCase() + "-icon.png";
-
             if (object.has("icon"))
-                iconUrl = object.getString("icon");
+                iconImage.iconUrl = object.getString("icon");
             if (object.has("text"))
                 text = object.getString("text");
 
@@ -98,6 +99,9 @@ public class TraitFact {
                     attributeAdjust = new AttributeAdjust();
                     attributeAdjust.target = object.getString("target");
                     attributeAdjust.value = object.getInt("value");
+                    iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                            "/GW2App/spe/trait/icon/" +
+                            type.toString().toLowerCase() + "-icon.png";
                     break;
                 case BUFF:
                     buff = new Buff();
@@ -109,6 +113,9 @@ public class TraitFact {
                     if (object.has("duration"))
                         buff.duration = object.getInt("duration");
                     buff.status = object.getString("status");
+                    iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                            "/GW2App/spe/trait/icon/" +
+                            buff.status.toLowerCase() + "-icon.png";
                     break;
                 case BUFFCONVERSION:
                     buffConversion = new BuffConversion();
@@ -146,6 +153,7 @@ public class TraitFact {
                 case PERCENT:
                     percent = new Percent();
                     percent.percent = object.getInt("percent");
+
                     break;
                 case PREFIXEDBUFF:
 

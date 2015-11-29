@@ -27,28 +27,28 @@ public class Specialization implements CallerBack {
         this.specializationData.id = id;
         this.specializationData.profession = p;
         specializationData.path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/spe/data/" + id + ".json";
-        specializationData.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
+        specializationData.iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
                 "/GW2App/spe/image/" + id + "-icon.png";
-        specializationData.backgroundPath = Environment.getExternalStorageDirectory().getAbsolutePath()
+        specializationData.backgroundImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/GW2App/spe/image/" + id + "-background.png";
 
     }
 
     public boolean iconExists() {
-        return new File(specializationData.iconPath).exists();
+        return new File(specializationData.iconImage.iconPath).exists();
     }
 
     public boolean backgroundExists() {
-        return new File(specializationData.backgroundPath).exists();
+        return new File(specializationData.backgroundImage.iconPath).exists();
     }
 
     public Specialization(String id) {
         specializationData = new SpecializationData();
         this.specializationData.id = id;
         specializationData.path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/spe/data/" + id + ".json";
-        specializationData.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
+        specializationData.iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
                 "/GW2App/spe/image/" + id + "-icon.png";
-        specializationData.backgroundPath = Environment.getExternalStorageDirectory().getAbsolutePath()
+        specializationData.backgroundImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/GW2App/spe/image/" + id + "-background.png";
     }
 

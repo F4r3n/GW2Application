@@ -10,6 +10,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Read"
+            android:checked="true"
             android:onClick="onRadioButtonClicked"/>
         <RadioButton android:id="@+id/dlRadioButton"
             android:layout_width="wrap_content"

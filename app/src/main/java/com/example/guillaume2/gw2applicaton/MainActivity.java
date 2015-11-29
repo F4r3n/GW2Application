@@ -79,10 +79,9 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
                 break;
             case R.id.bankButton:
                 requestManager.execute(new Bank(), true, this);
-
+                break;
             case R.id.editorButton:
                 dialogSpeMean.show(getFragmentManager(), "ChoiceSpeMean");
-                //specializationManager.request();
                 break;
 
         }
@@ -159,15 +158,15 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
 
     @Override
     public void onChoiceSpeMean(DialogFragment dialog, DialogSpeMean.CHOICE_DL_SPECIALIZATION choice) {
-        if(dialog instanceof DialogSpeMean) {
-            if(choice.equals(DialogSpeMean.CHOICE_DL_SPECIALIZATION.YES)) {
+        if (dialog instanceof DialogSpeMean) {
+            dialog.dismiss();
+            if (choice.equals(DialogSpeMean.CHOICE_DL_SPECIALIZATION.YES)) {
                 specializationManager.request();
             }
-            if(choice.equals(DialogSpeMean.CHOICE_DL_SPECIALIZATION.NO)) {
+            if (choice.equals(DialogSpeMean.CHOICE_DL_SPECIALIZATION.NO)) {
                 specializationManager.readFiles();
 
-            }
-            else {
+            } else {
 
             }
         }

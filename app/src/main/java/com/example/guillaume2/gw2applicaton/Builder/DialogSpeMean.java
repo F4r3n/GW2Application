@@ -14,9 +14,9 @@ import com.example.guillaume2.gw2applicaton.R;
 /**
  * Created by guillaume2 on 25/11/15.
  */
-public class DialogSpeMean extends DialogFragment implements View.OnClickListener {
+public class DialogSpeMean extends DialogFragment implements View.OnClickListener{
 
-    private CHOICE_DL_SPECIALIZATION choice;
+    private CHOICE_DL_SPECIALIZATION choice = CHOICE_DL_SPECIALIZATION.NO;
 
     public enum CHOICE_DL_SPECIALIZATION {
         YES,
@@ -61,6 +61,7 @@ public class DialogSpeMean extends DialogFragment implements View.OnClickListene
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         Bundle args = getArguments();
         String title = args.getString("title");
         String message = args.getString("message");
@@ -71,11 +72,13 @@ public class DialogSpeMean extends DialogFragment implements View.OnClickListene
         builder.setView(inflater.inflate(R.layout.dialog_fragment_choice_specialization, null))
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                       // dialog.dismiss();
                         dialogListener.onChoiceSpeMean(DialogSpeMean.this, CHOICE_DL_SPECIALIZATION.NODATA);
                     }
                 })
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                       // dismiss();
                         dialogListener.onChoiceSpeMean(DialogSpeMean.this, choice);
                     }
                 });
@@ -93,4 +96,6 @@ public class DialogSpeMean extends DialogFragment implements View.OnClickListene
         return dialog;
 
     }
+
+
 }
