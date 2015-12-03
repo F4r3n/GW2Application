@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/background"
+        android:background="@drawable/duel" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="1000dp"
+        android:layout_height="256dp">
+
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="165dp">
+
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="match_parent">
+
+
+                <Button
+                    android:id="@+id/t10"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:text="yop" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="165dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/t11"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="yop2" />
+
+                <Button
+                    android:id="@+id/t12"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="yop2" />
+
+                <Button
+                    android:id="@+id/t13"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="yop2" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="165dp">
+
+
+            <Button
+                android:id="@+id/t20"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="yop" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="165dp">
+
+            <Button
+                android:id="@+id/t21"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="yop2" />
+
+            <Button
+                android:id="@+id/t22"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="yop2" />
+
+            <Button
+                android:id="@+id/t23"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="yop2" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="165dp">
+
+
+            <Button
+                android:id="@+id/t30"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="yop" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="165dp">
+
+            <Button
+                android:id="@+id/t31"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="yop2" />
+
+            <Button
+                android:id="@+id/t32"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="yop2" />
+
+            <Button
+                android:id="@+id/t33"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="yop2" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

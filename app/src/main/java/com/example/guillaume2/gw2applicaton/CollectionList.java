@@ -57,7 +57,6 @@ public class CollectionList extends AppCompatActivity implements CallerBack {
             rqm.execute(new Bank(), true, this);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -92,8 +91,6 @@ public class CollectionList extends AppCompatActivity implements CallerBack {
         }
 
         @Override
-        public void cancel() {
-
-        }
+        public void cancel() {}
     }
 }

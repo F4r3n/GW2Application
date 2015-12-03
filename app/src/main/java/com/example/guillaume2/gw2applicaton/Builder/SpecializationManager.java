@@ -7,10 +7,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
+import com.example.guillaume2.gw2applicaton.CATEGORIES;
 import com.example.guillaume2.gw2applicaton.CallerBack;
 import com.example.guillaume2.gw2applicaton.DataImageToDl;
 import com.example.guillaume2.gw2applicaton.DownloadImage;
 import com.example.guillaume2.gw2applicaton.Professions;
+import com.example.guillaume2.gw2applicaton.ReadFilesSpecialization;
 import com.example.guillaume2.gw2applicaton.Tool.FileManagerTool;
 
 import org.json.JSONArray;
@@ -19,7 +21,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +28,7 @@ import java.util.Map;
  */
 public class SpecializationManager implements CallerBack {
 
-    private HashMap<Professions, List<Specialization>> specializations;
+    private HashMap<Professions, HashMap<String, Specialization>> specializations;
     private int index = 0;
     private int size = 54;
     private ConnectivityManager connectivityManager;
@@ -38,20 +39,28 @@ public class SpecializationManager implements CallerBack {
     private int sizeImages = 0;
     private int imagesFound = 0;
     private HashMap<String, Boolean> imagesChecked = new HashMap<>();
+    private CallerBack parent;
 
-    public SpecializationManager(Activity activity) {
+    public SpecializationManager(CallerBack parent, Activity activity) {
         specializations = new HashMap<>();
         this.activity = activity;
         connectivityManager = (ConnectivityManager) activity.getSystemService(activity.CONNECTIVITY_SERVICE);
         initProgressDialog();
+        this.parent = parent;
+    }
+
+    public HashMap<Professions, HashMap<String, Specialization>> getSpe() {
+        return specializations;
     }
 
     private void retrieveImage() {
-        ArrayList<DataImageToDl> images = new ArrayList<>();
+        final ArrayList<DataImageToDl> images = new ArrayList<>();
         progress = 0.0f;
-        for (Map.Entry<Professions, List<Specialization>> entry : specializations.entrySet()) {
-            List<Specialization> specializations = entry.getValue();
-            for (Specialization specialization : specializations) {
+        imagesFound = 0;
+        for (Map.Entry<Professions, HashMap<String, Specialization>> entry : specializations.entrySet()) {
+            HashMap<String, Specialization> value = entry.getValue();
+            for (Map.Entry<String, Specialization> specializationEntry : value.entrySet()) {
+                Specialization specialization = specializationEntry.getValue();
                 if (!specialization.backgroundExists()
                         && !imagesChecked.containsKey(specialization.specializationData.backgroundImage.iconPath)) {
                     images.add(new DataImageToDl(specialization.specializationData.backgroundImage,
@@ -105,27 +114,31 @@ public class SpecializationManager implements CallerBack {
         }
         NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
         if (ni == null) {
-            Toast.makeText(activity, "No connection but " + images.size() + " missing", Toast.LENGTH_SHORT).show();
+            activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(activity, "No connection but " + images.size() + " missing", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+            parent.notifyUpdate(this, CATEGORIES.SPECIALIZATION);
+            if (progressDialog.isShowing()) progressDialog.dismiss();
             return;
         }
         sizeImages = images.size();
+        if (sizeImages == 0) {
+            parent.notifyUpdate(this, CATEGORIES.SPECIALIZATION);
+            if (progressDialog.isShowing()) progressDialog.dismiss();
+        }
         new DownloadImage(this, images).execute();
     }
 
     public void readFiles() {
         progress = 0.0f;
-        progressDialog.setProgress(0);
+        imagesFound = 0;
+        speFound = 0;
         progressDialog.show();
-        for (int i = 1; i <= size; ++i) {
-            Specialization s = new Specialization(Integer.toString(i));
-            s.readData(this);
-            Professions profession = s.specializationData.profession;
 
-            if (specializations.get(profession) == null) {
-                specializations.put(profession, new ArrayList<Specialization>());
-            }
-            specializations.get(profession).add(s);
-        }
+        new ReadFilesSpecialization(this, specializations, size).execute();
     }
 
     public void initProgressDialog() {
@@ -139,6 +152,7 @@ public class SpecializationManager implements CallerBack {
 
     public void request() {
         progress = 0.0f;
+        progressDialog.setProgress((int) progress);
         NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
         if (ni == null) {
             Toast.makeText(activity, "No connection", Toast.LENGTH_SHORT).show();
@@ -153,7 +167,7 @@ public class SpecializationManager implements CallerBack {
             JSONObject reader = new JSONObject(file);
             Professions profession = Professions.valueOf(reader.getString("profession").toUpperCase());
             if (specializations.get(profession) == null) {
-                specializations.put(profession, new ArrayList<Specialization>());
+                specializations.put(profession, new HashMap<String, Specialization>());
             }
             Specialization specialization = new Specialization(profession, reader.getString("id"));
             specialization.specializationData.name = reader.getString("name");
@@ -168,7 +182,7 @@ public class SpecializationManager implements CallerBack {
             for (int i = 0; i < major.length(); i++) {
                 specialization.specializationData.majorTraits.add(new Trait(major.getInt(i)));
             }
-            specializations.get(profession).add(specialization);
+            specializations.get(profession).put(specialization.specializationData.name, specialization);
 
             System.out.println(profession);
         } catch (JSONException e) {
@@ -177,11 +191,10 @@ public class SpecializationManager implements CallerBack {
     }
 
     private void requestTraits() {
-        for (Map.Entry<Professions, List<Specialization>> entry : specializations.entrySet()) {
-
-            List<Specialization> value = entry.getValue();
-            for (Specialization v : value) {
-                v.requestTrait(this);
+        for (Map.Entry<Professions, HashMap<String, Specialization>> entry : specializations.entrySet()) {
+            HashMap<String, Specialization> value = entry.getValue();
+            for (Map.Entry<String, Specialization> entrySpe : value.entrySet()) {
+                entrySpe.getValue().requestTrait(this);
             }
         }
     }
@@ -212,8 +225,10 @@ public class SpecializationManager implements CallerBack {
                     progressDialog.setProgress(p);
                 }
             });
-            if (progress == 1.0f)
+            if (progress == 1.0f) {
                 progressDialog.dismiss();
+                parent.notifyUpdate(this, CATEGORIES.SPECIALIZATION);
+            }
         }
 
         if (o[0] instanceof Specialization) {
@@ -236,8 +251,7 @@ public class SpecializationManager implements CallerBack {
                             progressDialog.setProgress(0);
                         }
                     });
-                } else progressDialog.dismiss();
-
+                }
             }
             System.out.println("SpecializationManager " + progress);
         }

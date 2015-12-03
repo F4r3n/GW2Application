@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:fillViewport="true"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="800dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/speChange1"
+                        android:onClick="changeSpe"
+                        android:background="#000000" />
+
+
+                    <include
+                        android:id="@+id/spe1"
+                        layout="@layout/layout_specialization" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="50dp"
+                        android:id="@+id/speChange2"
+                        android:onClick="changeSpe"
+                        android:layout_height="match_parent"
+                        android:background="#000000" />
+
+
+                    <include
+                        android:id="@+id/spe2"
+                        layout="@layout/layout_specialization" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/speChange3"
+                        android:onClick="changeSpe"
+                        android:background="#000000" />
+
+
+                    <include
+                        android:id="@+id/spe3"
+                        layout="@layout/layout_specialization" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </ScrollView>
+
+</LinearLayout>

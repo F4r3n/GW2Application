@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
 
 
         requestManager = new RequestManager(this);
-        specializationManager = new SpecializationManager(this);
+        specializationManager = new SpecializationManager(this, this);
         requestManager.initProgressDialog(this);
 
         linearLayoutAccount = (LinearLayout) findViewById(R.id.AccountLinear);
@@ -148,6 +148,15 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
                 alertView(((Account) requestManager.getContainer(CATEGORIES.ACCOUNT)).accountData.name);
                 requestManager.overNotify();
             }
+
+
+        }
+        if (o[0] instanceof SpecializationManager) {
+            System.out.println("Over spe");
+            Collection c = (Collection) getApplication();
+            c.specializationManager = specializationManager;
+            Intent intent = new Intent(this, BuilderActivity.class);
+            startActivity(intent);
         }
     }
 

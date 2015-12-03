@@ -55,11 +55,10 @@ public class TraitFact {
     }
 
 
-
     public TYPE type;
     public String text;
     transient public Bitmap icon;
-    public ImageResource iconImage = new ImageResource(50,50);
+    public ImageResource iconImage = new ImageResource(50, 50);
 
 
     public AttributeAdjust attributeAdjust;
@@ -99,9 +98,14 @@ public class TraitFact {
                     attributeAdjust = new AttributeAdjust();
                     attributeAdjust.target = object.getString("target");
                     attributeAdjust.value = object.getInt("value");
-                    iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                            "/GW2App/spe/trait/icon/" +
-                            type.toString().toLowerCase() + "-icon.png";
+                    if (text != null)
+                        iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                                "/GW2App/spe/trait/icon/" +
+                                text.replaceAll(" ", "-").toLowerCase() + "-icon.png";
+                    else
+                        iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                                "/GW2App/spe/trait/icon/" +
+                                type.toString().toLowerCase() + "-icon.png";
                     break;
                 case BUFF:
                     buff = new Buff();

@@ -14,7 +14,7 @@ import com.example.guillaume2.gw2applicaton.R;
 /**
  * Created by guillaume2 on 25/11/15.
  */
-public class DialogSpeMean extends DialogFragment implements View.OnClickListener{
+public class DialogSpeMean extends DialogFragment implements View.OnClickListener {
 
     private CHOICE_DL_SPECIALIZATION choice = CHOICE_DL_SPECIALIZATION.NO;
 
@@ -72,14 +72,15 @@ public class DialogSpeMean extends DialogFragment implements View.OnClickListene
         builder.setView(inflater.inflate(R.layout.dialog_fragment_choice_specialization, null))
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                       // dialog.dismiss();
+                        dismiss();
                         dialogListener.onChoiceSpeMean(DialogSpeMean.this, CHOICE_DL_SPECIALIZATION.NODATA);
                     }
                 })
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                       // dismiss();
+                        dismiss();
                         dialogListener.onChoiceSpeMean(DialogSpeMean.this, choice);
+
                     }
                 });
 

@@ -27,6 +27,11 @@
             android:theme="@style/Theme.AppCompat.Light">
 
         </activity>
+        <activity
+            android:name="com.example.guillaume2.gw2applicaton.BuilderActivity"
+            android:theme="@style/Theme.AppCompat.Light">
+
+        </activity>
 
     </application>
 
