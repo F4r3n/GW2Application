@@ -1,6 +1,7 @@
 package com.example.guillaume2.gw2applicaton.Tool;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,5 +32,9 @@ public class FileManagerTool {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static Bitmap getImage(String path) {
+        return BitmapFactory.decodeFile(path);
     }
 }

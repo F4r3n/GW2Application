@@ -1,14 +1,18 @@
 package com.example.guillaume2.gw2applicaton.Builder;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.guillaume2.gw2applicaton.R;
+import com.example.guillaume2.gw2applicaton.Tool.FileManagerTool;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,10 +22,14 @@ public class ChoiceSpeAdapter extends BaseAdapter {
     LayoutInflater inflater;
     Activity activity;
     List<Specialization> specializations;
+    List<Bitmap> bitmaps = new ArrayList<>();
 
     public ChoiceSpeAdapter(Activity activity, List<Specialization> spes) {
         this.activity = activity;
         specializations = spes;
+        for(Specialization s : spes) {
+            bitmaps.add(FileManagerTool.getImage(s.specializationData.iconImage.iconPath));
+        }
         inflater = LayoutInflater.from(activity);
     }
 
@@ -53,14 +61,18 @@ public class ChoiceSpeAdapter extends BaseAdapter {
             mViewHolder = (MyViewHolder) convertView.getTag();
         }
         mViewHolder.nameSpe.setText(getItem(position).specializationData.name);
+        mViewHolder.imageView.setImageBitmap(bitmaps.get(position));
 
         return convertView;
     }
     private class MyViewHolder {
         TextView nameSpe;
+        ImageView imageView;
 
         public MyViewHolder(View item) {
             nameSpe = (TextView) item.findViewById(R.id.titleSpeChoice);
+            imageView = (ImageView) item.findViewById(R.id.imageSpeChoice);
+
         }
     }
 }

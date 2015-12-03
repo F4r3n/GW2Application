@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by guillaume2 on 02/12/15.
  */
-public class BuilderActivity extends AppCompatActivity {
+public class BuilderActivity extends AppCompatActivity implements CallerBack {
     private FrameLayout specialization1;
     private FrameLayout specialization2;
     private FrameLayout specialization3;
@@ -33,7 +33,7 @@ public class BuilderActivity extends AppCompatActivity {
         specializationManager = c.specializationManager;
         HashMap<String, Specialization> spe = specializationManager.getSpe().get(Professions.WARRIOR);
         specializations = new ArrayList<>(spe.values());
-        dialogSpeChoice.init(this, specializations);
+
         setContentView(R.layout.activity_builder);
         specialization1 = (FrameLayout) findViewById(R.id.spe1);
         //ImageView view  = (ImageView) specialization1.findViewById(R.id.background);
@@ -45,19 +45,32 @@ public class BuilderActivity extends AppCompatActivity {
     public void changeSpe(View view) {
         switch (view.getId()) {
             case R.id.speChange1:
+                dialogSpeChoice.init(this, specializations, this, specialization1);
                 dialogSpeChoice.show(getFragmentManager(), "dialogSpeChoice");
                 System.out.println("Choice 1");
                 break;
             case R.id.speChange2:
-
+                dialogSpeChoice.init(this, specializations, this, specialization2);
+                dialogSpeChoice.show(getFragmentManager(), "dialogSpeChoice");
                 break;
             case R.id.speChange3:
-
+                dialogSpeChoice.init(this, specializations, this, specialization3);
+                dialogSpeChoice.show(getFragmentManager(), "dialogSpeChoice");
                 break;
         }
     }
 
     private void sortSpe() {
+
+    }
+
+    @Override
+    public void notifyUpdate(Object... o) {
+
+    }
+
+    @Override
+    public void cancel() {
 
     }
 }
