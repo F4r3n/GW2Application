@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_warrior"
+        android:icon="@drawable/ic_warrior"
+        android:orderInCategory="100"
+        android:title="warrior"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_revenant"
+        android:icon="@drawable/ic_revenant"
+        android:orderInCategory="100"
+        android:title="revenant"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_thief"
+        android:icon="@drawable/ic_thief"
+        android:orderInCategory="100"
+        android:title="thief"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_necro"
+        android:icon="@drawable/ic_necro"
+        android:orderInCategory="100"
+        android:title="necro"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_mesmer"
+        android:icon="@drawable/ic_mesmer"
+        android:orderInCategory="100"
+        android:title="mesmer"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_guardian"
+        android:icon="@drawable/ic_guardian"
+        android:orderInCategory="100"
+        android:title="guardian"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_elementalist"
+        android:icon="@drawable/ic_elementalist"
+        android:orderInCategory="100"
+        android:title="elementalis"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_ranger"
+        android:icon="@drawable/ic_ranger"
+        android:orderInCategory="100"
+        android:title="ranger"
+        app:showAsAction="ifRoom" />
+</menu>

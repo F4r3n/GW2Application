@@ -5,4 +5,13 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="SpeButton">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/button_spe_selector</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:cropToPadding">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>
