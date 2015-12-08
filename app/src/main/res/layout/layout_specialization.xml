@@ -146,4 +146,10 @@
 
         </LinearLayout>
     </LinearLayout>
+<com.example.guillaume2.gw2applicaton.ToolTip.ToolTipLinearLayout
+    android:layout_width="match_parent"
+    android:id="@+id/toolTip"
+    android:layout_height="match_parent">
+</com.example.guillaume2.gw2applicaton.ToolTip.ToolTipLinearLayout>
+
 </FrameLayout>

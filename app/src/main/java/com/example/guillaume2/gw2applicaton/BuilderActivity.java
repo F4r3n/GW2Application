@@ -22,10 +22,16 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
     private FrameLayout specialization1;
     private FrameLayout specialization2;
     private FrameLayout specialization3;
+
     private SpecializationManager specializationManager;
     private List<Specialization> specializations;
     private DialogSpeChoice dialogSpeChoice;
     private Professions professions;
+
+    private SpecializationInterface specializationInterface1;
+    private SpecializationInterface specializationInterface2;
+    private SpecializationInterface specializationInterface3;
+
 
 
     @Override
@@ -41,14 +47,18 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
 
         setContentView(R.layout.activity_builder);
         specialization1 = (FrameLayout) findViewById(R.id.spe1);
-        //ImageView view  = (ImageView) specialization1.findViewById(R.id.background);
 
         specialization2 = (FrameLayout) findViewById(R.id.spe2);
         specialization3 = (FrameLayout) findViewById(R.id.spe3);
         changeVisibility(View.INVISIBLE);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+
+        specializationInterface1 = new SpecializationInterface(this, specialization1);
+        specializationInterface2 = new SpecializationInterface(this, specialization2);
+        specializationInterface3 = new SpecializationInterface(this, specialization3);
+
     }
+
+
 
     private void changeVisibility(int visibility) {
         specialization1.setVisibility(visibility);
@@ -111,15 +121,15 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
     public void changeSpe(View view) {
         switch (view.getId()) {
             case R.id.speChange1:
-                dialogSpeChoice.init(this, specializations, this, specialization1);
+                dialogSpeChoice.init(this, specializations, this, specialization1,1);
                 dialogSpeChoice.show(getFragmentManager(), "dialogSpeChoice");
                 break;
             case R.id.speChange2:
-                dialogSpeChoice.init(this, specializations, this, specialization2);
+                dialogSpeChoice.init(this, specializations, this, specialization2,2);
                 dialogSpeChoice.show(getFragmentManager(), "dialogSpeChoice");
                 break;
             case R.id.speChange3:
-                dialogSpeChoice.init(this, specializations, this, specialization3);
+                dialogSpeChoice.init(this, specializations, this, specialization3,3);
                 dialogSpeChoice.show(getFragmentManager(), "dialogSpeChoice");
                 break;
         }
@@ -137,9 +147,24 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
     public void notifyUpdate(Object... o) {
     }
 
+    public void notifySpeChoice(int id, Specialization specialization) {
+        if(id == 1) {
+            specializationInterface1.specialization = specialization;
+            specializationInterface1.init();
+        }
+        if(id == 2) {
+            specializationInterface2.specialization = specialization;
+            specializationInterface2.init();
+
+        }
+        if(id == 3) {
+            specializationInterface3.specialization = specialization;
+            specializationInterface3.init();
+        }
+    }
+
     @Override
     public void cancel() {
     }
-
 
 }

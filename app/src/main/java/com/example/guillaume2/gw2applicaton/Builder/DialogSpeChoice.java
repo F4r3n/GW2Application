@@ -1,6 +1,5 @@
 package com.example.guillaume2.gw2applicaton.Builder;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -20,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.example.guillaume2.gw2applicaton.BuilderActivity;
 import com.example.guillaume2.gw2applicaton.CallerBack;
 import com.example.guillaume2.gw2applicaton.R;
 import com.example.guillaume2.gw2applicaton.Tool.FileManagerTool;
@@ -37,19 +37,21 @@ public class DialogSpeChoice extends DialogFragment implements
 
     ListView mylist;
     List<Specialization> specializations;
-    Activity activity;
+    BuilderActivity activity;
     CallerBack parent;
     FrameLayout frameLayout;
+    int position;
     final int sdk = android.os.Build.VERSION.SDK_INT;
 
 
     public DialogSpeChoice() {
     }
 
-    public void init(Activity activity, List<Specialization> spes, CallerBack cb, FrameLayout frameLayout) {
+    public void init(BuilderActivity buidlderActivity, List<Specialization> spes, CallerBack cb, FrameLayout frameLayout, int pos) {
         specializations = spes;
-        this.activity = activity;
+        this.activity = buidlderActivity;
         parent = cb;
+        position = pos;
         this.frameLayout = frameLayout;
     }
 
@@ -181,7 +183,7 @@ public class DialogSpeChoice extends DialogFragment implements
            buttonsMajor.get(i).setImageBitmap(makeTransparent(bb, 255));
 
         }
-
+        activity.notifySpeChoice(this.position, specializations.get(position));
 
         dismiss();
     }
