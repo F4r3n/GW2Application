@@ -28,7 +28,7 @@
 
         </activity>
         <activity
-            android:name="com.example.guillaume2.gw2applicaton.BuilderActivity"
+            android:name=".Builder.BuilderActivity"
             android:theme="@style/Theme.AppCompat.Light">
 
         </activity>

@@ -1,53 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_warrior"
-        android:icon="@drawable/ic_warrior"
-        android:orderInCategory="100"
-        android:title="warrior"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_revenant"
-        android:icon="@drawable/ic_revenant"
-        android:orderInCategory="100"
-        android:title="revenant"
-        app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_thief"
-        android:icon="@drawable/ic_thief"
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings_black"
         android:orderInCategory="100"
-        android:title="thief"
-        app:showAsAction="ifRoom" />
+        android:title="settings"
+        app:showAsAction="ifRoom">
+        <menu>
+
+            <item
+                android:id="@+id/action_save"
+                android:icon="@drawable/ic_save_black"
+                android:orderInCategory="100"
+                android:title="save"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_load_folder"
+                android:icon="@drawable/ic_folder_black"
+                android:orderInCategory="100"
+                android:title="load file"
+                app:showAsAction="never">
+            </item>
+
+        </menu>
+
+
+    </item>
     <item
-        android:id="@+id/action_necro"
-        android:icon="@drawable/ic_necro"
+        android:id="@+id/action_choice_pro"
+        android:icon="@drawable/ic_reorder_black"
         android:orderInCategory="100"
-        android:title="necro"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_mesmer"
-        android:icon="@drawable/ic_mesmer"
-        android:orderInCategory="100"
-        android:title="mesmer"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_guardian"
-        android:icon="@drawable/ic_guardian"
-        android:orderInCategory="100"
-        android:title="guardian"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_elementalist"
-        android:icon="@drawable/ic_elementalist"
-        android:orderInCategory="100"
-        android:title="elementalis"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_ranger"
-        android:icon="@drawable/ic_ranger"
-        android:orderInCategory="100"
-        android:title="ranger"
-        app:showAsAction="ifRoom" />
+        android:title="choice"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_warrior"
+                android:icon="@drawable/ic_warrior"
+                android:orderInCategory="100"
+                android:title="warrior"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_revenant"
+                android:icon="@drawable/ic_revenant"
+                android:orderInCategory="100"
+                android:title="revenant"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_thief"
+                android:icon="@drawable/ic_thief"
+                android:orderInCategory="100"
+                android:title="thief"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_necro"
+                android:icon="@drawable/ic_necro"
+                android:orderInCategory="100"
+                android:title="necro"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_mesmer"
+                android:icon="@drawable/ic_mesmer"
+                android:orderInCategory="100"
+                android:title="mesmer"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_guardian"
+                android:icon="@drawable/ic_guardian"
+                android:orderInCategory="100"
+                android:title="guardian"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_elementalist"
+                android:icon="@drawable/ic_elementalist"
+                android:orderInCategory="100"
+                android:title="elementalist"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_ranger"
+                android:icon="@drawable/ic_ranger"
+                android:orderInCategory="100"
+                android:title="ranger"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 </menu>

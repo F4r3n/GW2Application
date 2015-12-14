@@ -99,7 +99,6 @@ public class GWItem implements CallerBack {
     }
 
     public void readData() {
-
         Gson gson = new Gson();
 
         File file = new File(gwItemData.dataPath);

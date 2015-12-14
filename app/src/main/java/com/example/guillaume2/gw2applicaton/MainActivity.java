@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.example.guillaume2.gw2applicaton.Builder.BuilderActivity;
 import com.example.guillaume2.gw2applicaton.Builder.DialogSpeMean;
 import com.example.guillaume2.gw2applicaton.Builder.SpecializationManager;
 

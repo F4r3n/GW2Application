@@ -44,6 +44,8 @@ public class ToolTipLinearLayout extends LinearLayout implements View.OnClickLis
 
     public void addToolTip(ToolTip toolTip) {
         this.toolTip = toolTip;
+        setX(0);
+        setY(0);
         if (toolTip.getText() != null) {
             textView.setText(toolTip.getText());
         }
@@ -53,9 +55,17 @@ public class ToolTipLinearLayout extends LinearLayout implements View.OnClickLis
         }
 
         if(toolTip.getView() != null) {
-            setX(toolTip.getView().getX() + 50);
-            setY(toolTip.getView().getY());
+            float offsetX = 0.0f;
+            float offsetY = 0.0f;
+            if(toolTip.getOffset() != null) {
+                offsetX = toolTip.getOffset().x;
+                offsetY = toolTip.getOffset().y;
+            }
+            setX(toolTip.getView().getX() + offsetX);
+            setY(toolTip.getView().getY() + offsetY);
         }
+
+
     }
 
     public void show() {
@@ -65,6 +75,8 @@ public class ToolTipLinearLayout extends LinearLayout implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        System.out.println(toolTip.getView().getId());
+        toolTip = null;
         if(v.getId() == R.id.toolTip) {
             setVisibility(View.INVISIBLE);
         }
