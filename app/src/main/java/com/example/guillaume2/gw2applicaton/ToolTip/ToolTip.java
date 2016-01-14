@@ -1,7 +1,11 @@
 package com.example.guillaume2.gw2applicaton.ToolTip;
 
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by guillaume2 on 06/12/15.
@@ -12,12 +16,19 @@ public class ToolTip {
     private String text = null;
     private View view = null;
     private Point p = null;
+    private List<Bitmap> images = new ArrayList<>();
+    private List<String> strings = new ArrayList<>();
 
     public ToolTip() {
     }
 
     public ToolTip addText(String text) {
         this.text = textWrapping(text);
+        return this;
+    }
+
+    public ToolTip addTextIcons(String text) {
+        strings.add(textWrapping(text));
         return this;
     }
 
@@ -37,8 +48,13 @@ public class ToolTip {
         return newText;
     }
 
-    public ToolTip addColor(int color) {
+    public ToolTip addColorText(int color) {
         this.color = color;
+        return this;
+    }
+
+    public ToolTip addImage(Bitmap bitmap) {
+        images.add(bitmap);
         return this;
     }
 
@@ -67,4 +83,8 @@ public class ToolTip {
     public String getText() {
         return text;
     }
+
+    public List<Bitmap> getImages() { return images;}
+
+    public List<String> getStrings() { return strings;}
 }

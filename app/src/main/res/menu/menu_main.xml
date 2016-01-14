@@ -1,10 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/action_update" android:title="Update"
-        android:orderInCategory="100" app:showAsAction="always"
-        android:icon="@drawable/ic_autorenew_black_24dp"
-        />
+    <item
+        android:id="@+id/action_choice_pro"
+        android:icon="@drawable/ic_reorder_black"
+        android:orderInCategory="100"
+        android:title="choice"
+        app:showAsAction="always">
+        <menu>
+            <item android:id="@+id/action_add" android:title="AddKey"
+                android:orderInCategory="100" app:showAsAction="always"
+                android:icon="@drawable/ic_add_black"
+                />
+            <item android:id="@+id/action_see_key" android:title="Key ..."
+                android:orderInCategory="100" app:showAsAction="always"
+                />
+            <item android:id="@+id/action_key_permissions" android:title="Key permissions"
+                android:orderInCategory="100" app:showAsAction="always"
+                />
+        </menu>
+    </item>
+
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

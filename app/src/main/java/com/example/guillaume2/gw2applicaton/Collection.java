@@ -15,7 +15,7 @@ public class Collection extends Application {
     List<Container> containers;
     RequestManager requestManager;
     public SpecializationManager specializationManager;
-
+    public String key = "";
     public Collection() {
         containers = new ArrayList<>();
 

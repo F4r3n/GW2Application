@@ -119,4 +119,8 @@ public class FileManagerTool {
         canvas.drawBitmap(src, 0, 0, paint);
         return transBitmap;
     }
+
+    public static void deleteFile(String path) {
+        new File(path).delete();
+    }
 }

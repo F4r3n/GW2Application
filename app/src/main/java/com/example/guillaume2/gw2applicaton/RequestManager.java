@@ -99,14 +99,13 @@ public class RequestManager extends Observable implements CallerBack {
         return null;
     }
 
-    public boolean execute(GWObject cat, boolean displayProgressDialog, CallerBack cb) {
+    public boolean execute(String key, GWObject cat, boolean displayProgressDialog, CallerBack cb) {
         this.cb = cb;
         object = cat;
         progressDialog.setProgress(0);
         this.dialogBoxDisplay = displayProgressDialog;
         if (cat.isExists()) {
             cat.readData();
-            System.out.println(cat.getCat());
             notifyFinish(cat.getCat());
             categoriesDownloaded.put(cat.getCat(), true);
             return categoriesDownloaded.get(cat.getCat());
@@ -129,6 +128,7 @@ public class RequestManager extends Observable implements CallerBack {
             progressDialog.show();
         }
         Request r = new Request(this);
+        r.key = key;
         r.execute(cat);
         return false;
     }

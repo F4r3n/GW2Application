@@ -8,43 +8,28 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by guillaume2 on 01/11/15.
+ * Created by guillaume2 on 14/01/16.
  */
-public final class Request extends AsyncTask<GWObject, Integer, String> {
-    public String key = "";
-    private String result;
-    private CATEGORIES param;
-    private RequestManager rqm;
-    private GWObject object;
+public class KeyChecker extends AsyncTask<String, Void, String> implements CallerBack {
+    private CallerBack parent;
 
-
-    public Request(RequestManager rqm) {
-        this.rqm = rqm;
-    }
-
-    public String getResult() {
-        return result;
+    public KeyChecker(CallerBack callerBack) {
+        parent = callerBack;
     }
 
     @Override
-    protected String doInBackground(GWObject... object) {
-        this.object = object[0];
-        this.param = this.object.getCat();
-        String p = this.object.getUrl();
-        return send(p);
-
-
+    protected String doInBackground(String... params) {
+        send(params[0]);
+        return null;
     }
 
-
-
-    public String send(String m) {
+    public void send(String key) {
         URL url;
         StringBuffer response = new StringBuffer();
-
+        System.out.println("https://api.guildwars2.com/v2/tokeninfo?access_token=" + key);
         HttpURLConnection urlConnection = null;
         try {
-            url = new URL("https://api.guildwars2.com/v2/" + m + "?access_token=" + key);
+            url = new URL("https://api.guildwars2.com/v2/tokeninfo?access_token=" + key);
 
             urlConnection = (HttpURLConnection) url
                     .openConnection();
@@ -68,18 +53,16 @@ public final class Request extends AsyncTask<GWObject, Integer, String> {
                 e.printStackTrace(); //If you want further info on failure...
             }
         }
-        return response.toString();
+        parent.notifyUpdate(this, response.toString());
     }
 
-    protected void onPostExecute(String result) {
-        object.readFile(rqm, result);
-
-    }
-
-
-    protected void onPreExecute() {
+    @Override
+    public void notifyUpdate(Object... o) {
 
     }
 
+    @Override
+    public void cancel() {
 
+    }
 }

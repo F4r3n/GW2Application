@@ -16,9 +16,7 @@ import android.widget.ImageView;
 
 import com.example.guillaume2.gw2applicaton.CallerBack;
 import com.example.guillaume2.gw2applicaton.Collection;
-import com.example.guillaume2.gw2applicaton.Professions;
 import com.example.guillaume2.gw2applicaton.R;
-import com.example.guillaume2.gw2applicaton.SpecializationInterface;
 import com.example.guillaume2.gw2applicaton.Tool.FileManagerTool;
 import com.google.gson.Gson;
 
@@ -44,14 +42,12 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
     private DialogSpeChoice dialogSpeChoice;
     private Professions professions;
 
-    private SpecializationInterface specializationInterface1;
-    private SpecializationInterface specializationInterface2;
-    private SpecializationInterface specializationInterface3;
-
     private android.support.v7.app.ActionBar actionBar;
     private String pathFolder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/builder/save/";
     private String nameSave;
     private BuilderSave builderSave;
+    private final int NUMBER_SPE = 3;
+    private SpecializationInterface[] specializationInterfaces;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +68,12 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
         changeVisibility(View.INVISIBLE);
         builderSave = new BuilderSave();
 
-        specializationInterface1 = new SpecializationInterface(this, specialization1, builderSave, 0);
-        specializationInterface2 = new SpecializationInterface(this, specialization2, builderSave, 1);
-        specializationInterface3 = new SpecializationInterface(this, specialization3, builderSave, 2);
+        specializationInterfaces = new SpecializationInterface[3];
+        specializationInterfaces[0] = new SpecializationInterface(this, specialization1);
+        specializationInterfaces[1] = new SpecializationInterface(this, specialization2);
+        specializationInterfaces[2] = new SpecializationInterface(this, specialization3);
+
+
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -98,7 +97,6 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
         } else {
             System.out.println("File does exist");
         }
-
 
         BufferedReader br;
         try {
@@ -144,19 +142,18 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
 
     private void loadData() {
         professions = builderSave.professions;
+        setTitle(professions.toString().toLowerCase());
+        actionBar.setIcon(getIdIcon(professions));
         HashMap<String, Specialization> spe = specializationManager.getSpe().get(builderSave.professions);
         specializations = new ArrayList<>(spe.values());
-        loadDataFrameLayout(specialization1, builderSave.spe[0], specializations);
-        specializationInterface1.specialization = specializations.get(builderSave.spe[0]);
-        specializationInterface1.init(builderSave.posTrait[0],builderSave.posTrait[1],builderSave.posTrait[2]);
 
-        loadDataFrameLayout(specialization2, builderSave.spe[1], specializations);
-        specializationInterface2.specialization = specializations.get(builderSave.spe[1]);
-        specializationInterface2.init(builderSave.posTrait[3],builderSave.posTrait[4],builderSave.posTrait[5]);
-
-        loadDataFrameLayout(specialization3, builderSave.spe[2], specializations);
-        specializationInterface3.specialization = specializations.get(builderSave.spe[2]);
-        specializationInterface3.init(builderSave.posTrait[6],builderSave.posTrait[7],builderSave.posTrait[8]);
+        for(int i = 0; i < NUMBER_SPE; i++) {
+            if (builderSave.spe[i] != -1) {
+                loadDataFrameLayout(specializationInterfaces[i].getFrameLayout(), builderSave.spe[i], specializations);
+                specializationInterfaces[i].specialization = specializations.get(builderSave.spe[i]);
+                specializationInterfaces[i].init(builderSave.posTrait[NUMBER_SPE * i], builderSave.posTrait[NUMBER_SPE * i + 1], builderSave.posTrait[NUMBER_SPE * i + 2]);
+            }
+        }
     }
 
     private void loadDataFrameLayout(FrameLayout frameLayout, int position, List<Specialization> specializations) {
@@ -252,6 +249,12 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
                 in = true;
                 break;
             case R.id.action_save:
+
+                for(int i = 0; i < NUMBER_SPE; i++) {
+                    for(int j = 0; j < NUMBER_SPE; j++) {
+                        builderSave.posTrait[NUMBER_SPE*i + j] = specializationInterfaces[i].getValueTraitsSelected()[j];
+                    }
+                }
                 saveDialog();
                 break;
             case R.id.action_load_folder:
@@ -308,7 +311,7 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
     }
 
 
-    private int getIdIcon(Professions professions) {
+    public static int getIdIcon(Professions professions) {
         switch (professions) {
             case ELEMENTALIST:
                 return R.drawable.ic_elementalist;
@@ -364,25 +367,18 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
 
     public void notifySpeChoice(int id, Specialization specialization, int position) {
         builderSave.spe[id - 1] = position;
-        if (id == 1) {
-            specializationInterface1.specialization = specialization;
-            specializationInterface1.init();
-        }
-        if (id == 2) {
-            specializationInterface2.specialization = specialization;
-            specializationInterface2.init();
-
-        }
-        if (id == 3) {
-            specializationInterface3.specialization = specialization;
-            specializationInterface3.init();
-        }
+        specializationInterfaces[id - 1].specialization = specialization;
+        specializationInterfaces[id - 1].init();
     }
 
     public void fileToLoad(String name) {
         System.out.println(name);
         readData(name);
         loadData();
+    }
+
+    public void deleteFileSpe(String file) {
+        FileManagerTool.deleteFile(pathFolder + file);
     }
 
     @Override

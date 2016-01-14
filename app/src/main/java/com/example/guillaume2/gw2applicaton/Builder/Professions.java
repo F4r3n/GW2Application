@@ -1,4 +1,4 @@
-package com.example.guillaume2.gw2applicaton;
+package com.example.guillaume2.gw2applicaton.Builder;
 
 /**
  * Created by guillaume2 on 24/11/15.

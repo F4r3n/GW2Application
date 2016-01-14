@@ -3,7 +3,6 @@ package com.example.guillaume2.gw2applicaton.Builder;
 import android.os.Environment;
 
 import com.example.guillaume2.gw2applicaton.CallerBack;
-import com.example.guillaume2.gw2applicaton.Professions;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;

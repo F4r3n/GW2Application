@@ -2,19 +2,36 @@ package com.example.guillaume2.gw2applicaton;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.guillaume2.gw2applicaton.Builder.BuilderActivity;
 import com.example.guillaume2.gw2applicaton.Builder.DialogSpeMean;
 import com.example.guillaume2.gw2applicaton.Builder.SpecializationManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements CallerBack, DialogSpeMean.DialogListener {
 
@@ -25,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
     private LinearLayout linearLayoutAccount;
     private LinearLayout linearLayoutBuilder;
     private DialogSpeMean dialogSpeMean;
+    private String nameFileKeyStorage = "key.dat";
+    public String keyValue = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +66,11 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
 
         accountButton = (Button) findViewById(R.id.accountButton);
         infoButton = (Button) findViewById(R.id.infoButton);
+        try {
+            keyValue = readKey();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -71,15 +95,70 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
         }
     }
 
+    private void saveKey(String key) {
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = openFileOutput(nameFileKeyStorage, Context.MODE_PRIVATE);
+            outputStream.write(key.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String readKey() throws IOException {
+        if (!new File(getFilesDir(), nameFileKeyStorage).exists())
+            return "No key";
+        FileInputStream fis = openFileInput(nameFileKeyStorage);
+
+
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader bufferedReader = new BufferedReader(isr);
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            sb.append(line);
+        }
+        return sb.toString();
+    }
+
+
+    private void saveDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Name of the save");
+
+// Set up the input
+        final EditText input = new EditText(this);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveKey(input.getText().toString());
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
 
     public void getInfo(View view) {
-
+        Collection c = (Collection) getApplication();
+        c.key = keyValue;
         switch (view.getId()) {
             case R.id.infoButton:
-                requestManager.execute(new Account(), true, this);
+                requestManager.execute(keyValue, new Account(), true, this);
                 break;
             case R.id.bankButton:
-                requestManager.execute(new Bank(), true, this);
+                requestManager.execute(keyValue, new Bank(), true, this);
                 break;
             case R.id.editorButton:
                 dialogSpeMean.show(getFragmentManager(), "ChoiceSpeMean");
@@ -88,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
         }
 
     }
+
 
     public void changeVisibility(View view) {
         switch (view.getId()) {
@@ -111,10 +191,10 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
         return true;
     }
 
-    private void alertView(String message) {
+    private void alertView(String message, String title) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
-        dialog.setTitle("GW2Application")
+        dialog.setTitle(title)
                 .setMessage(message)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialoginterface, int i) {
@@ -129,6 +209,27 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
 
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_add) {
+            saveDialog();
+        } else if (id == R.id.action_see_key) {
+            try {
+                keyValue = readKey();
+                alertView(keyValue, "Key");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if( id == R.id.action_key_permissions) {
+            System.out.println("Key value " + keyValue);
+            ConnectivityManager connectivityManager;
+            connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
+            if (ni == null) {
+                Toast.makeText(this, "No connection", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            new KeyChecker(this).execute(keyValue);
         }
 
         return super.onOptionsItemSelected(item);
@@ -146,7 +247,8 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
 
             }
             if (o[1] == CATEGORIES.ACCOUNT) {
-                alertView(((Account) requestManager.getContainer(CATEGORIES.ACCOUNT)).accountData.name);
+                alertView(((Account) requestManager.getContainer(CATEGORIES.ACCOUNT)).accountData.name,
+                        "Account info");
                 requestManager.overNotify();
             }
 
@@ -159,11 +261,49 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
             Intent intent = new Intent(this, BuilderActivity.class);
             startActivity(intent);
         }
+
+        if (o[0] instanceof KeyChecker) {
+            String permissions ="Permissions\n";
+            final ArrayList<String> builder = new ArrayList<>();
+            try {
+                JSONObject jsonObject = new JSONObject((String) o[1]);
+                JSONArray jsonArray = jsonObject.getJSONArray("permissions");
+                for(int i = 0; i < jsonArray.length(); ++i) {
+                    builder.add(jsonArray.getString(i));
+                    permissions += "- " + jsonArray.getString(i) + "\n";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            final String finalPermissions = permissions;
+            MainActivity.this.runOnUiThread(new Runnable() {
+                public void run() {
+                    alertView(finalPermissions, "Permissions");
+                    for(String s : builder) {
+                        enableButton(s);
+                    }
+                }
+            });
+
+        }
     }
 
     @Override
     public void cancel() {
 
+    }
+
+    public void enableButton(String permission) {
+        if(permission.equals("account")) {
+            Button b = (Button)(findViewById(R.id.accountButton));
+            b.setEnabled(true);
+            b = (Button)(findViewById(R.id.bankButton));
+            b.setEnabled(true);
+        }
+        if(permission.equals("wallet")) {
+            Button b = (Button)(findViewById(R.id.walletButton));
+            b.setEnabled(true);
+        }
     }
 
     @Override

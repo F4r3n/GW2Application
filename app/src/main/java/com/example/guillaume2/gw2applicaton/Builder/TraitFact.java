@@ -80,6 +80,8 @@ public class TraitFact {
         return new File(iconImage.iconPath).exists();
     }
 
+
+
     public TraitFact(JSONObject object) {
 
         try {
@@ -151,8 +153,8 @@ public class TraitFact {
                     break;
                 case NUMBER:
                     number = new Number();
-                    if (object.has("number"))
-                        number.number = object.getInt("number");
+                    if (object.has("value"))
+                        number.value = object.getInt("value");
                     break;
                 case PERCENT:
                     percent = new Percent();
@@ -225,7 +227,7 @@ public class TraitFact {
     }
 
     public class Number {
-        public int number;
+        public int value;
     }
 
     public class Percent {

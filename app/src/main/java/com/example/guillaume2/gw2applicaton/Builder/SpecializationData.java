@@ -1,7 +1,6 @@
 package com.example.guillaume2.gw2applicaton.Builder;
 
 import com.example.guillaume2.gw2applicaton.ImageResource;
-import com.example.guillaume2.gw2applicaton.Professions;
 
 import java.util.ArrayList;
 import java.util.List;

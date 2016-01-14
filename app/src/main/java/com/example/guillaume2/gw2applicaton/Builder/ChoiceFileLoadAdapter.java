@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.guillaume2.gw2applicaton.R;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by guillaume2 on 14/12/15.
  */
-public class ChoiceFileLoadAdapter extends BaseAdapter{
+public class ChoiceFileLoadAdapter extends BaseAdapter {
     LayoutInflater inflater;
     Activity activity;
     List<String> files;
@@ -53,18 +54,23 @@ public class ChoiceFileLoadAdapter extends BaseAdapter{
         } else {
             mViewHolder = (MyViewHolder) convertView.getTag();
         }
-        mViewHolder.nameSpe.setText(getItem(position));
-        //mViewHolder.imageView.setImageBitmap(bitmaps.get(position));
+        String currentValue = getItem(position);
+        String pro = currentValue.substring(0, currentValue.indexOf("_"));
+        Professions professions = Professions.valueOf(pro);
+        String name = currentValue.substring(currentValue.indexOf("_") + 1, currentValue.length());
+        mViewHolder.nameSpe.setText(name);
+        mViewHolder.imageView.setImageResource(BuilderActivity.getIdIcon(professions));
 
         return convertView;
     }
+
     private class MyViewHolder {
         TextView nameSpe;
-      //  ImageView imageView;
+        ImageView imageView;
 
         public MyViewHolder(View item) {
             nameSpe = (TextView) item.findViewById(R.id.file_name_load);
-          //  imageView = (ImageView) item.findViewById(R.id.imageSpeChoice);
+            imageView = (ImageView) item.findViewById(R.id.image_name_load);
 
         }
     }

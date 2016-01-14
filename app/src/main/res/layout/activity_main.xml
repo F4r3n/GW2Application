@@ -28,6 +28,7 @@
                 android:id="@+id/accountButton"
                 android:onClick="changeVisibility"
                 android:layout_marginBottom="@dimen/button_bottom"
+                android:enabled="false"
                 android:visibility="visible" />
 
             <LinearLayout
@@ -58,6 +59,7 @@
                     android:background="@drawable/black_button"
                     android:text="Bank"
                     android:id="@+id/bankButton"
+                    android:enabled="false"
                     android:onClick="getInfo"
 
                     android:textColor="#FFFFFF"
@@ -68,6 +70,7 @@
                     android:background="@drawable/black_button"
                     android:text="Dyes"
                     android:id="@+id/dyesButton"
+                    android:enabled="false"
                     android:textColor="#FFFFFF"
                     android:visibility="visible" />
                 <Button
@@ -75,6 +78,7 @@
                     android:layout_height="50dp"
                     android:background="@drawable/black_button"
                     android:text="Materials"
+                    android:enabled="false"
                     android:id="@+id/materialsButton"
                     android:textColor="#FFFFFF"
                     android:visibility="visible" />
@@ -83,6 +87,7 @@
                     android:layout_height="50dp"
                     android:background="@drawable/black_button"
                     android:text="Skins"
+                    android:enabled="false"
                     android:id="@+id/skinsButton"
                     android:textColor="#FFFFFF"
                     android:visibility="visible" />
@@ -93,6 +98,7 @@
                     android:background="@drawable/black_button"
                     android:text="Wallet"
                     android:id="@+id/walletButton"
+                    android:enabled="false"
                     android:textColor="#FFFFFF"
                     android:visibility="visible" />
             </LinearLayout>

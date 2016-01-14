@@ -11,8 +11,6 @@ import com.example.guillaume2.gw2applicaton.CATEGORIES;
 import com.example.guillaume2.gw2applicaton.CallerBack;
 import com.example.guillaume2.gw2applicaton.DataImageToDl;
 import com.example.guillaume2.gw2applicaton.DownloadImage;
-import com.example.guillaume2.gw2applicaton.Professions;
-import com.example.guillaume2.gw2applicaton.ReadFilesSpecialization;
 import com.example.guillaume2.gw2applicaton.Tool.FileManagerTool;
 
 import org.json.JSONArray;
@@ -142,6 +140,7 @@ public class SpecializationManager implements CallerBack {
     }
 
     public void initProgressDialog() {
+        progress = 0.0f;
         progressDialog = new ProgressDialog(activity);
         progressDialog.setProgress(0);
 
@@ -151,8 +150,7 @@ public class SpecializationManager implements CallerBack {
     }
 
     public void request() {
-        progress = 0.0f;
-        progressDialog.setProgress((int) progress);
+       initProgressDialog();
         NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
         if (ni == null) {
             Toast.makeText(activity, "No connection", Toast.LENGTH_SHORT).show();

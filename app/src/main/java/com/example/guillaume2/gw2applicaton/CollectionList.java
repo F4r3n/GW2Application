@@ -51,10 +51,10 @@ public class CollectionList extends AppCompatActivity implements CallerBack {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
+        Collection c = (Collection)getApplication();
         if (id == R.id.action_update) {
             rqm.deleteFileData(bank);
-            rqm.execute(new Bank(), true, this);
+            rqm.execute(c.key, new Bank(), true, this);
             return true;
         }
         return super.onOptionsItemSelected(item);

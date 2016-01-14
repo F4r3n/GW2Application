@@ -1,9 +1,11 @@
-package com.example.guillaume2.gw2applicaton;
+package com.example.guillaume2.gw2applicaton.Builder;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
+
+import com.example.guillaume2.gw2applicaton.R;
 
 /**
  * Created by guillaume2 on 02/12/15.

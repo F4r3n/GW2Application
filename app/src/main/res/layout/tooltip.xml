@@ -7,5 +7,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/textToolTip"
         />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/insideLayout"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
 
 </LinearLayout>

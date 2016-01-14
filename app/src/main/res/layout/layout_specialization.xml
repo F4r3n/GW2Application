@@ -139,6 +139,7 @@
     <com.example.guillaume2.gw2applicaton.ToolTip.ToolTipLinearLayout
         android:id="@+id/toolTip"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></com.example.guillaume2.gw2applicaton.ToolTip.ToolTipLinearLayout>
+        android:background="@drawable/style_tooltip"
+        android:layout_height="wrap_content"/>
 
 </FrameLayout>
