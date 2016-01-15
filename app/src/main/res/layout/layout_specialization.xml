@@ -136,7 +136,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.example.guillaume2.gw2applicaton.ToolTip.ToolTipLinearLayout
+    <com.faren.gw2.gw2applicaton.ToolTip.ToolTipLinearLayout
         android:id="@+id/toolTip"
         android:layout_width="wrap_content"
         android:background="@drawable/style_tooltip"
