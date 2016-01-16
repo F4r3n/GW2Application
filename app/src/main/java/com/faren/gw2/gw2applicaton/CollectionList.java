@@ -10,9 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-/**
- * Created by guillaume2 on 17/11/15.
- */
+
 public class CollectionList extends AppCompatActivity implements CallerBack {
     private RequestManager rqm;
     private Bank bank;

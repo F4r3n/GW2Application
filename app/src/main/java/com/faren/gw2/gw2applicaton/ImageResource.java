@@ -15,8 +15,6 @@ public class ImageResource {
         this.height = height;
     }
 
-    public ImageResource() {}
-
     public ImageResource(int w, int h) {
         this.width = w;
         this.height = h;

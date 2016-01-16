@@ -29,7 +29,7 @@
             <ImageButton
                 android:id="@+id/t10"
                 style="@style/SpeButton"
-                android:text="yop" />
+                android:contentDescription="@string/speButtonName" />
 
 
         </LinearLayout>
@@ -45,17 +45,17 @@
             <ImageButton
                 android:id="@+id/t11"
                 style="@style/SpeButton"
-                android:text="yop2" />
+                android:contentDescription="@string/speButtonName" />
 
             <ImageButton
                 android:id="@+id/t12"
                 style="@style/SpeButton"
-                android:text="yop2" />
+                android:contentDescription="@string/speButtonName" />
 
             <ImageButton
                 android:id="@+id/t13"
                 style="@style/SpeButton"
-                android:text="yop2" />
+                android:contentDescription="@string/speButtonName" />
 
 
         </LinearLayout>
@@ -70,7 +70,7 @@
             <ImageButton
                 android:id="@+id/t20"
                 style="@style/SpeButton"
-                android:text="yop" />
+                android:contentDescription="@string/speButtonName" />
         </LinearLayout>
 
 
@@ -83,17 +83,17 @@
             <ImageButton
                 android:id="@+id/t21"
                 style="@style/SpeButton"
-                android:text="yop2" />
+                android:contentDescription="@string/speButtonName" />
 
             <ImageButton
                 android:id="@+id/t22"
                 style="@style/SpeButton"
-                android:text="yop2" />
+                android:contentDescription="@string/speButtonName" />
 
             <ImageButton
                 android:id="@+id/t23"
                 style="@style/SpeButton"
-                android:text="yop2" />
+                android:contentDescription="@string/speButtonName" />
 
 
         </LinearLayout>
@@ -108,7 +108,7 @@
             <ImageButton
                 android:id="@+id/t30"
                 style="@style/SpeButton"
-                android:text="yop" />
+                android:contentDescription="@string/speButtonName" />
         </LinearLayout>
 
         <LinearLayout
@@ -120,26 +120,21 @@
             <ImageButton
                 android:id="@+id/t31"
                 style="@style/SpeButton"
-                android:text="yop2" />
+                android:contentDescription="@string/speButtonName" />
 
             <ImageButton
                 android:id="@+id/t32"
                 style="@style/SpeButton"
-                android:text="yop2" />
+                android:contentDescription="@string/speButtonName" />
 
             <ImageButton
                 android:id="@+id/t33"
                 style="@style/SpeButton"
-                android:text="yop2" />
+                android:contentDescription="@string/speButtonName" />
 
 
         </LinearLayout>
     </LinearLayout>
 
-    <com.faren.gw2.gw2applicaton.ToolTip.ToolTipLinearLayout
-        android:id="@+id/toolTip"
-        android:layout_width="wrap_content"
-        android:background="@drawable/style_tooltip"
-        android:layout_height="wrap_content"/>
 
 </FrameLayout>

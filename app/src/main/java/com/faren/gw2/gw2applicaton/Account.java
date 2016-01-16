@@ -10,14 +10,12 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class Account extends GWObject {
 
-    private CallerBack parent;
     public AccountData accountData;
 
     public Account() {
@@ -30,15 +28,12 @@ public class Account extends GWObject {
 
     public void readData() {
 
-        System.out.println(directoryFile);
-
         Gson gson = new Gson();
         File sdcard = Environment.getExternalStorageDirectory();
         File dir = new File(sdcard.getAbsolutePath() + directoryFile);
         File file = new File(dir, directoryName);
         if (!file.exists()) {
             System.out.println("File does not exist");
-
             return;
         } else {
             System.out.println("File does exist");
@@ -50,6 +45,7 @@ public class Account extends GWObject {
             accountData = gson.fromJson(br, AccountData.class);
             br.close();
         } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
@@ -57,7 +53,7 @@ public class Account extends GWObject {
     public void writeData() {
         File sdCard = Environment.getExternalStorageDirectory();
         File dir = new File(sdCard.getAbsolutePath() + directoryFile);
-        dir.mkdirs();
+        if(dir.mkdirs()){}
         File file = new File(dir, directoryName);
 
         try {
@@ -68,8 +64,6 @@ public class Account extends GWObject {
             String json = gson.toJson(accountData);
             outputStream.write(json.getBytes());
             outputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,15 +72,12 @@ public class Account extends GWObject {
     @Override
     public boolean isExists() {
         File file = new File(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + directoryFile), directoryName);
-        if (file.exists()) return true;
-
-        return false;
+        return file.exists();
     }
 
 
     @Override
     protected void readFile(CallerBack parent, String results) {
-        this.parent = parent;
         accountData.guilds.clear();
         parent.notifyUpdate(this, 0.0f, "Info");
         try {

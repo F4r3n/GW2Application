@@ -53,6 +53,7 @@ public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
             if(urlImage == null || new File(id).exists()) {
                 callerBack.notifyUpdate(this, null, index, id);
             }
+            assert urlImage != null;
             URL url = new URL(urlImage);
             // Get the image dimensions
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

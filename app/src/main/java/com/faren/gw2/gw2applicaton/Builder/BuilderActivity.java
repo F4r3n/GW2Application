@@ -64,11 +64,11 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
         specialization3 = (FrameLayout) findViewById(R.id.spe3);
         changeVisibility(View.INVISIBLE);
         builderSave = new BuilderSave();
-
+        FrameLayout mainFrame = (FrameLayout)findViewById(R.id.builder);
         specializationInterfaces = new SpecializationInterface[3];
-        specializationInterfaces[0] = new SpecializationInterface(this, specialization1);
-        specializationInterfaces[1] = new SpecializationInterface(this, specialization2);
-        specializationInterfaces[2] = new SpecializationInterface(this, specialization3);
+        specializationInterfaces[0] = new SpecializationInterface(this, specialization1, mainFrame);
+        specializationInterfaces[1] = new SpecializationInterface(this, specialization2, mainFrame);
+        specializationInterfaces[2] = new SpecializationInterface(this, specialization3, mainFrame);
 
 
 

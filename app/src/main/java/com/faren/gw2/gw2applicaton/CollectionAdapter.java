@@ -14,11 +14,9 @@ import com.faren.gw2.gw2applicaton.item.GWItemConsumable;
 public class CollectionAdapter extends BaseAdapter {
 
     Bank bank;
-    private Activity activity;
     LayoutInflater inflater;
 
     public CollectionAdapter(Activity activity) {
-        this.activity = activity;
         Collection collection = (Collection) activity.getApplication();
         bank = collection.getContainer(0).getBank();
         System.out.println(bank);

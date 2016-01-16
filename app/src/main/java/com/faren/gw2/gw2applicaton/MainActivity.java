@@ -35,8 +35,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements CallerBack, DialogSpeMean.DialogListener {
 
-    private Button accountButton;
-    private Button infoButton;
+
     private RequestManager requestManager;
     private SpecializationManager specializationManager;
     private LinearLayout linearLayoutAccount;
@@ -63,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
         linearLayoutAccount = (LinearLayout) findViewById(R.id.AccountLinear);
         linearLayoutBuilder = (LinearLayout) findViewById(R.id.linearBuildEditor);
 
-        accountButton = (Button) findViewById(R.id.accountButton);
-        infoButton = (Button) findViewById(R.id.infoButton);
         try {
             keyValue = readKey();
         } catch (IOException e) {
@@ -81,11 +78,6 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         System.out.println(requestCode);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-
-            }
-        }
     }
 
     private void saveKey(String key) {
@@ -299,9 +291,6 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
             }
             if (choice.equals(DialogSpeMean.CHOICE_DL_SPECIALIZATION.NO)) {
                 specializationManager.readFiles();
-
-            } else {
-
             }
         }
     }

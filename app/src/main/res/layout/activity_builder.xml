@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/builder"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fillViewport="true">
-
-
-        <LinearLayout
-            android:layout_width="800dp"
+        <ScrollView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:fillViewport="true">
 
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="800dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -34,19 +34,19 @@
                         android:background="#000000"
                         android:onClick="changeSpe" />
 
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true">
 
-                    <include
-                        android:id="@+id/spe1"
-                        layout="@layout/layout_specialization" />
+                        <include
+                            android:id="@+id/spe1"
+                            layout="@layout/layout_specialization" />
 
+                    </HorizontalScrollView>
 
                 </LinearLayout>
-            </HorizontalScrollView>
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -60,19 +60,18 @@
                         android:background="#000000"
                         android:onClick="changeSpe" />
 
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true">
 
-                    <include
-                        android:id="@+id/spe2"
-                        layout="@layout/layout_specialization" />
-
+                        <include
+                            android:id="@+id/spe2"
+                            layout="@layout/layout_specialization" />
+                    </HorizontalScrollView>
 
                 </LinearLayout>
-            </HorizontalScrollView>
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -86,16 +85,28 @@
                         android:background="#000000"
                         android:onClick="changeSpe" />
 
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true">
 
-                    <include
-                        android:id="@+id/spe3"
-                        layout="@layout/layout_specialization" />
+                        <include
+                            android:id="@+id/spe3"
+                            layout="@layout/layout_specialization" />
 
-
+                    </HorizontalScrollView>
                 </LinearLayout>
-            </HorizontalScrollView>
-        </LinearLayout>
 
-    </ScrollView>
+            </LinearLayout>
 
-</LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <com.faren.gw2.gw2applicaton.ToolTip.ToolTipLinearLayout
+        android:id="@+id/toolTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/style_tooltip" />
+</FrameLayout>

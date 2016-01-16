@@ -11,7 +11,10 @@ import java.util.List;
 public class ToolTip {
 
     private int color = 0;
+    private int colorTitle = 0;
+
     private String text = null;
+    private String title = null;
     private View view = null;
     private Point p = null;
     private List<Bitmap> images = new ArrayList<>();
@@ -22,6 +25,11 @@ public class ToolTip {
 
     public ToolTip addText(String text) {
         this.text = textWrapping(text);
+        return this;
+    }
+
+    public ToolTip addTitle(String text) {
+        this.title = textWrapping(text);
         return this;
     }
 
@@ -48,6 +56,10 @@ public class ToolTip {
 
     public ToolTip addColorText(int color) {
         this.color = color;
+        return this;
+    }
+    public ToolTip addColorTitle(int color) {
+        this.colorTitle = color;
         return this;
     }
 
@@ -78,8 +90,17 @@ public class ToolTip {
         return color;
     }
 
+    public int getColorTitle() {
+        return colorTitle;
+    }
+
+
     public String getText() {
         return text;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public List<Bitmap> getImages() { return images;}

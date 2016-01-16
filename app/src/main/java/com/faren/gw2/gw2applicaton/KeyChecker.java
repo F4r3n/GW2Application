@@ -23,7 +23,7 @@ public class KeyChecker extends AsyncTask<String, Void, String> implements Calle
 
     public void send(String key) {
         URL url;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         System.out.println("https://api.guildwars2.com/v2/tokeninfo?access_token=" + key);
         HttpURLConnection urlConnection = null;
         try {
@@ -46,6 +46,7 @@ public class KeyChecker extends AsyncTask<String, Void, String> implements Calle
             e.printStackTrace();
         } finally {
             try {
+                assert urlConnection != null;
                 urlConnection.disconnect();
             } catch (Exception e) {
                 e.printStackTrace(); //If you want further info on failure...

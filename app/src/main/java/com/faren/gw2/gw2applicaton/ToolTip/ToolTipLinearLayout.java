@@ -16,10 +16,10 @@ import java.util.List;
 
 public class ToolTipLinearLayout extends LinearLayout implements View.OnClickListener {
 
+    private TextView titleView;
     private TextView textView;
     private LinearLayout linearLayoutInside;
     private List<LinearLayout> linearsLayouts;
-    private ToolTip toolTip;
 
     public ToolTipLinearLayout(Context context) {
         super(context);
@@ -42,6 +42,8 @@ public class ToolTipLinearLayout extends LinearLayout implements View.OnClickLis
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.tooltip, this);
         textView = (TextView) findViewById(R.id.textToolTip);
+        titleView = (TextView) findViewById(R.id.titleToolTip);
+
         linearLayoutInside = (LinearLayout) findViewById(R.id.insideLayout);
     }
 
@@ -72,18 +74,23 @@ public class ToolTipLinearLayout extends LinearLayout implements View.OnClickLis
     }
 
     public void addToolTip(ToolTip toolTip) {
-        this.toolTip = toolTip;
         setX(0);
         setY(0);
         if (toolTip.getText() != null) {
             textView.setText(toolTip.getText());
         }
+        if (toolTip.getText() != null) {
+            titleView.setText(toolTip.getTitle());
+        }
 
         if (toolTip.getColor() != 0) {
             textView.setTextColor(toolTip.getColor());
         }
+        if (toolTip.getColor() != 0) {
+            titleView.setTextColor(toolTip.getColorTitle());
+        }
 
-        if (toolTip.getView() != null) {
+        /*if (toolTip.getView() != null) {
             float offsetX = 0.0f;
             float offsetY = 0.0f;
             if (toolTip.getOffset() != null) {
@@ -92,7 +99,7 @@ public class ToolTipLinearLayout extends LinearLayout implements View.OnClickLis
             }
             setX(toolTip.getView().getX() + offsetX);
             setY(toolTip.getView().getY() + offsetY);
-        }
+        }*/
 
         if (!toolTip.getImages().isEmpty())
             addAttributeView(toolTip.getImages(), toolTip.getStrings());
@@ -110,8 +117,6 @@ public class ToolTipLinearLayout extends LinearLayout implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        System.out.println(toolTip.getView().getId());
-        toolTip = null;
         if (v.getId() == R.id.toolTip) {
             setVisibility(View.INVISIBLE);
         }

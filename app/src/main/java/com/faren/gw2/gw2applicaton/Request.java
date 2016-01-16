@@ -10,8 +10,6 @@ import java.net.URL;
 
 public final class Request extends AsyncTask<GWObject, Integer, String> {
     public String key = "";
-    private String result;
-    private Categories param;
     private RequestManager rqm;
     private GWObject object;
 
@@ -19,21 +17,17 @@ public final class Request extends AsyncTask<GWObject, Integer, String> {
         this.rqm = rqm;
     }
 
-    public String getResult() {
-        return result;
-    }
 
     @Override
     protected String doInBackground(GWObject... object) {
         this.object = object[0];
-        this.param = this.object.getCat();
         String p = this.object.getUrl();
         return send(p);
     }
 
     public String send(String m) {
         URL url;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
 
         HttpURLConnection urlConnection = null;
         try {
@@ -54,6 +48,7 @@ public final class Request extends AsyncTask<GWObject, Integer, String> {
             e.printStackTrace();
         } finally {
             try {
+                assert urlConnection != null;
                 urlConnection.disconnect();
             } catch (Exception e) {
                 e.printStackTrace(); //If you want further info on failure...

@@ -24,12 +24,14 @@ public class SpecializationInterface implements View.OnClickListener {
     public Specialization specialization;
     private ToolTipLinearLayout toolTipLinearLayout;
     int number = 0;
+    private FrameLayout mainLinearLayout;
     int[] traitsChosen = new int[3];
 
-    public SpecializationInterface(Activity activity, FrameLayout frameLayout) {
+    public SpecializationInterface(Activity activity, FrameLayout frameLayout, FrameLayout mainFrame) {
+        this.mainLinearLayout = mainFrame;
         for (int i = 0; i < 3; ++i) traitsChosen[i] = -1;
         this.frameLayout = frameLayout;
-        toolTipLinearLayout = (ToolTipLinearLayout) frameLayout.findViewById(R.id.toolTip);
+        toolTipLinearLayout = (ToolTipLinearLayout) mainFrame.findViewById(R.id.toolTip);
         toolTipLinearLayout.hide();
         buttonsMajor = new HashMap<>();
         buttonsMinor = new HashMap<>();
@@ -130,7 +132,7 @@ public class SpecializationInterface implements View.OnClickListener {
         System.out.println(trait.type);
         switch (trait.type) {
             case ATTRIBUTEADJUST:
-                text = "Increases " + trait.attributeAdjust.target +" "+ Integer.toString(trait.attributeAdjust.value);
+                text = "Increases " + trait.attributeAdjust.target + " " + Integer.toString(trait.attributeAdjust.value);
                 break;
             case BUFF:
                 text = trait.buff.description + " " + trait.buff.status;
@@ -157,7 +159,7 @@ public class SpecializationInterface implements View.OnClickListener {
                 text += Integer.toString(trait.number.value);
                 break;
             case PERCENT:
-                text += Integer.toString(trait.percent.percent) +" %";
+                text += Integer.toString(trait.percent.percent) + " %";
                 break;
             case PREFIXEDBUFF:
                 break;
@@ -184,14 +186,16 @@ public class SpecializationInterface implements View.OnClickListener {
 
 
     private void getInformationMinor(int id) {
+        String name;
         String info;
-        if (buttonsMinor.get(id).trait.description == null)
-            info = buttonsMinor.get(id).trait.name;
-        else info = buttonsMinor.get(id).trait.description;
+        name = buttonsMinor.get(id).trait.name;
+        info = buttonsMinor.get(id).trait.description;
         if (info == null)
             info = "Nothing";
 
         ToolTip toolTip = new ToolTip()
+                .addColorTitle(Color.BLACK)
+                .addTitle(name)
                 .addColorText(Color.WHITE)
                 .addText(info)
                 .addView((View) frameLayout.findViewById(id).getParent());
@@ -203,13 +207,15 @@ public class SpecializationInterface implements View.OnClickListener {
 
     private void getInformationMajor(int id, Point offset) {
         String info;
-        if (buttonsMajor.get(id).trait.description == null)
-            info = buttonsMajor.get(id).trait.name;
-        else info = buttonsMajor.get(id).trait.description;
+        String name;
+        name = buttonsMajor.get(id).trait.name;
+        info = buttonsMajor.get(id).trait.description;
         if (info == null)
             info = "Nothing";
 
         ToolTip toolTip = new ToolTip()
+                .addColorTitle(Color.BLACK)
+                .addTitle(name)
                 .addColorText(Color.WHITE)
                 .addText(info)
                 .addView((View) frameLayout.findViewById(id).getParent()).addOffset(offset);
