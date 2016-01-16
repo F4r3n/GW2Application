@@ -35,7 +35,6 @@ public class GWItem implements CallerBack {
         gwItemData.type = GWItem_Type.valueOf(reader.getString("type").toUpperCase());
         gwItemData.level = reader.getInt("level");
         gwItemData.rarity = GWItem_Rarity.valueOf(reader.getString("rarity").toUpperCase());
-        //System.out.println(rarity);
         gwItemData.vendor_value = reader.getInt("vendor_value");
         JSONArray game_typesJSON = reader.getJSONArray("game_types");
         for (int i = 0; i < game_typesJSON.length(); i++) {
@@ -79,7 +78,6 @@ public class GWItem implements CallerBack {
         File file = new File(dir, gwItemData.id + ".json");
 
         try {
-
             FileOutputStream outputStream = new FileOutputStream(file);
 
             Gson gson = new Gson();

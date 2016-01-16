@@ -12,8 +12,10 @@ import android.util.DisplayMetrics;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
@@ -57,7 +59,7 @@ public class FileManagerTool {
         }
 
         int height = bitmap.getHeight();
-        int boundingX = FileManagerTool.dpToPx(activity,w);
+        int boundingX = FileManagerTool.dpToPx(activity, w);
         int boundingY = dpToPx(activity, h);
 
         float xScale = ((float) boundingX) / width;
@@ -93,7 +95,7 @@ public class FileManagerTool {
     }
 
     public static Bitmap makeTransparent(Bitmap src, int value) {
-        if(value == 255) return src;
+        if (value == 255) return src;
         int width = src.getWidth();
         int height = src.getHeight();
         Bitmap transBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -104,6 +106,44 @@ public class FileManagerTool {
         paint.setAlpha(value);
         canvas.drawBitmap(src, 0, 0, paint);
         return transBitmap;
+    }
+
+    public static String readFile(String dir, String name) throws IOException {
+        File file = new File(dir + name);
+        if (!file.exists()) {
+            System.out.println("File does not exist");
+            return null;
+        } else {
+            System.out.println("File does exist");
+        }
+
+        BufferedReader br;
+        String line;
+        String out = "";
+        try {
+            br = new BufferedReader(new FileReader(file));
+            while ((line = br.readLine()) != null) {
+                out += line + " ";
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return out;
+    }
+
+    public static void saveFile(String path, String name, String content) {
+        File dir = new File(path);
+        dir.mkdirs();
+        File file = new File(dir, name);
+
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file);
+            outputStream.write(content.getBytes());
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteFile(String path) {

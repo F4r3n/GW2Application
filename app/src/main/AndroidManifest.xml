@@ -25,12 +25,14 @@
         <activity
             android:name="com.faren.gw2.gw2applicaton.CollectionList"
             android:theme="@style/Theme.AppCompat.Light">
-
         </activity>
         <activity
             android:name="com.faren.gw2.gw2applicaton.Builder.BuilderActivity"
             android:theme="@style/Theme.AppCompat.Light">
-
+        </activity>
+        <activity
+            android:name="com.faren.gw2.gw2applicaton.KeyManagerActivity"
+            android:theme="@style/Theme.AppCompat.Light">
         </activity>
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

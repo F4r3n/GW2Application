@@ -29,7 +29,6 @@ public class Specialization implements CallerBack {
                 "/GW2App/spe/image/" + id + "-icon.png";
         specializationData.backgroundImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/GW2App/spe/image/" + id + "-background.png";
-
     }
 
     public boolean iconExists() {
