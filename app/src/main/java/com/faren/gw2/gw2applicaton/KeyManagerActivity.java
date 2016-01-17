@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,11 +28,12 @@ import java.util.ArrayList;
 
 public class KeyManagerActivity extends AppCompatActivity implements CallerBack {
     private String nameFileKeyStorage = "key.dat";
+    private String nameFilePermissions = "";
     private String keyValue;
     private TextView textKeyView;
     public MainActivity parent;
     private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/info/";
-    private String result="";
+    private String result = "";
 
 
     @Override
@@ -84,21 +86,33 @@ public class KeyManagerActivity extends AppCompatActivity implements CallerBack 
     public void getLastKey(View view) {
 
         try {
-            keyValue = readKey();
-            textKeyView.setText(keyValue);
+            String temp = readKey();
+            if (temp != null && temp != "" && temp != "No Key") {
+                keyValue = temp;
+                textKeyView.setText(keyValue);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void onConnect(View view) {
-        System.out.println(textKeyView.getText().toString());
+        if (textKeyView.getText().toString() == "") return;
+        keyValue = textKeyView.getText().toString();
         ConnectivityManager connectivityManager;
         connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        saveKey(keyValue);
+
         NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
         if (ni == null) {
             Toast.makeText(this, "No connection", Toast.LENGTH_SHORT).show();
+            final TextView info = (TextView) findViewById(R.id.infoKeyText);
+            this.runOnUiThread(new Runnable() {
+                                   public void run() {
+                                       info.setText("The Key " + keyValue + " cannot be tested");
+                                   }
+                               }
+            );
+
             return;
         }
         new KeyChecker(this).execute(keyValue);
@@ -121,13 +135,33 @@ public class KeyManagerActivity extends AppCompatActivity implements CallerBack 
             }
             final String finalPermissions = permissions;
 
-            for (String s : builder) {
+            for (final String s : builder) {
                 result += s + " ";
+                this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        int imageResource = getResources().getIdentifier("ic_check_black", "drawable", getPackageName());
+                        int resource = getResources().getIdentifier(s + "ImageCheck", "id", getPackageName());
+                        System.out.println(s + " " + imageResource + " " + resource);
+
+                        ImageView imageView = (ImageView) findViewById(resource);
+                        imageView.setImageResource(imageResource);
+
+                    }
+                });
             }
+            if (result != "")
+                saveKey(keyValue);
             Intent data = new Intent();
             data.putExtra("Result", result);
             FileManagerTool.saveFile(path, "permission.dat", result);
             setResult(Activity.RESULT_OK, data);
+            final TextView info = (TextView) findViewById(R.id.infoKeyText);
+            this.runOnUiThread(new Runnable() {
+                                   public void run() {
+                                       info.setText("The Key " + keyValue + " " + "grants acces to:");
+                                   }
+                               }
+            );
         }
     }
 

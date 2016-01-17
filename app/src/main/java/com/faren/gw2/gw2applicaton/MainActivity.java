@@ -79,6 +79,10 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
+                //Todo disable all buttons first
+
+
+
                 String r = data.getStringExtra("Result");
                 String[] to = r.split(" ");
                 for (String t : to) {
@@ -160,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
         System.out.println("notify " + o[0]);
         if (o[0] instanceof MainActivity) {
             if (o[1] == Categories.BANK) {
-
                 Intent intent = new Intent(this, CollectionList.class);
                 startActivity(intent);
 

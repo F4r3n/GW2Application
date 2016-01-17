@@ -12,12 +12,6 @@
                 android:orderInCategory="100" app:showAsAction="always"
                 android:icon="@drawable/ic_add_black"
                 />
-            <item android:id="@+id/action_see_key" android:title="Key ..."
-                android:orderInCategory="100" app:showAsAction="always"
-                />
-            <item android:id="@+id/action_key_permissions" android:title="Key permissions"
-                android:orderInCategory="100" app:showAsAction="always"
-                />
         </menu>
     </item>
 
