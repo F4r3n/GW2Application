@@ -19,7 +19,16 @@
             android:animateLayoutChanges="true"
 
             android:orientation="vertical">
-
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/style_button"
+                android:text="Items"
+                android:id="@+id/itemsButton"
+                android:onClick="onItemButton"
+                android:layout_marginBottom="@dimen/button_bottom"
+                android:enabled="true"
+                android:visibility="visible" />
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"

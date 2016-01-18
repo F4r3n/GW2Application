@@ -93,6 +93,11 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
         }
     }
 
+    public void onItemButton(View view) {
+        Intent intent = new Intent(this, ItemsActivity.class);
+        startActivity(intent);
+    }
+
 
     public void getInfo(View view) {
         Collection c = (Collection) getApplication();
