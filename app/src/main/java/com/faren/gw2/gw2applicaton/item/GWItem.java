@@ -29,7 +29,46 @@ public class GWItem implements CallerBack {
         gwItemData.id = id;
     }
 
+    public GWItem() {
+    }
+
     public void readFile(String result) throws JSONException {
+        JSONObject reader = new JSONObject(result);
+        gwItemData.name = reader.getString("name");
+        gwItemData.type = GWItem_Type.valueOf(reader.getString("type").toUpperCase());
+        gwItemData.level = reader.getInt("level");
+        gwItemData.rarity = GWItem_Rarity.valueOf(reader.getString("rarity").toUpperCase());
+        gwItemData.vendor_value = reader.getInt("vendor_value");
+        JSONArray game_typesJSON = reader.getJSONArray("game_types");
+        for (int i = 0; i < game_typesJSON.length(); i++) {
+            gwItemData.game_types.add(GWItem_Gametypes.valueOf(game_typesJSON.getString(i).toUpperCase()));
+        }
+        JSONArray flagsJSON = reader.getJSONArray("flags");
+        for (int i = 0; i < flagsJSON.length(); i++) {
+            gwItemData.flags.add(GWItem_flags.valueOf(flagsJSON.getString(i).toUpperCase()));
+        }
+        JSONArray restrictionsJSON = reader.getJSONArray("restrictions");
+        for (int i = 0; i < restrictionsJSON.length(); i++) {
+            gwItemData.restrictions.add(GWItem_Restrictions.valueOf(restrictionsJSON.getString(i).toUpperCase()));
+        }
+        gwItemData.chat_link = reader.getString("chat_link");
+        gwItemData.imageResource.iconUrl = reader.getString("icon");
+        System.out.println("id " + gwItemData.imageResource.iconUrl);
+        switch (gwItemData.type) {
+            case CONSUMABLE:
+                gwItemData.gwItemConsumable = new GWItemConsumable(reader.getJSONObject("details"));
+                break;
+            case ARMOR:
+                gwItemData.gwItemArmor = new GWItemArmor(reader.getJSONObject("details"));
+                break;
+        }
+    }
+
+    public void readFile(String id, String result) throws JSONException {
+        gwItemData = new GWItemData(id);
+        gwItemData.dataPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/item/data/" + id + ".json";
+
+        gwItemData.id = id;
         JSONObject reader = new JSONObject(result);
         gwItemData.name = reader.getString("name");
         gwItemData.type = GWItem_Type.valueOf(reader.getString("type").toUpperCase());

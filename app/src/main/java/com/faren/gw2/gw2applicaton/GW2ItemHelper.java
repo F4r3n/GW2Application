@@ -52,7 +52,7 @@ public class GW2ItemHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void createGWItem(String id) {
+    public void createGWItem(String id,String name, String description) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

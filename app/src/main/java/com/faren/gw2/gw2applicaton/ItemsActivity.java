@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.faren.gw2.gw2applicaton.item.GWItem;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -25,7 +27,7 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
     private int index = 0;
     private int numberThreads = 0;
     private int numberDl = 0;
-    private final int THREAD_POOL_SIZE = 10;
+    private final int THREAD_POOL_SIZE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,20 +82,13 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
                 e.printStackTrace();
             }
 
-            for (int i = 0; i < idList.size(); ++i) {
-                RequestHttp requestHttp = new RequestHttp(this,
-                        "https://api.guildwars2.com/v2/items?ids=" + idList.get(i), 1);
-                if (Build.VERSION.SDK_INT >= 11)
-                    requestHttp.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                else
-                    requestHttp.execute();
-            }
+
             Thread thread = new Thread() {
                 @Override
                 public void run() {
                     try {
                         for (int i = 0; i < idList.size(); ) {
-                            if (numberThreads < 10) {
+                            if (numberThreads < THREAD_POOL_SIZE) {
                                 RequestHttp requestHttp = new RequestHttp(ItemsActivity.this,
                                         "https://api.guildwars2.com/v2/items?ids=" + idList.get(i), 1);
                                 if (Build.VERSION.SDK_INT >= 11)
@@ -102,9 +97,11 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
                                     requestHttp.execute();
                                 i++;
                                 numberThreads++;
+                                System.out.println("Number threads " + numberThreads);
                             }
-                            if (numberThreads > THREAD_POOL_SIZE) {
-                                sleep(1000);
+                            if (numberThreads >= THREAD_POOL_SIZE) {
+                                sleep(2000);
+                                System.out.println("Sleep");
                             }
 
                         }
@@ -118,12 +115,14 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
 
         } else if (o[0] instanceof RequestHttp && (int) o[2] == 1) {
             numberThreads--;
+
             try {
                 JSONArray array = new JSONArray((String) o[1]);
+                GWItem item = new GWItem();
+
                 for (int i = 0; i < array.length(); ++i) {
 
                     String val = array.getString(i);
-
                     String id = array.getJSONObject(i).getString("id");
                     String name = array.getJSONObject(i).getString("name");
                     String description = array.getJSONObject(i).getString("description");
@@ -132,6 +131,8 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
 
                     numberDl++;
                 }
+                item = null;
+                System.gc();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
