@@ -26,6 +26,7 @@ public class RequestHttp extends AsyncTask<String, Void, String> {
 
     public void send() {
         URL url;
+        System.out.println("Request " + request);
         StringBuilder response = new StringBuilder();
         HttpURLConnection urlConnection = null;
         try {
