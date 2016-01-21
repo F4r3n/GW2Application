@@ -1,7 +1,6 @@
 package com.faren.gw2.gw2applicaton;
 
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
+import android.app.FragmentManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -9,51 +8,57 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.faren.gw2.gw2applicaton.item.GWItem;
+import com.faren.gw2.gw2applicaton.item.GWItemInfoDisplay;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by guillaume2 on 18/01/16.
- */
+
 public class ItemsActivity extends AppCompatActivity implements CallerBack {
 
-    private Button updateItems;
-    private GW2ItemHelper db ;
-    private SQLiteDatabase database;
+    private GW2ItemHelper db;
     private int index = 0;
     private int numberThreads = 0;
-    private int numberDl = 0;
     private final int THREAD_POOL_SIZE = 20;
-    private String result = "";
-    private SQLiteStatement stmt;
+    private List<GWItemInfoDisplay> itemInfoDisplays = new ArrayList<>();
+    private FragmentItems list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
-        updateItems = (Button) findViewById(R.id.updateItems);
         db = new GW2ItemHelper(this);
+        FragmentManager fm = getFragmentManager();
 
+
+        if (fm.findFragmentById(R.id.listFragment) == null) {
+            list = new FragmentItems();
+            fm.beginTransaction().add(R.id.listFragment, list).commit();
+        }
+    }
+
+
+    public void searchButton(View view) {
+        itemInfoDisplays = db.selectItem("Mighty");
+
+        list.updateData(this, itemInfoDisplays);
     }
 
     public void onUpdateButton(View view) {
 
-        db.onUpgrade(database, 1, 2);
+        //db.onUpgrade(database, 1, 2);
         ConnectivityManager connectivityManager;
         connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 
         NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
         if (ni == null) {
             Toast.makeText(this, "No connection", Toast.LENGTH_SHORT).show();
-            return;
         } else new RequestHttp(this, "https://api.guildwars2.com/v2/items", 0).execute();
 
     }
@@ -61,7 +66,6 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
     @Override
     public void notifyUpdate(Object... o) {
         if (o[0] instanceof RequestHttp && (int) o[2] == 0) {
-            float progress;
             final String result = (String) o[1];
             System.out.println("Result " + result);
             int sizeToken = 0;
@@ -76,7 +80,6 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
                         ids = "";
                     }
 
-                    progress = (float) i / array.length();
                     ids += id + ",";
                     sizeToken++;
                     if (sizeToken > 100) {
@@ -124,50 +127,14 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
             numberThreads--;
             index++;
             System.out.println(index);
-            insertValue((String) o[1]);
         }
     }
 
-    private void insertValue(String result) {
-        try {
-            JSONArray array = new JSONArray(result);
-            GWItem item = new GWItem();
-            String val = "";
-            String id = "";
-            String name = "";
-            String description = "";
-            for (int i = 0; i < array.length(); ++i) {
-
-                val = array.getString(i);
-                id = array.getJSONObject(i).getString("id");
-                name = array.getJSONObject(i).getString("name");
-                description = array.getJSONObject(i).getString("description");
-                System.out.println("id " + id);
-                System.out.println("index " + numberDl);
-
-              /* stmt.bindString(1, id);
-                stmt.bindString(2, name);
-                stmt.bindString(3, description);
-                stmt.executeInsert();*/
-
-                numberDl++;
-
-            }
-            val = null;
-            id = null;
-            name = null;
-            description = null;
-            item = null;
-            array = null;
-            System.gc();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        index = 0;
-    }
 
     @Override
     public void cancel() {
 
     }
+
+
 }
