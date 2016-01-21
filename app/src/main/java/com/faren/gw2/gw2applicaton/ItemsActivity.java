@@ -1,5 +1,7 @@
 package com.faren.gw2.gw2applicaton;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -23,21 +25,28 @@ import java.util.ArrayList;
 public class ItemsActivity extends AppCompatActivity implements CallerBack {
 
     private Button updateItems;
-    private GW2ItemHelper db = new GW2ItemHelper(this);
+    private GW2ItemHelper db ;
+    private SQLiteDatabase database;
     private int index = 0;
     private int numberThreads = 0;
     private int numberDl = 0;
     private final int THREAD_POOL_SIZE = 20;
+    private String result = "";
+    private SQLiteStatement stmt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
         updateItems = (Button) findViewById(R.id.updateItems);
+        db = new GW2ItemHelper(this);
+
     }
 
     public void onUpdateButton(View view) {
-        db.onUpgrade(db.getWritableDatabase(), 1, 2);
+
+        db.onUpgrade(database, 1, 2);
         ConnectivityManager connectivityManager;
         connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 
@@ -51,7 +60,6 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
 
     @Override
     public void notifyUpdate(Object... o) {
-        System.out.println(o[2]);
         if (o[0] instanceof RequestHttp && (int) o[2] == 0) {
             float progress;
             final String result = (String) o[1];
@@ -76,7 +84,6 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
                         sizeToken = 0;
                         idList.add(ids);
                     }
-                    index++;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -100,7 +107,7 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
                                 System.out.println("Number threads " + numberThreads);
                             }
                             if (numberThreads >= THREAD_POOL_SIZE) {
-                                sleep(2000);
+                                sleep(10000);
                                 System.out.println("Sleep");
                             }
 
@@ -115,28 +122,48 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
 
         } else if (o[0] instanceof RequestHttp && (int) o[2] == 1) {
             numberThreads--;
-
-            try {
-                JSONArray array = new JSONArray((String) o[1]);
-                GWItem item = new GWItem();
-
-                for (int i = 0; i < array.length(); ++i) {
-
-                    String val = array.getString(i);
-                    String id = array.getJSONObject(i).getString("id");
-                    String name = array.getJSONObject(i).getString("name");
-                    String description = array.getJSONObject(i).getString("description");
-                    System.out.println("id " + id);
-                    System.out.println("index " + numberDl);
-
-                    numberDl++;
-                }
-                item = null;
-                System.gc();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            index++;
+            System.out.println(index);
+            insertValue((String) o[1]);
         }
+    }
+
+    private void insertValue(String result) {
+        try {
+            JSONArray array = new JSONArray(result);
+            GWItem item = new GWItem();
+            String val = "";
+            String id = "";
+            String name = "";
+            String description = "";
+            for (int i = 0; i < array.length(); ++i) {
+
+                val = array.getString(i);
+                id = array.getJSONObject(i).getString("id");
+                name = array.getJSONObject(i).getString("name");
+                description = array.getJSONObject(i).getString("description");
+                System.out.println("id " + id);
+                System.out.println("index " + numberDl);
+
+              /* stmt.bindString(1, id);
+                stmt.bindString(2, name);
+                stmt.bindString(3, description);
+                stmt.executeInsert();*/
+
+                numberDl++;
+
+            }
+            val = null;
+            id = null;
+            name = null;
+            description = null;
+            item = null;
+            array = null;
+            System.gc();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        index = 0;
     }
 
     @Override
