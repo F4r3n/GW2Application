@@ -111,7 +111,7 @@ public class Bank extends GWObject implements CallerBack {
         }
 
         if (!imagesUrlToDl.isEmpty())
-            new DownloadImage(this, imagesUrlToDl).execute();
+            new DownloadImage(this, imagesUrlToDl, 0).execute();
     }
 
     public void readFile(CallerBack parent, String result) {

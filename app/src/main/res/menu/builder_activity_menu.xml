@@ -47,6 +47,12 @@
                 android:orderInCategory="100"
                 android:title="revenant"
                 app:showAsAction="never" />
+            <item
+                android:id="@+id/action_engineer"
+                android:icon="@drawable/ic_engineer"
+                android:orderInCategory="100"
+                android:title="engineer"
+                app:showAsAction="never" />
 
             <item
                 android:id="@+id/action_thief"

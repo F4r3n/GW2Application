@@ -64,12 +64,11 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
         specialization3 = (FrameLayout) findViewById(R.id.spe3);
         changeVisibility(View.INVISIBLE);
         builderSave = new BuilderSave();
-        FrameLayout mainFrame = (FrameLayout)findViewById(R.id.builder);
+        FrameLayout mainFrame = (FrameLayout) findViewById(R.id.builder);
         specializationInterfaces = new SpecializationInterface[3];
         specializationInterfaces[0] = new SpecializationInterface(this, specialization1, mainFrame);
         specializationInterfaces[1] = new SpecializationInterface(this, specialization2, mainFrame);
         specializationInterfaces[2] = new SpecializationInterface(this, specialization3, mainFrame);
-
 
 
         if (getSupportActionBar() != null) {
@@ -141,7 +140,7 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
         HashMap<String, Specialization> spe = specializationManager.getSpe().get(builderSave.professions);
         specializations = new ArrayList<>(spe.values());
 
-        for(int i = 0; i < NUMBER_SPE; i++) {
+        for (int i = 0; i < NUMBER_SPE; i++) {
             if (builderSave.spe[i] != -1) {
                 loadDataFrameLayout(specializationInterfaces[i].getFrameLayout(), builderSave.spe[i], specializations);
                 specializationInterfaces[i].specialization = specializations.get(builderSave.spe[i]);
@@ -230,6 +229,10 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
                 professions = Professions.NECROMANCER;
                 in = true;
                 break;
+            case R.id.action_engineer:
+                professions = Professions.ENGINEER;
+                in = true;
+                break;
             case R.id.action_revenant:
                 professions = Professions.REVENANT;
                 in = true;
@@ -244,9 +247,9 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
                 break;
             case R.id.action_save:
 
-                for(int i = 0; i < NUMBER_SPE; i++) {
-                    for(int j = 0; j < NUMBER_SPE; j++) {
-                        builderSave.posTrait[NUMBER_SPE*i + j] = specializationInterfaces[i].getValueTraitsSelected()[j];
+                for (int i = 0; i < NUMBER_SPE; i++) {
+                    for (int j = 0; j < NUMBER_SPE; j++) {
+                        builderSave.posTrait[NUMBER_SPE * i + j] = specializationInterfaces[i].getValueTraitsSelected()[j];
                     }
                 }
                 saveDialog();

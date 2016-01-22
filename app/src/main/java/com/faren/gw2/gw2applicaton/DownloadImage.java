@@ -20,9 +20,11 @@ public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
     private int index = 0;
     private int width;
     private int height;
-    public DownloadImage(CallerBack callerBack, List<DataImageToDl> urls) {
+    private int status_code = 0;
+    public DownloadImage(CallerBack callerBack, List<DataImageToDl> urls, int status_code) {
         this.urls = urls;
         this.callerBack = callerBack;
+        this.status_code = status_code;
     }
 
 
@@ -41,7 +43,7 @@ public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
     }
 
     protected void onPostExecute(Void o) {
-
+        callerBack.notifyUpdate(this, null, -1, -1, status_code);
     }
 
     private void retrieveImage(String urlImage) {
@@ -51,7 +53,7 @@ public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
         try {
             System.out.println("Image " + urlImage);
             if(urlImage == null || new File(id).exists()) {
-                callerBack.notifyUpdate(this, null, index, id);
+                callerBack.notifyUpdate(this, null, index, id, 0);
             }
             assert urlImage != null;
             URL url = new URL(urlImage);
@@ -79,7 +81,7 @@ public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
             }
             connection.disconnect();
 
-            callerBack.notifyUpdate(this, result, index, id);
+            callerBack.notifyUpdate(this, result, index, id, status_code);
 
         } catch (IOException e) {
             e.printStackTrace();
