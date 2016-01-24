@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.faren.gw2.gw2applicaton.item.GWItemInfoDisplay;
@@ -42,12 +43,15 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
             fm.beginTransaction().add(R.id.listFragment, list).commit();
         }
     }
-
+    
 
     public void searchButton(View view) {
-        itemInfoDisplays = db.selectItem("Mighty");
+        EditText text = (EditText) findViewById(R.id.nameToSearch);
+        if (text.getText().toString() != "")
+            itemInfoDisplays = db.selectItem(text.getText().toString());
 
         list.updateData(this, itemInfoDisplays);
+        list.setListShown(true);
     }
 
     public void onUpdateButton(View view) {

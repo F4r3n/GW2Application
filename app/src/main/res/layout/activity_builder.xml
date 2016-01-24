@@ -27,12 +27,16 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+
                     <Button
                         android:id="@+id/speChange1"
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:background="#000000"
+                        android:drawableLeft="@drawable/ic_keyboard_arrow_right_white_48dp"
+                        android:drawableStart="@drawable/ic_keyboard_arrow_right_white_48dp"
                         android:onClick="changeSpe" />
+
 
                     <HorizontalScrollView
                         android:layout_width="match_parent"
@@ -58,6 +62,8 @@
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:background="#000000"
+                        android:drawableLeft="@drawable/ic_keyboard_arrow_right_white_48dp"
+                        android:drawableStart="@drawable/ic_keyboard_arrow_right_white_48dp"
                         android:onClick="changeSpe" />
 
                     <HorizontalScrollView
@@ -83,6 +89,8 @@
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:background="#000000"
+                        android:drawableLeft="@drawable/ic_keyboard_arrow_right_white_48dp"
+                        android:drawableStart="@drawable/ic_keyboard_arrow_right_white_48dp"
                         android:onClick="changeSpe" />
 
                     <HorizontalScrollView

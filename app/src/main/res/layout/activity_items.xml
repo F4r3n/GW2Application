@@ -11,15 +11,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:enabled="false"
+        android:visibility="gone"
         android:onClick="onUpdateButton"
         android:text="Update" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="searchButton"
-        android:text="Search" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_height="50dp">
 
+        <EditText
+            android:layout_width="250dp"
+            android:id="@+id/nameToSearch"
+            android:layout_height="match_parent"
+            android:translationZ="5dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="match_parent"
+            android:onClick="searchButton"
+            android:text="Search"
+            android:background="#000000"
+            android:elevation="5dp"
+            android:elegantTextHeight="true"
+            android:textColor="#ffffff"
+            android:translationZ="5dp" />
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/listFragment"
