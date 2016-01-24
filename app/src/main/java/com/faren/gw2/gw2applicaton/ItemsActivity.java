@@ -43,7 +43,7 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
             fm.beginTransaction().add(R.id.listFragment, list).commit();
         }
     }
-    
+
 
     public void searchButton(View view) {
         EditText text = (EditText) findViewById(R.id.nameToSearch);
