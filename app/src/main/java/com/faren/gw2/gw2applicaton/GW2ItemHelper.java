@@ -30,19 +30,31 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
         this.myContext = context;
     }
 
-    public List<GWItemInfoDisplay> selectItem(String name) {
+    public List<GWItemInfoDisplay> selectItem(String name, String level, String vendor_value) {
         List<GWItemInfoDisplay> gwItemInfoDisplays = new ArrayList<>();
+        List<String> whereArgs = new ArrayList<>();
+        whereArgs.add(name + "%");
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         String[] tableColumns = new String[]{
-                item_name
+                item_name,
+                "level",
+                "vendor_value"
         };
         String whereClause = "name LIKE ?";
-        String[] whereArgs = new String[]{
-                name +"%"
-        };
+        if (!"".equals(level)) {
+            whereClause += " and level = ?";
+            whereArgs.add(level);
+        }
+
+        if (!"".equals(vendor_value)) {
+            whereClause += " and vendor_value =?";
+            whereArgs.add(vendor_value);
+        }
+
+        String[] args = new String[whereArgs.size()];
 
         String orderBy = "name";
-        Cursor c = sqLiteDatabase.query(table_item, tableColumns, whereClause, whereArgs,
+        Cursor c = sqLiteDatabase.query(table_item, tableColumns, whereClause, whereArgs.toArray(args),
                 null, null, orderBy);
         System.out.println(c.getCount());
         while (c.moveToNext()) {
@@ -51,6 +63,7 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
 
         sqLiteDatabase.close();
         return gwItemInfoDisplays;
+
 
     }
 

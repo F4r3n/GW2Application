@@ -46,9 +46,17 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
 
 
     public void searchButton(View view) {
-        EditText text = (EditText) findViewById(R.id.nameToSearch);
-        if (text.getText().toString() != "")
-            itemInfoDisplays = db.selectItem(text.getText().toString());
+        EditText nameText = (EditText) findViewById(R.id.nameToSearch);
+        String name = nameText.getText().toString();
+
+        EditText vendorText = (EditText) findViewById(R.id.vendorValue);
+        String vendorValue = vendorText.getText().toString();
+
+        EditText levelText = (EditText) findViewById(R.id.level);
+        String levelValue = levelText.getText().toString();
+
+        if (!name.equals(""))
+            itemInfoDisplays = db.selectItem(name, levelValue, vendorValue);
 
         list.updateData(this, itemInfoDisplays);
         list.setListShown(true);
