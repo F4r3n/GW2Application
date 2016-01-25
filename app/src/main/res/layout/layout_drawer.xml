@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Type" />
+
+                    <CheckBox
+                        android:id="@+id/allTypeCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="All" />
+
+                    <CheckBox
+                        android:id="@+id/ArmorCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Armor" />
+
+                    <CheckBox
+                        android:id="@+id/BackCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Back" />
+
+                    <CheckBox
+                        android:id="@+id/ConsumableCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Consumable" />
+
+                    <CheckBox
+                        android:id="@+id/ContainerCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Container" />
+
+                    <CheckBox
+                        android:id="@+id/CraftingMaterialCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Crafting Material" />
+
+                    <CheckBox
+                        android:id="@+id/GatheringCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gathering" />
+
+                    <CheckBox
+                        android:id="@+id/GizmoCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gizmo" />
+
+                    <CheckBox
+                        android:id="@+id/MinipetCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Minipet" />
+
+                    <CheckBox
+                        android:id="@+id/ToolCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tool" />
+
+                    <CheckBox
+                        android:id="@+id/TraitCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trait" />
+
+                    <CheckBox
+                        android:id="@+id/TrinketCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trinket" />
+
+                    <CheckBox
+                        android:id="@+id/TrophyCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trophy" />
+
+                    <CheckBox
+                        android:id="@+id/UpgradeComponentCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="UpgradeComponent" />
+
+                    <CheckBox
+                        android:id="@+id/WeaponCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Weapon" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Rarity" />
+
+                    <CheckBox
+                        android:id="@+id/allRarityCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="All" />
+
+                    <CheckBox
+                        android:id="@+id/JunkCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Junk" />
+
+                    <CheckBox
+                        android:id="@+id/BasicCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Basic" />
+
+                    <CheckBox
+                        android:id="@+id/FineCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fine" />
+
+                    <CheckBox
+                        android:id="@+id/MasterworkCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Masterwork" />
+
+                    <CheckBox
+                        android:id="@+id/RareCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rare" />
+
+                    <CheckBox
+                        android:id="@+id/ExoticCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Exotic" />
+
+                    <CheckBox
+                        android:id="@+id/AscendedCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ascended" />
+
+                    <CheckBox
+                        android:id="@+id/LegendaryCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Legendary" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:digits="0123456789"
+                android:text="Level">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/vendorValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:digits="0123456789"
+                android:text="Vendor value">
+
+            </TextView>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
