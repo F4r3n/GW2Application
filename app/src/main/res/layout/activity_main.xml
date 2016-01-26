@@ -7,11 +7,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#444343">
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:fillViewport="false">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -19,16 +21,125 @@
             android:animateLayoutChanges="true"
 
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="ITEMS"
+                android:id="@+id/textView"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:background="#727272"
+                android:capitalize="characters"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+
+            android:layout_height="fill_parent"
+            android:paddingRight="0dp"
+            android:paddingEnd="0dp"
+            android:id="@+id/ItemsLinear"
+            android:visibility="visible"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
             <Button
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/style_button"
-                android:text="Items"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/items_icon2"
                 android:id="@+id/itemsButton"
                 android:onClick="onItemButton"
                 android:layout_marginBottom="@dimen/button_bottom"
                 android:enabled="true"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:text="Items"
+                android:layout_margin="5dp"
+                android:textColor="#ffffff"
+                android:layout_weight="0.06" />
+
+            <Button
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/flame_and_frost_dye"
+                android:id="@+id/button"
+                android:onClick="onItemButton"
+                android:layout_marginBottom="@dimen/button_bottom"
+                android:enabled="true"
+                android:visibility="visible"
+                android:text="Dyes"
+                android:layout_marginLeft="5dp"
+                android:layout_margin="5dp"
+                android:textColor="#ffffff"
+                android:layout_weight="0.06" />
+
+            <Button
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/copper_ore"
+                android:id="@+id/materialButton"
+                android:onClick="onItemButton"
+                android:layout_marginBottom="@dimen/button_bottom"
+                android:enabled="true"
+                android:visibility="visible"
+                android:text="Material"
+                android:layout_marginLeft="5dp"
+                android:layout_margin="5dp"
+                android:textColor="#ffffff"
+                android:layout_weight="0.06"
+                android:translationZ="0dp" />
+        </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Build Editor"
+                android:id="@+id/textView2"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="#727272"
+                android:capitalize="characters"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingRight="0dp"
+                android:paddingEnd="0dp"
+                android:id="@+id/linearLayout"
+                android:visibility="visible"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@drawable/pvp"
+                    android:text="Editor"
+                    android:id="@+id/editorButton"
+                    android:textColor="#FFFFFF"
+                    android:onClick="getInfo"
+                    android:visibility="visible" />
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/black_button"
+                    android:text="Watch Builds"
+                    android:id="@+id/watchBuild"
+                    android:onClick="getInfo"
+
+                    android:textColor="#FFFFFF"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
@@ -38,7 +149,7 @@
                 android:onClick="changeVisibility"
                 android:layout_marginBottom="@dimen/button_bottom"
                 android:enabled="false"
-                android:visibility="visible" />
+                android:visibility="invisible" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -112,14 +223,6 @@
                     android:visibility="visible" />
             </LinearLayout>
 
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:id="@+id/builderButton"
-                android:background="@drawable/style_button"
-                android:onClick="changeVisibility"
-
-                android:text="Build Editor" />
             <LinearLayout
                 android:layout_width="fill_parent"
 
@@ -132,26 +235,6 @@
                 android:id="@+id/linearBuildEditor"
                 android:visibility="gone"
                 android:orientation="vertical">
-
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/black_button"
-                    android:text="Editor"
-                    android:id="@+id/editorButton"
-                    android:textColor="#FFFFFF"
-                    android:onClick="getInfo"
-                    android:visibility="visible" />
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/black_button"
-                    android:text="Watch Builds"
-                    android:id="@+id/watchBuild"
-                    android:onClick="getInfo"
-
-                    android:textColor="#FFFFFF"
-                    android:visibility="visible" />
 
             </LinearLayout>
         </LinearLayout>

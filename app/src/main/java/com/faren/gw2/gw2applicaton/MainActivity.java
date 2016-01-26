@@ -123,11 +123,7 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
                     linearLayoutAccount.setVisibility(View.GONE);
                 else linearLayoutAccount.setVisibility(View.VISIBLE);
                 break;
-            case R.id.builderButton:
-                if (linearLayoutBuilder.getVisibility() == View.VISIBLE)
-                    linearLayoutBuilder.setVisibility(View.GONE);
-                else linearLayoutBuilder.setVisibility(View.VISIBLE);
-                break;
+
         }
     }
 

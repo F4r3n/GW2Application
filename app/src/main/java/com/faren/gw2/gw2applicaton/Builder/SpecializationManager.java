@@ -213,7 +213,12 @@ public class SpecializationManager implements CallerBack {
     public void readFiles() {
         progress = 0.0f;
         imagesFound = 0;
+        index = 0;
+        sizeImagesIntegrity = 0;
+        sizeImages = 0;
+        checkingIntegrity = false;
         speFound = 0;
+        imagesFoundIntegrity = 0;
         progressDialog.show();
 
         new ReadFilesSpecialization(this, specializations, size).execute();
@@ -230,8 +235,13 @@ public class SpecializationManager implements CallerBack {
     }
 
     public void request() {
-        speFound = 0;
         imagesFound = 0;
+        index = 0;
+        sizeImagesIntegrity = 0;
+        sizeImages = 0;
+        checkingIntegrity = false;
+        speFound = 0;
+        imagesFoundIntegrity = 0;
         initProgressDialog();
         NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
         if (ni == null) {

@@ -74,11 +74,14 @@ public class DialogSpeChoice extends DialogFragment implements
         if (!specializations.get(position).specializationData.elite) {
 
             System.out.println(FileManagerTool.convertDpToPixels(activity, 1500));
-            b = Bitmap.createBitmap(b, 0, 128, 800, 128);
-            FileManagerTool.scaleImage(activity, imageView, b, 1800, 900);
+            int w = b.getWidth();
+            if(w > 1000) w = 1000;
+            b = Bitmap.createBitmap(b, 0, 128, w -500, 128);
+            imageView.setImageBitmap(Bitmap.createScaledBitmap(b, 1000, 256, true));
+            //FileManagerTool.scaleImage(activity, imageView, b, 1800, 900);
         } else {
-            b = Bitmap.createBitmap(b, 0, 40, 948, 216);
-            FileManagerTool.scaleImage(activity, imageView, b, 1900, 256);
+            b = Bitmap.createBitmap(b, 0, 40, b.getWidth(), 216);
+            imageView.setImageBitmap(Bitmap.createScaledBitmap(b, 1000, 256, true));
         }
 
 
@@ -110,15 +113,13 @@ public class DialogSpeChoice extends DialogFragment implements
         for (int i = 0; i < buttonsMajor.size(); ++i) {
             Bitmap bb = FileManagerTool.getImage(
                     specializations.get(position).specializationData.majorTraits.get(i).iconImage.iconPath);
-           buttonsMajor.get(i).setImageBitmap(FileManagerTool.makeTransparent(bb, 255));
+            buttonsMajor.get(i).setImageBitmap(FileManagerTool.makeTransparent(bb, 255));
 
         }
         activity.notifySpeChoice(this.position, specializations.get(position), position);
 
         dismiss();
     }
-
-
 
 
 }
