@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -37,7 +38,6 @@ public class SpecializationManager implements CallerBack {
     private int imagesFoundIntegrity = 0;
     private int sizeImagesIntegrity = 0;
     private boolean checkingIntegrity = false;
-    private HashMap<String, Boolean> imagesChecked = new HashMap<>();
     private CallerBack parent;
 
     public SpecializationManager(CallerBack parent, Activity activity) {
@@ -53,61 +53,56 @@ public class SpecializationManager implements CallerBack {
     }
 
     private void checkIntegrity() {
-        final ArrayList<DataImageToDl> images = new ArrayList<>();
-
+        HashMap<String, DataImageToDl> imagesChecked = new HashMap<>();
         for (Map.Entry<Professions, HashMap<String, Specialization>> entry : specializations.entrySet()) {
             HashMap<String, Specialization> value = entry.getValue();
             for (Map.Entry<String, Specialization> specializationEntry : value.entrySet()) {
                 Specialization specialization = specializationEntry.getValue();
-                if (!specialization.backgroundExists()
+                /*if (!specialization.backgroundExists()
                         && !imagesChecked.containsKey(specialization.specializationData.backgroundImage.iconPath)) {
                     images.add(new DataImageToDl(specialization.specializationData.backgroundImage,
                             specialization.specializationData.backgroundImage.iconPath, 0));
                     imagesChecked.put(specialization.specializationData.backgroundImage.iconPath, true);
-                }
+                }*/
                 if (!specialization.iconExists() && !imagesChecked.containsKey(specialization.specializationData.iconImage.iconPath)) {
-                    images.add(new DataImageToDl(specialization.specializationData.iconImage,
+                    imagesChecked.put(specialization.specializationData.iconImage.iconPath, new DataImageToDl(specialization.specializationData.iconImage,
                             specialization.specializationData.iconImage.iconPath, 0));
-                    imagesChecked.put(specialization.specializationData.iconImage.iconPath, true);
                 }
                 for (Trait t : specialization.specializationData.majorTraits) {
                     if (!t.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && t.iconImage.iconUrl != null) {
-                        images.add(new DataImageToDl(t.iconImage, t.iconImage.iconPath, 0));
-                        imagesChecked.put(t.iconImage.iconPath, true);
+                        imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(t.iconImage, t.iconImage.iconPath, 0));
                     }
 
                     for (TraitFact traitFact : t.traited_facts) {
                         if (!traitFact.iconExists() && !imagesChecked.containsKey(traitFact.iconImage.iconPath) && traitFact.iconImage.iconUrl != null) {
-                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
-                            imagesChecked.put(t.iconImage.iconPath, true);
+                            imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
                         }
                     }
                     for (TraitFact traitFact : t.traits) {
-                        if (!traitFact.iconExists() && !imagesChecked.containsKey(traitFact.iconImage.iconPath) && traitFact.iconImage.iconUrl != null)
-                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
+                        if (!traitFact.iconExists() && !imagesChecked.containsKey(traitFact.iconImage.iconPath) && traitFact.iconImage.iconUrl != null) {
+                            imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
+                        }
                     }
                 }
 
                 for (Trait t : specialization.specializationData.minorTraits) {
                     if (!t.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && t.iconImage.iconUrl != null) {
-                        images.add(new DataImageToDl(t.iconImage, t.iconImage.iconPath, 0));
-                        imagesChecked.put(t.iconImage.iconPath, true);
+                        imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(t.iconImage, t.iconImage.iconPath, 0));
                     }
                     for (TraitFact traitFact : t.traited_facts) {
                         if (!traitFact.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && t.iconImage.iconUrl != null) {
-                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
-                            imagesChecked.put(t.iconImage.iconPath, true);
+                            imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
                         }
                     }
                     for (TraitFact traitFact : t.traits) {
                         if (!traitFact.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && traitFact.iconImage.iconUrl != null) {
-                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
-                            imagesChecked.put(t.iconImage.iconPath, true);
+                            imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
                         }
                     }
                 }
             }
         }
+        final List<DataImageToDl> images = new ArrayList<DataImageToDl>(imagesChecked.values());
         System.out.println("Images missing " + images.size());
         NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
         if (ni == null) {
@@ -133,62 +128,56 @@ public class SpecializationManager implements CallerBack {
     }
 
     private void retrieveImage() {
-        final ArrayList<DataImageToDl> images = new ArrayList<>();
-        progress = 0.0f;
-        imagesFound = 0;
+        HashMap<String, DataImageToDl> imagesChecked = new HashMap<>();
         for (Map.Entry<Professions, HashMap<String, Specialization>> entry : specializations.entrySet()) {
             HashMap<String, Specialization> value = entry.getValue();
             for (Map.Entry<String, Specialization> specializationEntry : value.entrySet()) {
                 Specialization specialization = specializationEntry.getValue();
-                if (!specialization.backgroundExists()
+                /*if (!specialization.backgroundExists()
                         && !imagesChecked.containsKey(specialization.specializationData.backgroundImage.iconPath)) {
                     images.add(new DataImageToDl(specialization.specializationData.backgroundImage,
                             specialization.specializationData.backgroundImage.iconPath, 0));
                     imagesChecked.put(specialization.specializationData.backgroundImage.iconPath, true);
-                }
+                }*/
                 if (!specialization.iconExists() && !imagesChecked.containsKey(specialization.specializationData.iconImage.iconPath)) {
-                    images.add(new DataImageToDl(specialization.specializationData.iconImage,
+                    imagesChecked.put(specialization.specializationData.iconImage.iconPath, new DataImageToDl(specialization.specializationData.iconImage,
                             specialization.specializationData.iconImage.iconPath, 0));
-                    imagesChecked.put(specialization.specializationData.iconImage.iconPath, true);
                 }
                 for (Trait t : specialization.specializationData.majorTraits) {
                     if (!t.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && t.iconImage.iconUrl != null) {
-                        images.add(new DataImageToDl(t.iconImage, t.iconImage.iconPath, 0));
-                        imagesChecked.put(t.iconImage.iconPath, true);
+                        imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(t.iconImage, t.iconImage.iconPath, 0));
                     }
 
                     for (TraitFact traitFact : t.traited_facts) {
                         if (!traitFact.iconExists() && !imagesChecked.containsKey(traitFact.iconImage.iconPath) && traitFact.iconImage.iconUrl != null) {
-                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
-                            imagesChecked.put(t.iconImage.iconPath, true);
+                            imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
                         }
                     }
                     for (TraitFact traitFact : t.traits) {
-                        if (!traitFact.iconExists() && !imagesChecked.containsKey(traitFact.iconImage.iconPath) && traitFact.iconImage.iconUrl != null)
-                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
+                        if (!traitFact.iconExists() && !imagesChecked.containsKey(traitFact.iconImage.iconPath) && traitFact.iconImage.iconUrl != null) {
+                            imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
+                        }
                     }
                 }
 
                 for (Trait t : specialization.specializationData.minorTraits) {
                     if (!t.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && t.iconImage.iconUrl != null) {
-                        images.add(new DataImageToDl(t.iconImage, t.iconImage.iconPath, 0));
-                        imagesChecked.put(t.iconImage.iconPath, true);
+                        imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(t.iconImage, t.iconImage.iconPath, 0));
                     }
                     for (TraitFact traitFact : t.traited_facts) {
                         if (!traitFact.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && t.iconImage.iconUrl != null) {
-                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
-                            imagesChecked.put(t.iconImage.iconPath, true);
+                            imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
                         }
                     }
                     for (TraitFact traitFact : t.traits) {
                         if (!traitFact.iconExists() && !imagesChecked.containsKey(t.iconImage.iconPath) && traitFact.iconImage.iconUrl != null) {
-                            images.add(new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
-                            imagesChecked.put(t.iconImage.iconPath, true);
+                            imagesChecked.put(t.iconImage.iconPath, new DataImageToDl(traitFact.iconImage, traitFact.iconImage.iconPath, 0));
                         }
                     }
                 }
             }
         }
+        final List<DataImageToDl> images = new ArrayList<DataImageToDl>(imagesChecked.values());
         NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
         if (ni == null) {
             activity.runOnUiThread(new Runnable() {
@@ -207,6 +196,8 @@ public class SpecializationManager implements CallerBack {
             if (progressDialog.isShowing()) progressDialog.dismiss();
             return;
         }
+        System.out.println("SizeHashmap " + imagesChecked.size() + "Size table images " + sizeImages);
+
         new DownloadImage(this, images, 0).execute();
     }
 
@@ -263,7 +254,7 @@ public class SpecializationManager implements CallerBack {
             specialization.specializationData.name = reader.getString("name");
             specialization.specializationData.elite = reader.getBoolean("elite");
             specialization.specializationData.iconImage.iconUrl = reader.getString("icon");
-            specialization.specializationData.backgroundImage.iconUrl = reader.getString("background");
+            //specialization.specializationData.backgroundImage.iconUrl = reader.getString("background");
             JSONArray minor = reader.getJSONArray("minor_traits");
             for (int i = 0; i < minor.length(); i++) {
                 specialization.specializationData.minorTraits.add(new Trait(minor.getInt(i)));
@@ -325,7 +316,7 @@ public class SpecializationManager implements CallerBack {
                         progressDialog.setProgress(p);
                     }
                 });
-                if ((int)o[2] == -1) {
+                if ((int) o[2] == -1) {
                     progressDialog.dismiss();
                     parent.notifyUpdate(this, Categories.SPECIALIZATION);
                 }
@@ -347,7 +338,7 @@ public class SpecializationManager implements CallerBack {
                 }
 
 
-                if (!checkingIntegrity && (int)o[2] == -1) {
+                if (!checkingIntegrity && (int) o[2] == -1) {
                     activity.runOnUiThread(new Runnable() {
                         public void run() {
                             progressDialog.setMessage("Checking integrity please wait");
