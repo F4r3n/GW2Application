@@ -26,6 +26,25 @@ def createDatabase():
     conn.commit()
     conn.close()
 
+def createDatabaseDyes():
+    print("Create Db dye...")
+    conn = sqlite3.connect(nameDatabase)
+    c = conn.cursor()
+    c.execute("drop table if exists gwdye")
+    conn.commit()
+    c.execute('''CREATE TABLE gwdye
+             (rid INTEGER, 
+                name text,
+                rgbCloth text,
+                rgbLeather text,
+                rgbMetal text)''')
+
+    conn.commit()
+    conn.close()
+
+def insertDye(cursor, table):
+    cursor.executemany("insert into gwdye ('rid','name','rgbCloth','rgbLeather', 'rgbMetal') values (?,?,?,?,?)",table)
+
 def prepareForAndroid():
     print("Prepare...")
     conn = sqlite3.connect(nameDatabase)
@@ -106,9 +125,32 @@ def fillDatabase():
         conn.commit()
     conn.close()
 
+def fillDBDye():
+    url = "https://api.guildwars2.com/v1/colors.json"
+    response = urllib.request.urlopen(url)
+    data = response.read()
+    text = data.decode('utf-8')
+    jsonObject = json.loads(text)
+    colors = jsonObject["colors"]
+    conn = sqlite3.connect(nameDatabase, timeout=100)
+    cursor = conn.cursor()
+    print(len(colors))
+    table = []
+    for i in range(1,len(colors)):
+        if str(i) in colors:
+            color = colors[str(i)]
+            table.append((i, color["name"], str(color["cloth"]["rgb"]),
+                    str(color["leather"]["rgb"]),
+                    str(color["metal"]["rgb"])))
+    insertDye(cursor, table)
+
+    conn.commit()
+    conn.close()
 
 
-createDatabase()
-prepareForAndroid()
-fillDatabase()
-copyfile(nameDatabase, "../app/src/main/assets/databases/" + nameDatabase)
+#createDatabase()
+#prepareForAndroid()
+#fillDatabase()
+#copyfile(nameDatabase, "../app/src/main/assets/databases/" + nameDatabase)
+createDatabaseDyes()
+fillDBDye()

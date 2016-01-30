@@ -69,9 +69,10 @@ public class DialogSpeChoice extends DialogFragment implements
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ImageView imageView = (ImageView) frameLayout.findViewById(R.id.background);
         frameLayout.setVisibility(View.VISIBLE);
-        Bitmap b = FileManagerTool.getImage(
-                specializations.get(position).specializationData.backgroundImage.iconPath);
-        if (!specializations.get(position).specializationData.elite) {
+        String path = specializations.get(position).specializationData.backgroundImage.iconPath;
+        //Bitmap b = FileManagerTool.getImage(
+        //      specializations.get(position).specializationData.backgroundImage.iconPath);
+        /*if (!specializations.get(position).specializationData.elite) {
 
             System.out.println(FileManagerTool.convertDpToPixels(activity, 1500));
             int w = b.getWidth();
@@ -82,7 +83,9 @@ public class DialogSpeChoice extends DialogFragment implements
         } else {
             b = Bitmap.createBitmap(b, 0, 40, b.getWidth(), 216);
             imageView.setImageBitmap(Bitmap.createScaledBitmap(b, 1000, 256, true));
-        }
+        }*/
+        System.out.println(path);
+        imageView.setImageResource(getResources().getIdentifier(path, "drawable", getActivity().getPackageName()));
 
 
         List<ImageButton> buttonsMinor = new ArrayList<>();

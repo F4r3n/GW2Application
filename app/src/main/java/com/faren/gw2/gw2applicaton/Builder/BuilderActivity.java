@@ -152,17 +152,10 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
     private void loadDataFrameLayout(FrameLayout frameLayout, int position, List<Specialization> specializations) {
         ImageView imageView = (ImageView) frameLayout.findViewById(R.id.background);
         frameLayout.setVisibility(View.VISIBLE);
-        Bitmap b = FileManagerTool.getImage(
-                specializations.get(position).specializationData.backgroundImage.iconPath);
-        if (!specializations.get(position).specializationData.elite) {
+        String path = specializations.get(position).specializationData.backgroundImage.iconPath;
 
-            System.out.println(FileManagerTool.convertDpToPixels(this, 1500));
-            b = Bitmap.createBitmap(b, 0, 128, 800, 128);
-            FileManagerTool.scaleImage(this, imageView, b, 1800, 900);
-        } else {
-            b = Bitmap.createBitmap(b, 0, 40, 948, 216);
-            FileManagerTool.scaleImage(this, imageView, b, 1900, 256);
-        }
+        System.out.println(path);
+        imageView.setImageResource(getResources().getIdentifier(path, "drawable", getPackageName()));
 
 
         List<ImageButton> buttonsMinor = new ArrayList<>();

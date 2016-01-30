@@ -34,4 +34,19 @@ def dlDataWebsite():
             print(td.span.find("a",{"title":True})["title"])
         print(td.text)
 
-dlDataWebsite()
+def dlSpeImages(directory):
+    url = 'https://api.guildwars2.com/v2/specializations?ids=all'
+    response = urllib.request.urlopen(url)
+    data = response.read()
+    text = data.decode('utf-8')
+    specializations = json.loads(text)
+    for spe in specializations:
+        id = spe['id']
+        icon = spe["background"]
+        path = directory + str(id) + ".png"
+        print(path)
+        urllib.request.urlretrieve(icon, path)
+
+
+#dlDataWebsite()
+dlSpeImages(sys.argv[1])

@@ -74,6 +74,7 @@ public class TraitFact {
     public Unblockable unblockable;
 
     public boolean iconExists() {
+        if(iconImage.iconPath == null) return true;
         return new File(iconImage.iconPath).exists();
     }
 
@@ -84,11 +85,11 @@ public class TraitFact {
         try {
             type = TYPE.valueOf(object.getString("type").toUpperCase());
 
-            iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                    "/GW2App/spe/trait/icon/" +
-                    type.toString().toLowerCase() + "-icon.png";
-            if (object.has("icon"))
+            if (object.has("icon")) {
                 iconImage.iconUrl = object.getString("icon");
+                iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                        "/GW2App/spe/trait/icon/" +iconImage.iconUrl.substring(iconImage.iconUrl.lastIndexOf("/")+1);
+            }
             if (object.has("text"))
                 text = object.getString("text");
 
@@ -97,14 +98,8 @@ public class TraitFact {
                     attributeAdjust = new AttributeAdjust();
                     attributeAdjust.target = object.getString("target");
                     attributeAdjust.value = object.getInt("value");
-                    if (text != null)
-                        iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                                "/GW2App/spe/trait/icon/" +
-                                text.replaceAll(" ", "-").toLowerCase() + "-icon.png";
-                    else
-                        iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                                "/GW2App/spe/trait/icon/" +
-                                type.toString().toLowerCase() + "-icon.png";
+
+
                     break;
                 case BUFF:
                     buff = new Buff();
@@ -116,9 +111,7 @@ public class TraitFact {
                     if (object.has("duration"))
                         buff.duration = object.getInt("duration");
                     buff.status = object.getString("status");
-                    iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                            "/GW2App/spe/trait/icon/" +
-                            buff.status.toLowerCase() + "-icon.png";
+
                     break;
                 case BUFFCONVERSION:
                     buffConversion = new BuffConversion();

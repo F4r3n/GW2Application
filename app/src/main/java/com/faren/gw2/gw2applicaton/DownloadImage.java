@@ -21,6 +21,7 @@ public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
     private int width;
     private int height;
     private int status_code = 0;
+
     public DownloadImage(CallerBack callerBack, List<DataImageToDl> urls, int status_code) {
         this.urls = urls;
         this.callerBack = callerBack;
@@ -37,7 +38,9 @@ public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
             index = urls.get(i).index;
             width = urls.get(i).imageResource.width;
             height = urls.get(i).imageResource.height;
+            index = i;
             retrieveImage(urls.get(i).imageResource.iconUrl);
+
         }
         return null;
     }
@@ -51,9 +54,11 @@ public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
 
 
         try {
-            System.out.println("Image " + urlImage);
+            System.out.println("Image " + urlImage + " " + index);
             if(urlImage == null || new File(id).exists()) {
+                System.out.println("DLImage "  + id+  " already exists");
                 callerBack.notifyUpdate(this, null, index, id, 0);
+                return;
             }
             assert urlImage != null;
             URL url = new URL(urlImage);

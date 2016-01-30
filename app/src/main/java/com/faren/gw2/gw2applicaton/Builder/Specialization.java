@@ -27,8 +27,9 @@ public class Specialization implements CallerBack {
         specializationData.path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/spe/data/" + id + ".json";
         specializationData.iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
                 "/GW2App/spe/image/" + id + "-icon.png";
-        specializationData.backgroundImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/GW2App/spe/image/" + id + "-background.png";
+        //specializationData.backgroundImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath()
+          //      + "/GW2App/spe/image/" + id + "-background.png";
+        specializationData.backgroundImage.iconPath = "background_spe_"+id;
     }
 
     public boolean iconExists() {
@@ -45,8 +46,9 @@ public class Specialization implements CallerBack {
         specializationData.path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/spe/data/" + id + ".json";
         specializationData.iconImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
                 "/GW2App/spe/image/" + id + "-icon.png";
-        specializationData.backgroundImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/GW2App/spe/image/" + id + "-background.png";
+       // specializationData.backgroundImage.iconPath = Environment.getExternalStorageDirectory().getAbsolutePath()
+         //       + "/GW2App/spe/image/" + id + "-background.png";
+        specializationData.backgroundImage.iconPath = "background_spe_"+id;
     }
 
     public void requestTrait(CallerBack cb) {
