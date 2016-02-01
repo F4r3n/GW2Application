@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.List;
 
 
-public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
+public class DownloadImage extends AsyncTask<DataImageToDl, Void, Void> {
 
     private CallerBack callerBack;
     private List<DataImageToDl> urls;
@@ -32,8 +32,8 @@ public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
     protected void onPreExecute() {
     }
 
-    protected Void doInBackground(DataImageToDl ... data) {
-        for(int i = 0; i < urls.size(); i++) {
+    protected Void doInBackground(DataImageToDl... data) {
+        for (int i = 0; i < urls.size(); i++) {
             id = urls.get(i).id;
             index = urls.get(i).index;
             width = urls.get(i).imageResource.width;
@@ -55,12 +55,12 @@ public class DownloadImage extends AsyncTask<DataImageToDl , Void, Void> {
 
         try {
             System.out.println("Image " + urlImage + " " + index);
-            if(urlImage == null || new File(id).exists()) {
-                System.out.println("DLImage "  + id+  " already exists");
+            if (urlImage == null || new File(id).exists()) {
+                if (urlImage != null)
+                    System.out.println("DLImage " + id + " already exists");
                 callerBack.notifyUpdate(this, null, index, id, 0);
                 return;
             }
-            assert urlImage != null;
             URL url = new URL(urlImage);
             // Get the image dimensions
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

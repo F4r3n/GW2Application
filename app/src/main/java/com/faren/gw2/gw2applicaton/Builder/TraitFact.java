@@ -74,7 +74,6 @@ public class TraitFact {
     public Unblockable unblockable;
 
     public boolean iconExists() {
-        if(iconImage.iconPath == null) return true;
         return new File(iconImage.iconPath).exists();
     }
 

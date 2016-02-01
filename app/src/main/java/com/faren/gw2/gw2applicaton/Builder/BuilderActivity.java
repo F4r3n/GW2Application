@@ -123,6 +123,7 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
     private List<String> getFiles() {
         List<String> s = new ArrayList<>();
         File folder = new File(pathFolder);
+        if(!folder.exists()) return null;
         File[] listOfFiles = folder.listFiles();
 
         for (int i = 0; i < listOfFiles.length; i++) {
@@ -248,9 +249,11 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
                 saveDialog();
                 break;
             case R.id.action_load_folder:
-                DialogLoadSpe dialogLoadSpe = new DialogLoadSpe();
-                dialogLoadSpe.init(this, getFiles(), this);
-                dialogLoadSpe.show(getFragmentManager(), "dialogLoadFile");
+                if(getFiles() != null) {
+                    DialogLoadSpe dialogLoadSpe = new DialogLoadSpe();
+                    dialogLoadSpe.init(this, getFiles(), this);
+                    dialogLoadSpe.show(getFragmentManager(), "dialogLoadFile");
+                }
                 break;
             default:
                 in = false;
