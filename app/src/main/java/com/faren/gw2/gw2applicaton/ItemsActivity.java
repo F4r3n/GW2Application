@@ -95,7 +95,6 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
             if (c.isChecked()) typeValues.add(r);
         }
 
-
         if (!name.equals(""))
             itemInfoDisplays = db.selectItem(name, levelValueMin, levelValueMax,
                     Integer.toString(minValue), Integer.toString(maxValue), rarityValues, typeValues);
@@ -119,7 +118,6 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
         boolean value = checkBox.isChecked();
         for (GWItem_Type type : GWItem_Type.values()) {
             String r = type.getFormatedName();
-            System.out.println(r);
             CheckBox c = (CheckBox) findViewById(getResources().getIdentifier(r + "CheckBox", "id", getPackageName()));
             c.setChecked(value);
         }

@@ -13,7 +13,7 @@ import com.faren.gw2.gw2applicaton.item.GWItemInfoDisplay;
 import java.util.List;
 
 
-public class ItemCollection extends BaseAdapter{
+public class ItemCollection extends BaseAdapter {
     LayoutInflater inflater;
     private List<GWItemInfoDisplay> gwItemInfoDisplays;
 
@@ -54,12 +54,26 @@ public class ItemCollection extends BaseAdapter{
         // System.out.println("type " +currentListData.item.gwItemData.detailObject);
 
         mViewHolder.itemName.setText(currentListData.name);
+        mViewHolder.itemType.setText(currentListData.type);
+        mViewHolder.itemDesc.setText(currentListData.description);
+
+        int valuePrice = Integer.parseInt(currentListData.vendor_value);
+        int goldPrice = valuePrice / 10000;
+        int silverPrice = (valuePrice % 10000) / 100;
+        int copperPrice = valuePrice - goldPrice * 10000 - silverPrice * 100;
+        //System.out.println("Item " + mViewHolder.goldValue + " " + goldPrice + " " + silverPrice + " " + copperPrice);
+
+        mViewHolder.goldValue.setText(Integer.toString(goldPrice));
+        mViewHolder.silverValue.setText(Integer.toString(silverPrice));
+        mViewHolder.copperValue.setText(Integer.toString(copperPrice));
+
+        mViewHolder.levelText.setText(currentListData.level);
 
         return convertView;
     }
 
     private class MyViewHolder {
-        TextView itemName, itemDesc, itemType;
+        TextView itemName, itemDesc, itemType, goldValue, silverValue, copperValue, levelText;
         ImageView itemIcon;
 
         public MyViewHolder(View item) {
@@ -67,6 +81,13 @@ public class ItemCollection extends BaseAdapter{
             itemIcon = (ImageView) item.findViewById(R.id.itemIcon);
             itemName = (TextView) item.findViewById(R.id.itemName);
             itemDesc = (TextView) item.findViewById(R.id.itemDesc);
+            levelText = (TextView) item.findViewById(R.id.level);
+
+
+            goldValue = (TextView) item.findViewById(R.id.goldPrice);
+            silverValue = (TextView) item.findViewById(R.id.silverPrice);
+            copperValue = (TextView) item.findViewById(R.id.copperPrice);
+
         }
     }
 }

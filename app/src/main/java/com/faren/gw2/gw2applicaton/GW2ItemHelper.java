@@ -41,9 +41,13 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         String[] tableColumns = new String[]{
                 item_name,
+                "type",
                 "level",
-                "vendor_value"
+                "vendor_value",
+                "rarity",
+                "description"
         };
+
         String whereClause = "name LIKE ?";
 
         whereClause += " and level >= ?";
@@ -56,7 +60,7 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
         whereClause += " and vendor_value <= ?";
         whereArgs.add(vendor_valueMax);
 
-        if(rarity.size() > 0) {
+        if (rarity.size() > 0) {
             whereClause += " and ( rarity = ?";
             whereArgs.add(rarity.get(0));
             for (int i = 1; i < rarity.size(); i++) {
@@ -66,7 +70,7 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
             whereClause += ")";
         }
 
-        if(types.size() > 0) {
+        if (types.size() > 0) {
             whereClause += " and ( type = ?";
             whereArgs.add(types.get(0));
             for (int i = 1; i < types.size(); i++) {
@@ -83,15 +87,12 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
                 null, null, orderBy);
         System.out.println(c.getCount());
         while (c.moveToNext()) {
-            gwItemInfoDisplays.add(new GWItemInfoDisplay(c.getString(0)));
+            gwItemInfoDisplays.add(new GWItemInfoDisplay(c.getString(0),
+                    c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5)));
         }
 
         sqLiteDatabase.close();
         return gwItemInfoDisplays;
-
-
     }
-
-
 }
 
