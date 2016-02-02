@@ -30,7 +30,11 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
         this.myContext = context;
     }
 
-    public List<GWItemInfoDisplay> selectItem(String name, String level, String vendor_value) {
+    public List<GWItemInfoDisplay> selectItem(String name, String levelMin,
+                                              String levelMax, String vendor_valueMin,
+                                              String vendor_valueMax, List<String> rarity,
+                                              List<String> types
+    ) {
         List<GWItemInfoDisplay> gwItemInfoDisplays = new ArrayList<>();
         List<String> whereArgs = new ArrayList<>();
         whereArgs.add(name + "%");
@@ -41,14 +45,35 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
                 "vendor_value"
         };
         String whereClause = "name LIKE ?";
-        if (!"".equals(level)) {
-            whereClause += " and level = ?";
-            whereArgs.add(level);
+
+        whereClause += " and level >= ?";
+        whereArgs.add(levelMin);
+        whereClause += " and level <= ?";
+        whereArgs.add(levelMax);
+
+        whereClause += " and vendor_value >= ?";
+        whereArgs.add(vendor_valueMin);
+        whereClause += " and vendor_value <= ?";
+        whereArgs.add(vendor_valueMax);
+
+        if(rarity.size() > 0) {
+            whereClause += " and ( rarity = ?";
+            whereArgs.add(rarity.get(0));
+            for (int i = 1; i < rarity.size(); i++) {
+                whereClause += " or rarity = ?";
+                whereArgs.add(rarity.get(i));
+            }
+            whereClause += ")";
         }
 
-        if (!"".equals(vendor_value)) {
-            whereClause += " and vendor_value =?";
-            whereArgs.add(vendor_value);
+        if(types.size() > 0) {
+            whereClause += " and ( type = ?";
+            whereArgs.add(types.get(0));
+            for (int i = 1; i < types.size(); i++) {
+                whereClause += " or type = ?";
+                whereArgs.add(types.get(i));
+            }
+            whereClause += ")";
         }
 
         String[] args = new String[whereArgs.size()];

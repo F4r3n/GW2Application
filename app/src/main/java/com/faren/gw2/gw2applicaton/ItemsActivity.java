@@ -8,10 +8,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.faren.gw2.gw2applicaton.item.GWItemInfoDisplay;
+import com.faren.gw2.gw2applicaton.item.GWItem_Rarity;
+import com.faren.gw2.gw2applicaton.item.GWItem_Type;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,17 +52,77 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
         EditText nameText = (EditText) findViewById(R.id.nameToSearch);
         String name = nameText.getText().toString();
 
-        EditText vendorText = (EditText) findViewById(R.id.vendorValue);
-        String vendorValue = vendorText.getText().toString();
+        EditText levelTextMax = (EditText) findViewById(R.id.levelMax);
+        String levelValueMax = levelTextMax.getText().toString();
 
-        EditText levelText = (EditText) findViewById(R.id.level);
-        String levelValue = levelText.getText().toString();
+        EditText levelTextMin = (EditText) findViewById(R.id.levelMin);
+        String levelValueMin = levelTextMin.getText().toString();
+
+        EditText vendorValueTextMinG = (EditText) findViewById(R.id.vendorGoldMin);
+        String vendorValueMinG = vendorValueTextMinG.getText().toString();
+        EditText vendorValueTextMinS = (EditText) findViewById(R.id.vendorSilverMin);
+        String vendorValueMinS = vendorValueTextMinS.getText().toString();
+        EditText vendorValueTextMinC = (EditText) findViewById(R.id.vendorCopperMin);
+        String vendorValueMinC = vendorValueTextMinC.getText().toString();
+
+        EditText vendorValueTextMaxG = (EditText) findViewById(R.id.vendorGoldMax);
+        String vendorValueMaxG = vendorValueTextMaxG.getText().toString();
+        EditText vendorValueTextMaxS = (EditText) findViewById(R.id.vendorSilverMax);
+        String vendorValueMaxS = vendorValueTextMaxS.getText().toString();
+        EditText vendorValueTextMaxC = (EditText) findViewById(R.id.vendorCopperMax);
+        String vendorValueMaxC = vendorValueTextMaxC.getText().toString();
+
+        int minValue = Integer.parseInt(vendorValueMinG) * 10000 + Integer.parseInt(vendorValueMinS) * 100 + Integer.parseInt(vendorValueMinC);
+        int maxValue = Integer.parseInt(vendorValueMaxG) * 10000 + Integer.parseInt(vendorValueMaxS) * 100 + Integer.parseInt(vendorValueMaxC);
+
+        if (minValue > maxValue) {
+            int temp = minValue;
+            minValue = maxValue;
+            maxValue = temp;
+        }
+
+        List<String> rarityValues = new ArrayList<>();
+        for (GWItem_Rarity rarity : GWItem_Rarity.values()) {
+            String r = rarity.toString();
+            CheckBox c = (CheckBox) findViewById(getResources().getIdentifier(r + "CheckBox", "id", getPackageName()));
+            if (c.isChecked()) rarityValues.add(r);
+        }
+
+        List<String> typeValues = new ArrayList<>();
+        for (GWItem_Type type : GWItem_Type.values()) {
+            String r = type.getFormatedName();
+            CheckBox c = (CheckBox) findViewById(getResources().getIdentifier(r + "CheckBox", "id", getPackageName()));
+            if (c.isChecked()) typeValues.add(r);
+        }
+
 
         if (!name.equals(""))
-            itemInfoDisplays = db.selectItem(name, levelValue, vendorValue);
+            itemInfoDisplays = db.selectItem(name, levelValueMin, levelValueMax,
+                    Integer.toString(minValue), Integer.toString(maxValue), rarityValues, typeValues);
 
         list.updateData(this, itemInfoDisplays);
         list.setListShown(true);
+    }
+
+    public void onCheckRarityButton(View view) {
+        CheckBox checkBox = (CheckBox)view;
+        boolean value = checkBox.isChecked();
+        for (GWItem_Rarity rarity : GWItem_Rarity.values()) {
+            String r = rarity.toString();
+            CheckBox c = (CheckBox) findViewById(getResources().getIdentifier(r + "CheckBox", "id", getPackageName()));
+            c.setChecked(value);
+        }
+    }
+
+    public void onCheckTypeButton(View view) {
+        CheckBox checkBox = (CheckBox)view;
+        boolean value = checkBox.isChecked();
+        for (GWItem_Type type : GWItem_Type.values()) {
+            String r = type.getFormatedName();
+            System.out.println(r);
+            CheckBox c = (CheckBox) findViewById(getResources().getIdentifier(r + "CheckBox", "id", getPackageName()));
+            c.setChecked(value);
+        }
     }
 
     public void onUpdateButton(View view) {

@@ -4,18 +4,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -185,24 +187,181 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/level"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:digits="0123456789"
-                android:text="Level">
+                android:orientation="vertical">
 
-            </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Level" />
 
-            <TextView
-                android:id="@+id/vendorValue"
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Min" />
+
+                    <EditText
+                        android:id="@+id/levelMin"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789"
+                        android:maxLength="2"
+                        android:gravity="center"
+                        android:text="0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Max " />
+
+                    <EditText
+                        android:id="@+id/levelMax"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789"
+                        android:maxLength="2"
+                        android:gravity="center"
+                        android:text="80" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:digits="0123456789"
-                android:text="Vendor value">
+                android:orientation="vertical">
 
-            </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Vendor value" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Min :" />
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ui_coin_gold" />
+
+                    <EditText
+                        android:id="@+id/vendorGoldMin"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789"
+                        android:maxLength="6"
+                        android:gravity="center"
+                        android:text="0" />
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ui_coin_silver" />
+
+                    <EditText
+                        android:id="@+id/vendorSilverMin"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789"
+                        android:maxLength="2"
+                        android:gravity="center"
+                        android:text="0" />
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ui_coin_copper" />
+
+                    <EditText
+                        android:id="@+id/vendorCopperMin"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789"
+                        android:maxLength="2"
+                        android:gravity="center"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Max :" />
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ui_coin_gold" />
+
+                    <EditText
+                        android:id="@+id/vendorGoldMax"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789"
+                        android:gravity="center"
+
+                        android:maxLength="6"
+                        android:text="100000" />
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ui_coin_silver" />
+
+                    <EditText
+                        android:id="@+id/vendorSilverMax"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789"
+                        android:maxLength="2"
+                        android:gravity="center"
+                        android:text="99" />
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ui_coin_copper" />
+
+                    <EditText
+                        android:id="@+id/vendorCopperMax"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789"
+                        android:maxLength="2"
+                        android:gravity="center"
+                        android:text="99" />
+                </LinearLayout>
+
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
 
 </LinearLayout>

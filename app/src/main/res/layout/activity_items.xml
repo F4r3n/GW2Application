@@ -78,13 +78,14 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:visibility="visible"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -95,11 +96,14 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textStyle="bold"
                             android:text="Type" />
 
                         <CheckBox
                             android:id="@+id/allTypeCheckBox"
                             android:layout_width="wrap_content"
+                            android:checked="true"
+                            android:onClick="onCheckTypeButton"
                             android:layout_height="wrap_content"
                             android:text="All" />
 
@@ -107,84 +111,105 @@
                             android:id="@+id/ArmorCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Armor" />
 
                         <CheckBox
                             android:id="@+id/BackCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Back" />
+
+                        <CheckBox
+                            android:id="@+id/BagCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="Bag" />
 
                         <CheckBox
                             android:id="@+id/ConsumableCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Consumable" />
 
                         <CheckBox
                             android:id="@+id/ContainerCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Container" />
 
                         <CheckBox
                             android:id="@+id/CraftingMaterialCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Crafting Material" />
 
                         <CheckBox
                             android:id="@+id/GatheringCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Gathering" />
 
                         <CheckBox
                             android:id="@+id/GizmoCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Gizmo" />
 
                         <CheckBox
                             android:id="@+id/MinipetCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Minipet" />
 
                         <CheckBox
                             android:id="@+id/ToolCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Tool" />
 
                         <CheckBox
                             android:id="@+id/TraitCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Trait" />
 
                         <CheckBox
                             android:id="@+id/TrinketCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Trinket" />
 
                         <CheckBox
                             android:id="@+id/TrophyCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Trophy" />
 
                         <CheckBox
                             android:id="@+id/UpgradeComponentCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="UpgradeComponent" />
 
                         <CheckBox
                             android:id="@+id/WeaponCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Weapon" />
                     </LinearLayout>
 
@@ -196,60 +221,71 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textStyle="bold"
                             android:text="Rarity" />
 
                         <CheckBox
                             android:id="@+id/allRarityCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:onClick="onCheckRarityButton"
+                            android:checked="true"
                             android:text="All" />
 
                         <CheckBox
                             android:id="@+id/JunkCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Junk" />
 
                         <CheckBox
                             android:id="@+id/BasicCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Basic" />
 
                         <CheckBox
                             android:id="@+id/FineCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Fine" />
 
                         <CheckBox
                             android:id="@+id/MasterworkCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Masterwork" />
 
                         <CheckBox
                             android:id="@+id/RareCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Rare" />
 
                         <CheckBox
                             android:id="@+id/ExoticCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Exotic" />
 
                         <CheckBox
                             android:id="@+id/AscendedCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Ascended" />
 
                         <CheckBox
                             android:id="@+id/LegendaryCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="Legendary" />
                     </LinearLayout>
                 </LinearLayout>
@@ -262,15 +298,45 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textStyle="bold"
                         android:text="Level" />
 
-                    <EditText
-                        android:id="@+id/level"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:digits="0123456789">
+                        android:orientation="horizontal">
 
-                    </EditText>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Min" />
+
+                        <EditText
+                            android:id="@+id/levelMin"
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content"
+                            android:digits="0123456789"
+                            android:maxLength="2"
+                            android:gravity="center"
+                            android:text="0" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" Max " />
+
+                        <EditText
+                            android:id="@+id/levelMax"
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content"
+                            android:digits="0123456789"
+                            android:maxLength="2"
+                            android:gravity="center"
+                            android:text="80" />
+
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -281,15 +347,121 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textStyle="bold"
                         android:text="Vendor value" />
 
-                    <EditText
-                        android:id="@+id/vendorValue"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:digits="0123456789">
+                        android:orientation="horizontal">
 
-                    </EditText>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Min :" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ui_coin_gold" />
+
+                        <EditText
+                            android:id="@+id/vendorGoldMin"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:digits="0123456789"
+                            android:maxLength="6"
+                            android:gravity="center"
+                            android:text="0" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ui_coin_silver" />
+
+                        <EditText
+                            android:id="@+id/vendorSilverMin"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:digits="0123456789"
+                            android:maxLength="2"
+                            android:gravity="center"
+                            android:text="0" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ui_coin_copper" />
+
+                        <EditText
+                            android:id="@+id/vendorCopperMin"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:digits="0123456789"
+                            android:maxLength="2"
+                            android:gravity="center"
+                            android:text="0" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Max :" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ui_coin_gold" />
+
+                        <EditText
+                            android:id="@+id/vendorGoldMax"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:digits="0123456789"
+                            android:gravity="center"
+
+                            android:maxLength="6"
+                            android:text="100000" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ui_coin_silver" />
+
+                        <EditText
+                            android:id="@+id/vendorSilverMax"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:digits="0123456789"
+                            android:maxLength="2"
+                            android:gravity="center"
+                            android:text="99" />
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ui_coin_copper" />
+
+                        <EditText
+                            android:id="@+id/vendorCopperMax"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:digits="0123456789"
+                            android:maxLength="2"
+                            android:gravity="center"
+                            android:text="99" />
+                    </LinearLayout>
+
+
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

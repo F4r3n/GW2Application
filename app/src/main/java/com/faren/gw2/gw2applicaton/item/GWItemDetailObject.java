@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public  class  GWItemDetailObject {
      public String description = "";
-     public GWItem_Type typeObject = GWItem_Type.NONE;
+     public GWItem_Type typeObject;
 
      protected  void readFile(JSONObject jo) throws JSONException{}
 

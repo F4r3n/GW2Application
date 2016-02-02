@@ -6,7 +6,7 @@ public enum GWItem_Type {
     BAG,
     CONSUMABLE,
     CONTAINER,
-    CRAFTINGMATERIAL,
+    CRAFTING_MATERIAL,
     GATHERING,
     GIZMO,
     MINIPET,
@@ -14,8 +14,18 @@ public enum GWItem_Type {
     TRAIT,
     TRINKET,
     TROPHY,
-    UPGRADECOMPONENT,
-    WEAPON,
-    NONE
+    UPGRADE_COMPONENT,
+    WEAPON;
+    
+    public String getFormatedName() {
+        String n = this.name();
+        String word = "";
+        for(String w : n.split("_")) {
+            w = w.toLowerCase();
+            w = Character.toUpperCase(w.charAt(0)) + w.substring(1);
+            word += w;
+        }
+        return word;
+    }
 }
 

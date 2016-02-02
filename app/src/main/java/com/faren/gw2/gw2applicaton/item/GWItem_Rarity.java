@@ -8,5 +8,14 @@ public enum GWItem_Rarity {
     RARE,
     EXOTIC,
     ASCENDED,
-    LEGENDARY
+    LEGENDARY;
+
+    @Override
+    public String toString() {
+        String n = this.name();
+        n = n.toLowerCase();
+        n = Character.toUpperCase(n.charAt(0)) + n.substring(1);
+        return n;
+    }
+
 }
