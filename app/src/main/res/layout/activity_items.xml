@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:onClick="onUpdateButton"
-            android:text="Update"
+            android:text="@string/update"
             android:visibility="gone" />
 
         <LinearLayout
@@ -32,19 +32,17 @@
                 android:id="@+id/nameToSearch"
                 android:layout_width="250dp"
                 android:layout_height="match_parent"
-                android:translationZ="5dp" />
+                android:inputType="text" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="#000000"
-                android:elegantTextHeight="true"
-                android:elevation="5dp"
                 android:onClick="searchButton"
-                android:text="Search"
+                android:text="@string/search"
                 android:textColor="#ffffff"
-                android:translationZ="5dp" />
+                 />
 
         </LinearLayout>
 
@@ -69,9 +67,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="left|start"
+        android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        android:background="#ffffff">
+        >
 
         <ScrollView
             android:layout_width="match_parent"
@@ -80,6 +78,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#ffffff"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -97,7 +96,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
-                            android:text="Type" />
+                            android:text="@string/type" />
 
                         <CheckBox
                             android:id="@+id/allTypeCheckBox"

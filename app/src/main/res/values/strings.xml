@@ -4,4 +4,16 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="speButtonName">Spe</string>
+    <string name="image">picture</string>
+    <string name="title">title</string>
+    <string name="subtitle">subTitle</string>
+    <string name="level">level</string>
+    <string name="vendorValue">Vendor value :</string>
+    <string name="tradingValue">Trading post value:</string>
+    <string name="n0">0</string>
+    <string name="description">Description</string>
+    <string name="update">Update</string>
+    <string name="search">Search</string>
+    <string name="type">Type</string>
+
 </resources>

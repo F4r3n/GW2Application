@@ -94,21 +94,24 @@ public class ItemCollection extends BaseAdapter implements CallerBack {
 
         mViewHolder.levelText.setText(currentListData.level);
 
-        connectivityManager = (ConnectivityManager) activity.getSystemService(activity.CONNECTIVITY_SERVICE);
+        connectivityManager = (ConnectivityManager) activity.getSystemService(Activity.CONNECTIVITY_SERVICE);
         ni = connectivityManager.getActiveNetworkInfo();
 
-        if (ni != null) {
-            String name = currentListData.iconUrl.substring(currentListData.iconUrl.lastIndexOf("/") + 1);
-            if (!new File(path + name).exists()) {
+
+        String name = currentListData.iconUrl.substring(currentListData.iconUrl.lastIndexOf("/") + 1);
+        if (!new File(path + name).exists()) {
+            if (ni != null) {
                 List<DataImageToDl> imageToDls = new ArrayList<>();
                 imageToDls.add(new DataImageToDl(new ImageResource(currentListData.name,
                         currentListData.iconUrl, path, 50, 50),
                         name, 0));
                 new DownloadImage(this, imageToDls, 0).execute();
             } else {
-                Bitmap bm = BitmapFactory.decodeFile(path + name);
-                mViewHolder.itemIcon.setImageBitmap(bm);
+                mViewHolder.itemIcon.setImageBitmap(null);
             }
+        } else {
+            Bitmap bm = BitmapFactory.decodeFile(path + name);
+            mViewHolder.itemIcon.setImageBitmap(bm);
         }
 
         return convertView;
@@ -124,8 +127,6 @@ public class ItemCollection extends BaseAdapter implements CallerBack {
                 @Override
                 public void run() {
                     notifyDataSetChanged();
-//stuff that updates ui
-
                 }
             });
 
