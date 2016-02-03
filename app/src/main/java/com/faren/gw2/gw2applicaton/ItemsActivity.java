@@ -94,10 +94,12 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
             CheckBox c = (CheckBox) findViewById(getResources().getIdentifier(r + "CheckBox", "id", getPackageName()));
             if (c.isChecked()) typeValues.add(r);
         }
+        String limit = "";
+        if(name.equals("")) limit = "100";
 
-        if (!name.equals(""))
+        //if (!name.equals(""))
             itemInfoDisplays = db.selectItem(name, levelValueMin, levelValueMax,
-                    Integer.toString(minValue), Integer.toString(maxValue), rarityValues, typeValues);
+                    Integer.toString(minValue), Integer.toString(maxValue), rarityValues, typeValues, limit);
 
         list.updateData(this, itemInfoDisplays);
         list.setListShown(true);

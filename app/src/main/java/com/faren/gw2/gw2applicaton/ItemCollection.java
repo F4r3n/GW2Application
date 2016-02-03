@@ -1,10 +1,12 @@
 package com.faren.gw2.gw2applicaton;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,7 +68,7 @@ public class ItemCollection extends BaseAdapter implements CallerBack {
             mViewHolder = (MyViewHolder) convertView.getTag();
         }
 
-        GWItemInfoDisplay currentListData = getItem(position);
+        final GWItemInfoDisplay currentListData = getItem(position);
         // System.out.println("type " +currentListData.item.gwItemData.detailObject);
 
         mViewHolder.itemName.setText(currentListData.name);
@@ -113,7 +115,19 @@ public class ItemCollection extends BaseAdapter implements CallerBack {
             Bitmap bm = BitmapFactory.decodeFile(path + name);
             mViewHolder.itemIcon.setImageBitmap(bm);
         }
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Uri uri = Uri.parse("https://wiki.guildwars2.com/wiki/" + currentListData.name.replace(" ", "_"));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                activity.startActivity(intent);
+                return false;
+            }
 
+            public void onClick(View v) {
+
+            }
+        });
         return convertView;
     }
 
@@ -137,6 +151,8 @@ public class ItemCollection extends BaseAdapter implements CallerBack {
     public void cancel() {
 
     }
+
+
 
     private class MyViewHolder {
         TextView itemName, itemDesc, itemType, goldValue, silverValue, copperValue,
