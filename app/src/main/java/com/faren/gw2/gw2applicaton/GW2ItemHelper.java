@@ -43,9 +43,12 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
                 item_name,
                 "type",
                 "level",
-                "vendor_value",
+                "trading_value",
                 "rarity",
-                "description"
+                "description",
+                "vendor_value",
+                "iconUrl",
+                "rid"
         };
 
         String whereClause = "name LIKE ?";
@@ -55,9 +58,9 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
         whereClause += " and level <= ?";
         whereArgs.add(levelMax);
 
-        whereClause += " and vendor_value >= ?";
+        whereClause += " and trading_value >= ?";
         whereArgs.add(vendor_valueMin);
-        whereClause += " and vendor_value <= ?";
+        whereClause += " and trading_value <= ?";
         whereArgs.add(vendor_valueMax);
 
         if (rarity.size() > 0) {
@@ -81,14 +84,15 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
         }
 
         String[] args = new String[whereArgs.size()];
-
         String orderBy = "name";
         Cursor c = sqLiteDatabase.query(table_item, tableColumns, whereClause, whereArgs.toArray(args),
                 null, null, orderBy);
         System.out.println(c.getCount());
         while (c.moveToNext()) {
             gwItemInfoDisplays.add(new GWItemInfoDisplay(c.getString(0),
-                    c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5)));
+                    c.getString(1), c.getString(2), c.getString(3), c.getString(4),
+                    c.getString(5), c.getString(6), c.getString(7),
+                    c.getString(8)));
         }
 
         sqLiteDatabase.close();

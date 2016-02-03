@@ -1,6 +1,7 @@
 import urllib.request
 import urllib
 import json
+import sys
 import sqlite3
 import os
 from shutil import copyfile
@@ -20,6 +21,7 @@ def createDatabase():
                 rarity text,
                 level INTEGER,
                 vendor_value INTEGER,
+                trading_value INTEGER DEFAULT 0,
                 infoWeb text,
               iconUrl text, image bytea)''')
 
@@ -60,7 +62,11 @@ def prepareForAndroid():
 def insertItem(cursor, table):
     cursor.executemany("INSERT INTO gwitem ('rid','name','description', 'type','rarity','level','vendor_value','infoWeb','iconUrl') VALUES (?,?,?,?,?, ?, ?, ?, ?)", table)
 
+def updateTablePrice(cursor, table):
+    cursor.executemany("UPDATE gwitem set trading_value = ? where rid = ?", table)
+
 def fillDatabase():
+    print("Fill database...")
     percentage = 0
     url ="https://api.guildwars2.com/v2/items"
     response = urllib.request.urlopen(url)
@@ -119,13 +125,60 @@ def fillDatabase():
             table.append((id, name, description, type, rarity, level, vendor_value, infoWeb, iconUrl))
             index = index + 1
             percentage = (index*100)/len(listIds)
-        print(str(percentage)+"\r")
+        sys.stdout.write("\r" + str(percentage))
+        sys.stdout.flush()
 
         insertItem(cursor,table) 
         conn.commit()
     conn.close()
 
+def fillDatabaseTradingPost():
+    print("Fill database trading post")
+    percentage = 0
+    url ="https://api.guildwars2.com/v2/commerce/prices"
+    response = urllib.request.urlopen(url)
+    data = response.read()
+    text = data.decode('utf-8')
+
+    conn = sqlite3.connect(nameDatabase, timeout=100)
+    cursor = conn.cursor()
+    listIds = json.loads(text)
+
+    print("Size " + str(len(listIds)))
+    token = 100
+    toSend = ""
+    ids = [listIds[x:x+100] for x in range(0, len(listIds), 100)]
+    index = 0
+
+    for id in ids:
+        toSend = str(id).replace("[","").replace("]","").replace(" ","")
+        url ="https://api.guildwars2.com/v2/commerce/prices?ids=" + toSend
+        response = urllib.request.urlopen(url)
+        data = response.read()
+        text = data.decode('utf-8')
+        jsonObject = json.loads(text)
+        table = []
+        id = ""
+        price = "0"
+        for object in jsonObject:
+            if 'id' in object:
+                id = object['id']
+            if 'buys' in object:
+                if 'unit_price' in object['buys']:
+                    price = object['buys']['unit_price']
+            table.append((price, id))
+            index = index + 1
+            percentage = (index*100)/len(listIds)
+        sys.stdout.write("\r" + str(percentage))
+        sys.stdout.flush()
+
+        updateTablePrice(cursor,table) 
+        conn.commit()
+    conn.close()
+
+
 def fillDBDye():
+    print("Fill db dye...")
     url = "https://api.guildwars2.com/v1/colors.json"
     response = urllib.request.urlopen(url)
     data = response.read()
@@ -151,6 +204,7 @@ def fillDBDye():
 #createDatabase()
 #prepareForAndroid()
 #fillDatabase()
+fillDatabaseTradingPost()
 #copyfile(nameDatabase, "../app/src/main/assets/databases/" + nameDatabase)
-createDatabaseDyes()
-fillDBDye()
+#createDatabaseDyes()
+#fillDBDye()
