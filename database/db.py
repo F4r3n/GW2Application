@@ -179,20 +179,17 @@ def fillDatabaseTradingPost():
 
 def fillDBDye():
     print("Fill db dye...")
-    url = "https://api.guildwars2.com/v1/colors.json"
+    url = "https://api.guildwars2.com/v2/colors?ids=all"
     response = urllib.request.urlopen(url)
     data = response.read()
     text = data.decode('utf-8')
-    jsonObject = json.loads(text)
-    colors = jsonObject["colors"]
+    colors = json.loads(text)
     conn = sqlite3.connect(nameDatabase, timeout=100)
     cursor = conn.cursor()
     print(len(colors))
     table = []
-    for i in range(1,len(colors)):
-        if str(i) in colors:
-            color = colors[str(i)]
-            table.append((i, color["name"], str(color["cloth"]["rgb"]),
+    for color in colors:
+        table.append((color["id"], color["name"], str(color["cloth"]["rgb"]),
                     str(color["leather"]["rgb"]),
                     str(color["metal"]["rgb"])))
     insertDye(cursor, table)
@@ -204,7 +201,7 @@ def fillDBDye():
 #createDatabase()
 #prepareForAndroid()
 #fillDatabase()
-fillDatabaseTradingPost()
+#fillDatabaseTradingPost()
 #copyfile(nameDatabase, "../app/src/main/assets/databases/" + nameDatabase)
-#createDatabaseDyes()
-#fillDBDye()
+createDatabaseDyes()
+fillDBDye()

@@ -20,6 +20,7 @@ import com.faren.gw2.gw2applicaton.item.GWItemInfoDisplay;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -29,7 +30,7 @@ public class ItemCollection extends BaseAdapter implements CallerBack {
     private String path;
     private Activity activity;
     ConnectivityManager connectivityManager;
-
+    private HashMap<String, Boolean> imagesDownloaded = new HashMap<>();
 
     NetworkInfo ni;
 
@@ -103,11 +104,14 @@ public class ItemCollection extends BaseAdapter implements CallerBack {
         String name = currentListData.iconUrl.substring(currentListData.iconUrl.lastIndexOf("/") + 1);
         if (!new File(path + name).exists()) {
             if (ni != null) {
-                List<DataImageToDl> imageToDls = new ArrayList<>();
-                imageToDls.add(new DataImageToDl(new ImageResource(currentListData.name,
-                        currentListData.iconUrl, path, 50, 50),
-                        name, 0));
-                new DownloadImage(this, imageToDls, 0).execute();
+                if(!imagesDownloaded.containsKey(name)) {
+                    imagesDownloaded.put(name, false);
+                    List<DataImageToDl> imageToDls = new ArrayList<>();
+                    imageToDls.add(new DataImageToDl(new ImageResource(currentListData.name,
+                            currentListData.iconUrl, path, 50, 50),
+                            name, 0));
+                    new DownloadImage(this, imageToDls, 0).execute();
+                }
             } else {
                 mViewHolder.itemIcon.setImageBitmap(null);
             }
@@ -133,17 +137,17 @@ public class ItemCollection extends BaseAdapter implements CallerBack {
 
     @Override
     public void notifyUpdate(Object... o) {
-        System.out.println("update");
         if (o[0] instanceof DownloadImage && o[1] != null) {
             String name = (String) o[3];
             FileManagerTool.saveImage((Bitmap) o[1], path + name);
+            imagesDownloaded.put(name, true);
+
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     notifyDataSetChanged();
                 }
             });
-
         }
     }
 

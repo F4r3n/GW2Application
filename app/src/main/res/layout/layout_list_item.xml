@@ -7,8 +7,9 @@
     <ImageView
         android:id="@+id/itemIcon"
         android:contentDescription="@string/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:src="@drawable/no_image_found"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

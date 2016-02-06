@@ -5,6 +5,7 @@ import sys
 from lxml import html
 import requests
 import bs4
+import shutil
 
 
 def dlImages():
@@ -21,6 +22,23 @@ def dlImages():
         path = sys.argv[1] + name + ".png"
         print(path)
         urllib.request.urlretrieve(icon, path)
+
+def dlQuagganImages():
+    url = 'https://api.guildwars2.com/v2/quaggans?ids=all'
+    response = urllib.request.urlopen(url)
+    data = response.read()
+    text = data.decode('utf-8')
+    print(text)
+    d = json.loads(text)
+    
+    for row in d:
+        name = row['id']
+        icon = row["url"]
+        path = sys.argv[1] + name + ".png"
+        print(icon)
+        response = urllib.request.urlopen(icon) 
+        out_file = open(path, 'wb')
+        shutil.copyfileobj(response, out_file)
 
 def dlDataWebsite():
     response = requests.get("https://wiki.guildwars2.com/wiki/Adamant_Guard_Dagger")
@@ -49,4 +67,5 @@ def dlSpeImages(directory):
 
 
 #dlDataWebsite()
-dlSpeImages(sys.argv[1])
+dlQuagganImages()
+#dlSpeImages(sys.argv[1])
