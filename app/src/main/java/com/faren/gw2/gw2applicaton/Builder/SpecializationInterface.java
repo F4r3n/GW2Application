@@ -27,6 +27,9 @@ public class SpecializationInterface implements View.OnClickListener {
     private FrameLayout mainLinearLayout;
     int[] traitsChosen = new int[3];
 
+    int[] traitsChosen1 = new int[9];
+
+
     public SpecializationInterface(Activity activity, FrameLayout frameLayout, FrameLayout mainFrame) {
         this.mainLinearLayout = mainFrame;
         for (int i = 0; i < 3; ++i) traitsChosen[i] = -1;
@@ -36,6 +39,17 @@ public class SpecializationInterface implements View.OnClickListener {
         buttonsMajor = new HashMap<>();
         buttonsMinor = new HashMap<>();
         this.activity = activity;
+        int j = 0;
+        int k = 1;
+        for (int i = 0; i < 9; ++i) {
+            if(i%3 == 0) {
+                j++;
+                k = 1;
+            }
+            traitsChosen1[i] = activity.getResources().getIdentifier("t"+j+""+k,
+                    "id", activity.getPackageName());
+            k++;
+        }
     }
 
     public FrameLayout getFrameLayout() {
@@ -116,13 +130,13 @@ public class SpecializationInterface implements View.OnClickListener {
         }
         System.out.println("Load " + id1);
         if (id1 != -1)
-            buttonsMajor.get(id1).imageButton.setBackgroundResource(R.drawable.red_border);
+            buttonsMajor.get(traitsChosen1[id1]).imageButton.setBackgroundResource(R.drawable.red_border);
 
         if (id2 != -1)
-            buttonsMajor.get(id2).imageButton.setBackgroundResource(R.drawable.red_border);
+            buttonsMajor.get(traitsChosen1[id2 + 3]).imageButton.setBackgroundResource(R.drawable.red_border);
 
         if (id3 != -1)
-            buttonsMajor.get(id3).imageButton.setBackgroundResource(R.drawable.red_border);
+            buttonsMajor.get(traitsChosen1[id3 + 6]).imageButton.setBackgroundResource(R.drawable.red_border);
 
     }
 
@@ -228,6 +242,7 @@ public class SpecializationInterface implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int id = v.getId();
+        int posT = -1;
 
         if (id == R.id.t10 || id == R.id.t20 || id == R.id.t30) {
             getInformationMinor(id);
@@ -235,7 +250,11 @@ public class SpecializationInterface implements View.OnClickListener {
 
         if (id == R.id.t11 || id == R.id.t12 || id == R.id.t13) {
             getInformationMajor(id, null);
-            traitsChosen[0] = id;
+            if (id == R.id.t11) posT = 0;
+            if (id == R.id.t12) posT = 1;
+            if (id == R.id.t13) posT = 2;
+
+            traitsChosen[0] = posT;
             buttonsMajor.get(R.id.t11).imageButton.setBackgroundResource(R.drawable.black_border);
             buttonsMajor.get(R.id.t12).imageButton.setBackgroundResource(R.drawable.black_border);
             buttonsMajor.get(R.id.t13).imageButton.setBackgroundResource(R.drawable.black_border);
@@ -245,7 +264,12 @@ public class SpecializationInterface implements View.OnClickListener {
 
         if (id == R.id.t21 || id == R.id.t22 || id == R.id.t23) {
             getInformationMajor(id, null);
-            traitsChosen[1] = id;
+
+            if (id == R.id.t21) posT = 0;
+            if (id == R.id.t22) posT = 1;
+            if (id == R.id.t23) posT = 2;
+
+            traitsChosen[1] = posT;
 
             buttonsMajor.get(R.id.t21).imageButton.setBackgroundResource(R.drawable.black_border);
             buttonsMajor.get(R.id.t22).imageButton.setBackgroundResource(R.drawable.black_border);
@@ -255,7 +279,11 @@ public class SpecializationInterface implements View.OnClickListener {
         }
 
         if (id == R.id.t31 || id == R.id.t32 || id == R.id.t33) {
-            traitsChosen[2] = id;
+            if (id == R.id.t31) posT = 0;
+            if (id == R.id.t32) posT = 1;
+            if (id == R.id.t33) posT = 2;
+
+            traitsChosen[2] = posT;
 
             getInformationMajor(id, new Point(-20, 0));
             buttonsMajor.get(R.id.t31).imageButton.setBackgroundResource(R.drawable.black_border);

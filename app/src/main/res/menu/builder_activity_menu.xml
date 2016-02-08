@@ -21,8 +21,13 @@
                 android:icon="@drawable/ic_folder_black"
                 android:orderInCategory="100"
                 android:title="load file"
-                app:showAsAction="never">
-            </item>
+                app:showAsAction="never" />
+            <item
+
+                android:id="@+id/action_load_builds"
+                android:orderInCategory="100"
+                android:title="load builds"
+                app:showAsAction="never" />
 
         </menu>
 

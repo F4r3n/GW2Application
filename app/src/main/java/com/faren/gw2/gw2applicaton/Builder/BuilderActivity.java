@@ -255,6 +255,9 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
                     dialogLoadSpe.show(getFragmentManager(), "dialogLoadFile");
                 }
                 break;
+
+            case R.id.action_load_builds:
+                new DownloadBuilds().execute("http://metabattle.com/wiki/MetaBattle_Wiki");
             default:
                 in = false;
                 break;

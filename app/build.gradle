@@ -25,4 +25,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+    compile 'org.jsoup:jsoup:1.8.3'
 }
