@@ -142,9 +142,17 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
         specializations = new ArrayList<>(spe.values());
 
         for (int i = 0; i < NUMBER_SPE; i++) {
-            if (builderSave.spe[i] != -1) {
-                loadDataFrameLayout(specializationInterfaces[i].getFrameLayout(), builderSave.spe[i], specializations);
-                specializationInterfaces[i].specialization = specializations.get(builderSave.spe[i]);
+            if (builderSave.spe[i] != "") {
+                int index = 0;
+                int j = 0;
+                for(Specialization s : specializations) {
+                    if(s.specializationData.name.equals(builderSave.spe[i])) {
+                        index = j;
+                    }
+                    j++;
+                }
+                loadDataFrameLayout(specializationInterfaces[i].getFrameLayout(), index, specializations);
+                specializationInterfaces[i].specialization = specializations.get(index);
                 specializationInterfaces[i].init(builderSave.posTrait[NUMBER_SPE * i], builderSave.posTrait[NUMBER_SPE * i + 1], builderSave.posTrait[NUMBER_SPE * i + 2]);
             }
         }
@@ -155,9 +163,7 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
         frameLayout.setVisibility(View.VISIBLE);
         String path = specializations.get(position).specializationData.backgroundImage.iconPath;
 
-        System.out.println(path);
         imageView.setImageResource(getResources().getIdentifier(path, "drawable", getPackageName()));
-
 
         List<ImageButton> buttonsMinor = new ArrayList<>();
         buttonsMinor.add((ImageButton) frameLayout.findViewById(R.id.t10));
@@ -257,7 +263,7 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
                 break;
 
             case R.id.action_load_builds:
-                new DownloadBuilds().execute("http://metabattle.com/wiki/MetaBattle_Wiki");
+                new DownloadBuilds(pathFolder).execute("http://metabattle.com/wiki/MetaBattle_Wiki");
             default:
                 in = false;
                 break;
@@ -359,7 +365,7 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
     }
 
     public void notifySpeChoice(int id, Specialization specialization, int position) {
-        builderSave.spe[id - 1] = position;
+        builderSave.spe[id - 1] = specialization.specializationData.name;
         specializationInterfaces[id - 1].specialization = specialization;
         specializationInterfaces[id - 1].init();
     }
