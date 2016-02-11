@@ -118,9 +118,9 @@ public class ItemCollection extends BaseAdapter implements CallerBack {
                     new DownloadImage(this, imageToDls, 0).execute();
                 }
             } else {
-                System.out.println("Id " + activity.getResources().getIdentifier("no_image_found.jpg", "drawable",
+                System.out.println("Id " + activity.getResources().getIdentifier("no_image_found", "drawable",
                         activity.getPackageName()));
-                mViewHolder.itemIcon.setImageResource(activity.getResources().getIdentifier("no_image_found.jpg",
+                mViewHolder.itemIcon.setImageResource(activity.getResources().getIdentifier("no_image_found",
                         "drawable", activity.getPackageName()));
             }
         } else {

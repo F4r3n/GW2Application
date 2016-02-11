@@ -61,8 +61,14 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
 
 
     public void searchButton(View view) {
+        System.out.println("CALLED !!!!!!!!!!!!!!!!!!!!");
         Log.v("Items ", "Searching");
-        textViewInfoRequest.setText("Searching ...");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                textViewInfoRequest.setText("Searching ...");
+            }
+        });
         EditText nameText = (EditText) findViewById(R.id.nameToSearch);
         String name = nameText.getText().toString();
 
@@ -115,9 +121,14 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
         itemInfoDisplays = db.selectItem(name, levelValueMin, levelValueMax,
                 Integer.toString(minValue), Integer.toString(maxValue), rarityValues, typeValues, limit);
 
-        frameLayout.setVisibility(View.VISIBLE);
-        textViewInfoRequest.setText("Results found " + itemInfoDisplays.size());
 
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                frameLayout.setVisibility(View.VISIBLE);
+                textViewInfoRequest.setText("Results found :" + itemInfoDisplays.size());
+            }
+        });
         list.updateData(this, itemInfoDisplays);
         list.setListShown(true);
     }
