@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.faren.gw2.gw2applicaton.dyeDisplay.GWDyeDisplay;
 import com.faren.gw2.gw2applicaton.item.GWItemInfoDisplay;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
@@ -28,6 +29,34 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
     public GW2ItemHelper(Context context) {
         super(context, DB_NAME, null, database_VERSION);
         this.myContext = context;
+    }
+
+    public List<GWDyeDisplay> selectDyes(String name) {
+        List<GWDyeDisplay> gwDyeDisplays = new ArrayList<>();
+        List<String> whereArgs = new ArrayList<>();
+
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String[] tableColumns = new String[]{
+                item_name,
+                "rgbCloth",
+                "rgbLeather",
+                "rgbMetal",
+                "rid"
+        };
+
+        String orderBy = "name";
+
+        String select = "Select gwitem.name, rgbCloth, rgbLeather, rgbMetal, trading_value from gwdye, gwitem where name like \""+name+"%\" and " +
+                "gwitem.rid = gwdye.rid";
+        Cursor c = sqLiteDatabase.rawQuery(select, null);
+        System.out.println(c.getCount());
+        while (c.moveToNext()) {
+            gwDyeDisplays.add(new GWDyeDisplay(c.getString(0),
+                    c.getString(1), c.getString(2), c.getString(3), c.getString(4)));
+        }
+
+        sqLiteDatabase.close();
+        return gwDyeDisplays;
     }
 
     public List<GWItemInfoDisplay> selectItem(String name, String levelMin,
