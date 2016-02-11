@@ -8,6 +8,7 @@
         android:id="@+id/itemIcon"
         android:contentDescription="@string/image"
         android:src="@drawable/no_image_found"
+        android:scaleType="fitCenter"
         android:layout_width="60dp"
         android:layout_height="60dp" />
 
@@ -70,6 +71,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:contentDescription="@string/image"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ui_coin_gold" />
 
             <TextView
@@ -84,6 +86,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ui_coin_silver"
                 android:contentDescription="@string/image" />
 
@@ -100,6 +103,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ui_coin_copper"
+                android:scaleType="fitCenter"
                 android:contentDescription="@string/image" />
 
             <TextView
@@ -127,6 +131,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ui_coin_gold"
                 android:contentDescription="@string/image" />
 
@@ -143,6 +148,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ui_coin_silver"
+                android:scaleType="fitCenter"
                 android:contentDescription="@string/image" />
 
             <TextView
@@ -158,6 +164,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ui_coin_copper"
+                android:scaleType="fitCenter"
                 android:contentDescription="@string/image" />
 
             <TextView

@@ -46,6 +46,16 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Results found : "
+            android:id="@+id/itemsFoundView"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:gravity="center"
+            />
+
 
         <FrameLayout
             android:id="@+id/listFragment"
