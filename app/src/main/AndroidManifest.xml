@@ -36,6 +36,10 @@
             android:theme="@style/Theme.AppCompat.Light">
         </activity>
         <activity
+            android:name="com.faren.gw2.gw2applicaton.dyeDisplay.DyesActivity"
+            android:theme="@style/Theme.AppCompat.Light">
+        </activity>
+        <activity
             android:name="com.faren.gw2.gw2applicaton.KeyManagerActivity"
             android:theme="@style/Theme.AppCompat.Light">
         </activity>

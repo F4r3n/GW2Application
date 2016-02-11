@@ -61,7 +61,6 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
 
 
     public void searchButton(View view) {
-        System.out.println("CALLED !!!!!!!!!!!!!!!!!!!!");
         Log.v("Items ", "Searching");
         runOnUiThread(new Runnable() {
             @Override

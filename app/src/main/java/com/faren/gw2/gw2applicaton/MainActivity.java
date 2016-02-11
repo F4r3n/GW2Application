@@ -17,6 +17,7 @@ import com.faren.gw2.gw2applicaton.Builder.BuilderActivity;
 import com.faren.gw2.gw2applicaton.Builder.DialogSpeMean;
 import com.faren.gw2.gw2applicaton.Builder.SpecializationManager;
 import com.faren.gw2.gw2applicaton.Tool.FileManagerTool;
+import com.faren.gw2.gw2applicaton.dyeDisplay.DyesActivity;
 import com.faren.gw2.gw2applicaton.itemDisplay.ItemsActivity;
 
 import org.json.JSONArray;
@@ -96,6 +97,11 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
 
     public void onItemButton(View view) {
         Intent intent = new Intent(this, ItemsActivity.class);
+        startActivity(intent);
+    }
+
+    public void onDyeButton(View view) {
+        Intent intent = new Intent(this, DyesActivity.class);
         startActivity(intent);
     }
 

@@ -2,14 +2,11 @@ package com.faren.gw2.gw2applicaton.dyeDisplay;
 
 import android.graphics.Color;
 
-/**
- * Created by guillaume2 on 06/02/16.
- */
 public class GWDyeDisplay {
     public String name;
-    public Color rgbCloth;
-    public Color rgbMetal;
-    public Color rgbLeather;
+    public int rgbCloth;
+    public int rgbMetal;
+    public int rgbLeather;
     public String trading_value;
 
     public GWDyeDisplay(String name, String rgbCloth, String rgbMetal, String rgbLeather, String trading_value) {
@@ -20,8 +17,9 @@ public class GWDyeDisplay {
         this.rgbLeather = toColor(rgbLeather);
     }
 
-    private Color toColor(String color) {
-        return new Color();
+    private int toColor(String color) {
+        String[] colorSplit = color.replace("[", "").replace("]", "").replace(" ","").split(",");
+        return Color.rgb(Integer.parseInt(colorSplit[0]), Integer.parseInt(colorSplit[1]), Integer.parseInt(colorSplit[2]));
     }
 
 }

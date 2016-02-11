@@ -67,7 +67,7 @@
                 android:layout_height="64dp"
                 android:background="@drawable/flame_and_frost_dye"
                 android:id="@+id/button"
-                android:onClick="onItemButton"
+                android:onClick="onDyeButton"
                 android:layout_marginBottom="@dimen/button_bottom"
                 android:enabled="true"
                 android:visibility="visible"

@@ -11,7 +11,6 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-
         <Button
             android:id="@+id/updateItems"
             android:layout_width="wrap_content"
@@ -41,11 +40,18 @@
                 android:background="#000000"
                 android:onClick="searchButton"
                 android:text="@string/search"
-                android:textColor="#ffffff"
-                />
+                android:textColor="#ffffff" />
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/itemsFoundView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Results found : "
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
         <FrameLayout
             android:id="@+id/listFragment"
@@ -63,7 +69,6 @@
 
 
     </LinearLayout>
-
 
 
 </android.support.v4.widget.DrawerLayout>

@@ -46,7 +46,7 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
 
         String orderBy = "name";
 
-        String select = "Select gwitem.name, rgbCloth, rgbLeather, rgbMetal, trading_value from gwdye, gwitem where name like \""+name+"%\" and " +
+        String select = "Select gwitem.name, rgbCloth, rgbLeather, rgbMetal, trading_value from gwdye, gwitem where gwitem.name like \""+name+"%\" and " +
                 "gwitem.rid = gwdye.rid";
         Cursor c = sqLiteDatabase.rawQuery(select, null);
         System.out.println(c.getCount());

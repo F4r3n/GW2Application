@@ -7,15 +7,13 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.faren.gw2.gw2applicaton.CallerBack;
-import com.faren.gw2.gw2applicaton.item.GWItemInfoDisplay;
-import com.faren.gw2.gw2applicaton.itemDisplay.ItemCollection;
 
 import java.util.List;
 
 
 public class FragmentDye extends ListFragment implements CallerBack {
 
-    private List<GWItemInfoDisplay> gwItemInfoDisplays;
+    private List<GWDyeDisplay> gwDyeDisplays;
     private Activity activity;
 
 
@@ -24,10 +22,10 @@ public class FragmentDye extends ListFragment implements CallerBack {
     }
 
 
-    public void updateData(Activity activity, List<GWItemInfoDisplay> items) {
-        this.gwItemInfoDisplays = items;
+    public void updateData(Activity activity, List<GWDyeDisplay> items) {
+        this.gwDyeDisplays = items;
         this.activity = activity;
-        setListAdapter(new ItemCollection(activity, gwItemInfoDisplays));
+        setListAdapter(new DyeCollection(activity, gwDyeDisplays));
     }
 
     public void onListItemClick(ListView listView, View view, int position, long id) {
