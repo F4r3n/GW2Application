@@ -59,7 +59,7 @@ public class FragmentBosses extends ListFragment implements CallerBack {
                     (hourT + TimeZone.getDefault().getRawOffset() / 3600000) * 3600 + minutesT * 60);
 
 
-            if (diffSeconds < 0)
+            if (diffSeconds < -15*60)
                 itemsToRemove.add(b);
         }
         gwWorldBosses.removeAll(itemsToRemove);

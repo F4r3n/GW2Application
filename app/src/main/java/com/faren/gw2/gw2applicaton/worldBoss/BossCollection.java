@@ -2,14 +2,18 @@ package com.faren.gw2.gw2applicaton.worldBoss;
 
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.faren.gw2.gw2applicaton.R;
@@ -70,21 +74,31 @@ public class BossCollection extends BaseAdapter {
         final int hour = c.get(Calendar.HOUR_OF_DAY);
         int minutesT = Integer.parseInt(time.split(":")[1]);
         int hourT = Integer.parseInt(time.split(":")[0]);
-        System.out.println(hourT + ":" + minutesT);
 
-        int diffSeconds =  -((hour)*3600 + minutes*60) + (
-                (hourT + TimeZone.getDefault().getRawOffset()/3600000)*3600 + minutesT*60);
+        int diffSeconds = -((hour) * 3600 + minutes * 60) + (
+                (hourT + TimeZone.getDefault().getRawOffset() / 3600000) * 3600 + minutesT * 60);
 
 
-        int diffHours = diffSeconds/3600;
-        int diffMinutes = (diffSeconds%3600)/60;
+        int diffHours = diffSeconds / 3600;
+        int diffMinutes = (diffSeconds % 3600) / 60;
         mViewHolder.timeBoss.setText(String.format("%02d", diffHours) + ":" + String.format("%02d", diffMinutes));
 
 
-        if (diffSeconds < 0)
-            mViewHolder.timeBoss.setText("Done");
+        if (diffMinutes <= 0) {
+            mViewHolder.bossLayout.setBackgroundColor(Color.RED);
+            mViewHolder.timeBoss.setText("In progress ...");
+        } else mViewHolder.bossLayout.setBackgroundColor(Color.WHITE);
         mViewHolder.nameBoss.setText(currentListData.nameBoss);
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Uri uri = Uri.parse(currentListData.url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                activity.startActivity(intent);
+                return false;
+            }
 
+        });
 
         return convertView;
     }
@@ -94,11 +108,13 @@ public class BossCollection extends BaseAdapter {
         ImageView imageBoss;
         TextView nameBoss;
         TextView timeBoss;
+        LinearLayout bossLayout;
 
         public MyViewHolder(View item) {
             imageBoss = (ImageView) item.findViewById(R.id.imageBoss);
             nameBoss = (TextView) item.findViewById(R.id.bossName);
             timeBoss = (TextView) item.findViewById(R.id.bossTimer);
+            bossLayout = (LinearLayout) item.findViewById(R.id.bossLinearLayout);
 
         }
     }
