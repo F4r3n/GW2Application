@@ -5,6 +5,7 @@ import sys
 import sqlite3
 import os
 from shutil import copyfile
+import worldBoss
 
 nameDatabase = "gw2item.db"
 def createDatabase():
@@ -35,7 +36,8 @@ def createDatabaseDyes():
     c.execute("drop table if exists gwdye")
     conn.commit()
     c.execute('''CREATE TABLE gwdye
-             (rid INTEGER, 
+             (rid INTEGER,
+                item INTEGER,
                 name text,
                 rgbCloth text,
                 rgbLeather text,
@@ -45,7 +47,7 @@ def createDatabaseDyes():
     conn.close()
 
 def insertDye(cursor, table):
-    cursor.executemany("insert into gwdye ('rid','name','rgbCloth','rgbLeather', 'rgbMetal') values (?,?,?,?,?)",table)
+    cursor.executemany("insert into gwdye ('rid','item','name','rgbCloth','rgbLeather', 'rgbMetal') values (?,?,?,?,?,?)",table)
 
 def prepareForAndroid():
     print("Prepare...")
@@ -188,8 +190,11 @@ def fillDBDye():
     cursor = conn.cursor()
     print(len(colors))
     table = []
+    item = ""
     for color in colors:
-        table.append((color["id"], color["name"], str(color["cloth"]["rgb"]),
+        if "item" in color:
+            item = color["item"]
+        table.append((color["id"],item, color["name"], str(color["cloth"]["rgb"]),
                     str(color["leather"]["rgb"]),
                     str(color["metal"]["rgb"])))
     insertDye(cursor, table)
@@ -197,11 +202,13 @@ def fillDBDye():
     conn.commit()
     conn.close()
 
-
-#createDatabase()
-#prepareForAndroid()
-#fillDatabase()
-#fillDatabaseTradingPost()
-#copyfile(nameDatabase, "../app/src/main/assets/databases/" + nameDatabase)
-createDatabaseDyes()
-fillDBDye()
+if __name__ == "__main__":
+    #createDatabase()
+    #prepareForAndroid()
+    #fillDatabase()
+    #fillDatabaseTradingPost()
+    #createDatabaseDyes()
+    #fillDBDye()
+    worldBoss.createBossDataBase()
+    worldBoss.dlTimer()
+    copyfile(nameDatabase, "../app/src/main/assets/databases/" + nameDatabase)

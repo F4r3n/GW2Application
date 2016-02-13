@@ -53,6 +53,9 @@ public class ItemsActivity extends AppCompatActivity implements CallerBack {
         if (fm.findFragmentById(R.id.listFragment) == null) {
             list = new FragmentItems();
             fm.beginTransaction().add(R.id.listFragment, list).commit();
+        } else {
+            list = new FragmentItems();
+            fm.beginTransaction().replace(R.id.listFragment, list).commit();
         }
         frameLayout = (FrameLayout) findViewById(R.id.listFragment);
         frameLayout.setVisibility(View.INVISIBLE);

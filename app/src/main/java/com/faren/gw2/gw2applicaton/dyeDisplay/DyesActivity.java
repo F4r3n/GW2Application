@@ -34,6 +34,9 @@ public class DyesActivity extends AppCompatActivity implements CallerBack {
         if (fm.findFragmentById(R.id.listFragment) == null) {
             list = new FragmentDye();
             fm.beginTransaction().add(R.id.listFragment, list).commit();
+        } else {
+            list = new FragmentDye();
+            fm.beginTransaction().replace(R.id.listFragment, list).commit();
         }
         frameLayout = (FrameLayout) findViewById(R.id.listFragment);
         frameLayout.setVisibility(View.INVISIBLE);

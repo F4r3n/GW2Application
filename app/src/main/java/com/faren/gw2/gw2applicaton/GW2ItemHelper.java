@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.faren.gw2.gw2applicaton.dyeDisplay.GWDyeDisplay;
 import com.faren.gw2.gw2applicaton.item.GWItemInfoDisplay;
+import com.faren.gw2.gw2applicaton.worldBoss.GWWorldBoss;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
@@ -31,6 +32,23 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
         this.myContext = context;
     }
 
+    public List<GWWorldBoss> selectBosses() {
+        List<GWWorldBoss> gwWorldBosses = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        String select = "Select name, time, url from gwBoss";
+        Cursor c = sqLiteDatabase.rawQuery(select, null);
+        System.out.println(c.getCount());
+        while (c.moveToNext()) {
+            gwWorldBosses.add(new GWWorldBoss(c.getString(0),
+                    c.getString(1), c.getString(2)));
+        }
+
+        sqLiteDatabase.close();
+
+        return gwWorldBosses;
+    }
+
     public List<GWDyeDisplay> selectDyes(String name) {
         List<GWDyeDisplay> gwDyeDisplays = new ArrayList<>();
         List<String> whereArgs = new ArrayList<>();
@@ -46,8 +64,8 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
 
         String orderBy = "name";
 
-        String select = "Select gwitem.name, rgbCloth, rgbLeather, rgbMetal, trading_value from gwdye, gwitem where gwitem.name like \""+name+"%\" and " +
-                "gwitem.rid = gwdye.rid";
+        String select = "Select gwitem.name, rgbCloth, rgbLeather, rgbMetal, trading_value from gwdye, gwitem where gwitem.name like \"" + name + "%\" and " +
+                "gwitem.rid = gwdye.item";
         Cursor c = sqLiteDatabase.rawQuery(select, null);
         System.out.println(c.getCount());
         while (c.moveToNext()) {
@@ -80,7 +98,7 @@ public class GW2ItemHelper extends SQLiteAssetHelper {
                 "rid"
         };
         String whereClause = "";
-        if(!"".equals(name)) {
+        if (!"".equals(name)) {
             whereArgs.add(name + "%");
             whereClause = "name LIKE ? and";
         }

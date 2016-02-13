@@ -19,6 +19,7 @@ import com.faren.gw2.gw2applicaton.Builder.SpecializationManager;
 import com.faren.gw2.gw2applicaton.Tool.FileManagerTool;
 import com.faren.gw2.gw2applicaton.dyeDisplay.DyesActivity;
 import com.faren.gw2.gw2applicaton.itemDisplay.ItemsActivity;
+import com.faren.gw2.gw2applicaton.worldBoss.worldBossActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
                 //Todo disable all buttons first
 
 
-
                 String r = data.getStringExtra("Result");
                 String[] to = r.split(" ");
                 for (String t : to) {
@@ -102,6 +102,11 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
 
     public void onDyeButton(View view) {
         Intent intent = new Intent(this, DyesActivity.class);
+        startActivity(intent);
+    }
+
+    public void onBossButton(View view) {
+        Intent intent = new Intent(this, worldBossActivity.class);
         startActivity(intent);
     }
 
