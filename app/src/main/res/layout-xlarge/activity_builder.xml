@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/builder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#484444">
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <Button
+                    android:id="@+id/speChange1"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:background="#000000"
+                    android:drawableLeft="@drawable/ic_keyboard_arrow_right_white_48dp"
+                    android:drawableStart="@drawable/ic_keyboard_arrow_right_white_48dp"
+                    android:onClick="changeSpe" />
+
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
+
+                    <include
+                        android:id="@+id/spe1"
+                        layout="@layout/layout_specialization" />
+
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/speChange2"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:background="#000000"
+                    android:drawableLeft="@drawable/ic_keyboard_arrow_right_white_48dp"
+                    android:drawableStart="@drawable/ic_keyboard_arrow_right_white_48dp"
+                    android:onClick="changeSpe" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
+
+                    <include
+                        android:id="@+id/spe2"
+                        layout="@layout/layout_specialization" />
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/speChange3"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:background="#000000"
+                    android:drawableLeft="@drawable/ic_keyboard_arrow_right_white_48dp"
+                    android:drawableStart="@drawable/ic_keyboard_arrow_right_white_48dp"
+                    android:onClick="changeSpe" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
+
+                    <include
+                        android:id="@+id/spe3"
+                        layout="@layout/layout_specialization" />
+
+                </HorizontalScrollView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <com.faren.gw2.gw2applicaton.ToolTip.ToolTipLinearLayout
+        android:id="@+id/toolTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/style_tooltip" />
+</FrameLayout>

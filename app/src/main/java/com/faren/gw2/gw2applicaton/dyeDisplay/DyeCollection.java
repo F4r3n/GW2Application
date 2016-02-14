@@ -1,6 +1,8 @@
 package com.faren.gw2.gw2applicaton.dyeDisplay;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,9 +72,17 @@ public class DyeCollection extends BaseAdapter {
         mViewHolder.sp.setText(String.format("%d", silverPrice));
         mViewHolder.cp.setText(String.format("%d", copperPrice));
 
-        mViewHolder.color1.setBackgroundColor(currentListData.rgbCloth);
-        mViewHolder.color2.setBackgroundColor(currentListData.rgbLeather);
-        mViewHolder.color3.setBackgroundColor(currentListData.rgbMetal);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mViewHolder.color1.setBackground(new ColorDrawable(currentListData.rgbCloth));
+            mViewHolder.color2.setBackground(new ColorDrawable(currentListData.rgbLeather));
+            mViewHolder.color3.setBackground(new ColorDrawable(currentListData.rgbMetal));
+        } else {
+            mViewHolder.color1.setBackgroundDrawable(new ColorDrawable(currentListData.rgbCloth));
+            mViewHolder.color2.setBackgroundDrawable(new ColorDrawable(currentListData.rgbLeather));
+            mViewHolder.color3.setBackgroundDrawable(new ColorDrawable(currentListData.rgbMetal));
+        }
+
+
 
 
         return convertView;

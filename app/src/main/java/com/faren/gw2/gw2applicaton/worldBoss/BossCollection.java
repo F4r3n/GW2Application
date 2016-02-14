@@ -4,9 +4,11 @@ package com.faren.gw2.gw2applicaton.worldBoss;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,9 +87,19 @@ public class BossCollection extends BaseAdapter {
 
 
         if (diffMinutes <= 0) {
-            mViewHolder.bossLayout.setBackgroundColor(Color.RED);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mViewHolder.bossLayout.setBackground(new ColorDrawable(Color.RED));
+            } else {
+                mViewHolder.bossLayout.setBackgroundDrawable(new ColorDrawable(Color.RED));
+            }
             mViewHolder.timeBoss.setText("In progress ...");
-        } else mViewHolder.bossLayout.setBackgroundColor(Color.WHITE);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mViewHolder.bossLayout.setBackground(new ColorDrawable(Color.WHITE));
+            } else {
+                mViewHolder.bossLayout.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+            }
+        }
         mViewHolder.nameBoss.setText(currentListData.nameBoss);
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
