@@ -81,26 +81,43 @@ public class BossCollection extends BaseAdapter {
                 (hourT + TimeZone.getDefault().getRawOffset() / 3600000) * 3600 + minutesT * 60);
 
 
-        int diffHours = diffSeconds / 3600;
-        int diffMinutes = (diffSeconds % 3600) / 60;
-        mViewHolder.timeBoss.setText(String.format("%02d", diffHours) + ":" + String.format("%02d", diffMinutes));
+        final int diffHours = diffSeconds / 3600;
+        final int diffMinutes = (diffSeconds % 3600) / 60;
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mViewHolder.timeBoss.setText(String.format("%02d", diffHours) + ":" + String.format("%02d", diffMinutes));
+                mViewHolder.nameBoss.setText(currentListData.nameBoss);
+            }
+        });
 
 
         if (diffMinutes <= 0) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mViewHolder.bossLayout.setBackground(new ColorDrawable(Color.RED));
-            } else {
-                mViewHolder.bossLayout.setBackgroundDrawable(new ColorDrawable(Color.RED));
-            }
-            mViewHolder.timeBoss.setText("In progress ...");
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        mViewHolder.bossLayout.setBackground(new ColorDrawable(Color.RED));
+                    } else {
+                        mViewHolder.bossLayout.setBackgroundDrawable(new ColorDrawable(Color.RED));
+                    }
+                    mViewHolder.timeBoss.setText("In progress ...");
+                }
+            });
+
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mViewHolder.bossLayout.setBackground(new ColorDrawable(Color.WHITE));
-            } else {
-                mViewHolder.bossLayout.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-            }
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        mViewHolder.bossLayout.setBackground(new ColorDrawable(Color.WHITE));
+                    } else {
+                        mViewHolder.bossLayout.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                    }
+                }
+            });
         }
-        mViewHolder.nameBoss.setText(currentListData.nameBoss);
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

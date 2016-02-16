@@ -47,7 +47,7 @@ public class DyeCollection extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        MyViewHolder mViewHolder;
+        final MyViewHolder mViewHolder;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.layout_list_dye, parent, false);
@@ -63,26 +63,29 @@ public class DyeCollection extends BaseAdapter {
 
 
         int valuePrice = Integer.parseInt(currentListData.trading_value);
-        int goldPrice = valuePrice / 10000;
-        int silverPrice = (valuePrice % 10000) / 100;
-        int copperPrice = valuePrice - goldPrice * 10000 - silverPrice * 100;
+        final int goldPrice = valuePrice / 10000;
+        final int silverPrice = (valuePrice % 10000) / 100;
+        final int copperPrice = valuePrice - goldPrice * 10000 - silverPrice * 100;
         //System.out.println("Item " + mViewHolder.goldValue + " " + goldPrice + " " + silverPrice + " " + copperPrice);
 
-        mViewHolder.gp.setText(String.format("%d", goldPrice));
-        mViewHolder.sp.setText(String.format("%d", silverPrice));
-        mViewHolder.cp.setText(String.format("%d", copperPrice));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mViewHolder.color1.setBackground(new ColorDrawable(currentListData.rgbCloth));
-            mViewHolder.color2.setBackground(new ColorDrawable(currentListData.rgbLeather));
-            mViewHolder.color3.setBackground(new ColorDrawable(currentListData.rgbMetal));
-        } else {
-            mViewHolder.color1.setBackgroundDrawable(new ColorDrawable(currentListData.rgbCloth));
-            mViewHolder.color2.setBackgroundDrawable(new ColorDrawable(currentListData.rgbLeather));
-            mViewHolder.color3.setBackgroundDrawable(new ColorDrawable(currentListData.rgbMetal));
-        }
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                mViewHolder.gp.setText(String.format("%d", goldPrice));
+                mViewHolder.sp.setText(String.format("%d", silverPrice));
+                mViewHolder.cp.setText(String.format("%d", copperPrice));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    mViewHolder.color1.setBackground(new ColorDrawable(currentListData.rgbCloth));
+                    mViewHolder.color2.setBackground(new ColorDrawable(currentListData.rgbLeather));
+                    mViewHolder.color3.setBackground(new ColorDrawable(currentListData.rgbMetal));
+                } else {
+                    mViewHolder.color1.setBackgroundDrawable(new ColorDrawable(currentListData.rgbCloth));
+                    mViewHolder.color2.setBackgroundDrawable(new ColorDrawable(currentListData.rgbLeather));
+                    mViewHolder.color3.setBackgroundDrawable(new ColorDrawable(currentListData.rgbMetal));
+                }
 
-
+            }
+        });
 
 
         return convertView;

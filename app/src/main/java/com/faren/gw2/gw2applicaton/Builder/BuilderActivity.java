@@ -263,7 +263,7 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
                 break;
 
             case R.id.action_load_builds:
-                new DownloadBuilds(pathFolder).execute("http://metabattle.com/wiki/MetaBattle_Wiki");
+                new DownloadBuilds(pathFolder).execute("http://metabattle.com/wiki/Conquest");
             default:
                 in = false;
                 break;

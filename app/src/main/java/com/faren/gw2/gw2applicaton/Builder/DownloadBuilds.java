@@ -63,12 +63,12 @@ public class DownloadBuilds extends AsyncTask<String, Void, Void> {
         try {
             // Connect to the web site
             Document document = Jsoup.connect(params[0]).timeout(10 * 1000).get();
-            Elements d = document.select("div.builds-intro-pvp").select("div.builds-intro-list");
+            Elements d = document.select("div.build-card-c");
             for (org.jsoup.nodes.Element e : d) {
-                Elements ps = d.select("p").select("a[href]");
-                for (org.jsoup.nodes.Element p : ps) {
+                Elements urls = d.select("div.title").select("a");
+                for (org.jsoup.nodes.Element url : urls) {
                     String save = "{\"posTrait\":[";
-                    String address = p.attr("href");
+                    String address = url.attr("href");
                     System.out.println(address);
                     Document profession = Jsoup.connect("http://metabattle.com" + address).timeout(10*1000).get();
 
