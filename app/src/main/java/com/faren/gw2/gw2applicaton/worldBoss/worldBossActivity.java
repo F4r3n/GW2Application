@@ -1,26 +1,33 @@
 package com.faren.gw2.gw2applicaton.worldBoss;
 
+import android.app.AlarmManager;
 import android.app.FragmentManager;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.faren.gw2.gw2applicaton.CallerBack;
 import com.faren.gw2.gw2applicaton.GW2ItemHelper;
+import com.faren.gw2.gw2applicaton.NotificationPublisher;
 import com.faren.gw2.gw2applicaton.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
 public class worldBossActivity extends AppCompatActivity implements CallerBack {
 
-    private List<GWWorldBoss> notificationBoss = new ArrayList<>();
+    private HashMap<GWWorldBoss, PendingIntent> notificationBoss = new HashMap<>();
     private NotificationManager notificationManager;
 
     @Override
@@ -55,9 +62,32 @@ public class worldBossActivity extends AppCompatActivity implements CallerBack {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
+    private Notification getNotification(String content, long when) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            Notification.Builder notification = new Notification.Builder(this)
+                    .setWhen(when)
+                    .setSmallIcon(R.mipmap.icon)
+                    .setContentTitle("GWWorldBoss")
+                    .setContentText(content);
+
+            Notification n = notification.build();
+            n.defaults |= Notification.DEFAULT_SOUND;
+            n.defaults |= Notification.DEFAULT_VIBRATE;
+            return n;
+        } else {
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(this)
+                    .setWhen(when)
+                    .setSmallIcon(R.mipmap.icon)
+                    .setContentTitle("GWWorldBoss")
+                    .setContentText(content);
+            Notification n = notification.build();
+            n.defaults |= Notification.DEFAULT_SOUND;
+            n.defaults |= Notification.DEFAULT_VIBRATE;
+            return n;
+        }
+    }
+
     public void addNotificationList(GWWorldBoss boss) {
-        notificationBoss.add(boss);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         String time = boss.time.replaceFirst(" UTC", "");
         Calendar c = Calendar.getInstance();
         int minutes = c.get(Calendar.MINUTE);
@@ -66,19 +96,25 @@ public class worldBossActivity extends AppCompatActivity implements CallerBack {
         int hourT = Integer.parseInt(time.split(":")[0]);
         int diffSeconds = -((hour) * 3600 + minutes * 60) + (
                 (hourT + TimeZone.getDefault().getRawOffset() / 3600000) * 3600 + minutesT * 60);
-        long when = System.currentTimeMillis() + diffSeconds*1000;
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setWhen(when)
-                .setSmallIcon(R.mipmap.icon)
-                .setContentTitle("GWWorldBoss")
-                .setContentText(boss.nameBoss);
+        long when = System.currentTimeMillis() + diffSeconds * 1000;
 
+        long futureInMillis = SystemClock.elapsedRealtime() + diffSeconds* 1000;
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        final int _id = (int) System.currentTimeMillis();
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, _id);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, getNotification(boss.nameBoss, when));
 
-        notificationManager.notify(9999, builder.build());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, _id, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        notificationBoss.put(boss, pendingIntent);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
         Toast.makeText(this, boss.nameBoss + " is followed", Toast.LENGTH_SHORT).show();
     }
 
     public void removeNotificationList(GWWorldBoss boss) {
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(notificationBoss.get(boss));
         notificationBoss.remove(boss);
         Toast.makeText(this, boss.nameBoss + " is removed from the following list", Toast.LENGTH_SHORT).show();
     }

@@ -71,7 +71,7 @@ public class BossCollection extends BaseAdapter {
         int minutesT = Integer.parseInt(time.split(":")[1]);
         int hourT = Integer.parseInt(time.split(":")[0]);
 
-        int diffSeconds = -((hour) * 3600 + minutes * 60) + (
+        final int diffSeconds = -((hour) * 3600 + minutes * 60) + (
                 (hourT + TimeZone.getDefault().getRawOffset() / 3600000) * 3600 + minutesT * 60);
 
 
@@ -126,20 +126,21 @@ public class BossCollection extends BaseAdapter {
         mViewHolder.imageBoss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(position);
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        currentListData.isFollowed = !currentListData.isFollowed;
-                        if (currentListData.isFollowed) {
-                            activity.addNotificationList(currentListData);
-                            mViewHolder.imageBoss.setBackgroundColor(Color.LTGRAY);
-                        } else {
-                            activity.removeNotificationList(currentListData);
-                            mViewHolder.imageBoss.setBackgroundColor(Color.BLACK);
+                if (diffSeconds > 0) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            currentListData.isFollowed = !currentListData.isFollowed;
+                            if (currentListData.isFollowed) {
+                                activity.addNotificationList(currentListData);
+                                mViewHolder.imageBoss.setBackgroundColor(Color.LTGRAY);
+                            } else {
+                                activity.removeNotificationList(currentListData);
+                                mViewHolder.imageBoss.setBackgroundColor(Color.BLACK);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 
