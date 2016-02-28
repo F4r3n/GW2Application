@@ -1,12 +1,9 @@
 package com.faren.gw2.gw2applicaton.worldBoss;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -27,18 +24,15 @@ import java.util.TimeZone;
 public class BossCollection extends BaseAdapter {
     private LayoutInflater inflater;
     private List<GWWorldBoss> gwWorldBosses;
-    private Activity activity;
+    private worldBossActivity activity;
     private String path;
-    private ConnectivityManager connectivityManager;
-    private NetworkInfo ni;
 
-    public BossCollection(Activity activity, List<GWWorldBoss> gwItemInfoDisplayList) {
+
+    public BossCollection(worldBossActivity activity, List<GWWorldBoss> gwItemInfoDisplayList) {
         inflater = LayoutInflater.from(activity);
         gwWorldBosses = gwItemInfoDisplayList;
         this.activity = activity;
         path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/GW2App/boss/images/";
-
-
     }
 
     @Override
@@ -57,7 +51,7 @@ public class BossCollection extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         final MyViewHolder mViewHolder;
 
@@ -93,7 +87,7 @@ public class BossCollection extends BaseAdapter {
         });
 
 
-        if (diffMinutes <= 0) {
+        if (diffSeconds <= 0) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -118,7 +112,7 @@ public class BossCollection extends BaseAdapter {
                 }
             });
         }
-        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+        mViewHolder.bossLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Uri uri = Uri.parse(currentListData.url);
@@ -127,6 +121,37 @@ public class BossCollection extends BaseAdapter {
                 return false;
             }
 
+        });
+
+        mViewHolder.imageBoss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(position);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        currentListData.isFollowed = !currentListData.isFollowed;
+                        if (currentListData.isFollowed) {
+                            activity.addNotificationList(currentListData);
+                            mViewHolder.imageBoss.setBackgroundColor(Color.LTGRAY);
+                        } else {
+                            activity.removeNotificationList(currentListData);
+                            mViewHolder.imageBoss.setBackgroundColor(Color.BLACK);
+                        }
+                    }
+                });
+            }
+        });
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (currentListData.isFollowed) {
+                    mViewHolder.imageBoss.setBackgroundColor(Color.LTGRAY);
+                } else {
+                    mViewHolder.imageBoss.setBackgroundColor(Color.BLACK);
+                }
+            }
         });
 
         return convertView;

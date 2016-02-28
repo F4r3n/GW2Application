@@ -24,7 +24,7 @@ public class FragmentBosses extends ListFragment implements CallerBack {
     }
 
 
-    public void updateData(Activity activity, List<GWWorldBoss> items) {
+    public void updateData(worldBossActivity activity, List<GWWorldBoss> items) {
         this.gwWorldBosses = items;
         this.activity = activity;
         changeData();
