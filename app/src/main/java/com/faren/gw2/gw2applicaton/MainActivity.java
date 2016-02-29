@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.crashlytics.android.Crashlytics;
 import com.faren.gw2.gw2applicaton.Builder.BuilderActivity;
 import com.faren.gw2.gw2applicaton.Builder.DialogSpeMean;
 import com.faren.gw2.gw2applicaton.Builder.SpecializationManager;
@@ -27,6 +28,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity implements CallerBack, DialogSpeMean.DialogListener {
 
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
 
         setContentView(R.layout.activity_main);
         dialogSpeMean = new DialogSpeMean();
@@ -78,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements CallerBack, Dialo
         super.onResume();
         requestManager.initProgressDialog(this);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

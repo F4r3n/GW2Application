@@ -129,16 +129,6 @@
                     android:visibility="visible" />
 
 
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/black_button"
-                    android:text="Watch Builds"
-                    android:id="@+id/watchBuild"
-                    android:onClick="getInfo"
-
-                    android:textColor="#FFFFFF"
-                    android:visibility="invisible" />
             </LinearLayout>
 
             <Button

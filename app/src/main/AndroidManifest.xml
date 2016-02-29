@@ -53,6 +53,9 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <receiver android:name=".NotificationPublisher" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="9f6217f916fd1f33414b14c716ca9a658ef7a414" />
     </application>
 
 </manifest>
