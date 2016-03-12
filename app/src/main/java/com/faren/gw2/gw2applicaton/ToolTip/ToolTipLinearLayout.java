@@ -98,7 +98,7 @@ public class ToolTipLinearLayout extends LinearLayout implements View.OnClickLis
         if (toolTip.getColor() != 0) {
             titleView.setTextColor(toolTip.getColorTitle());
         }
-        
+
 
         if (!toolTip.getImages().isEmpty())
             addAttributeView(toolTip.getImages(), toolTip.getStrings());
