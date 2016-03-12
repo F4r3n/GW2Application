@@ -51,13 +51,22 @@ public class ToolTipLinearLayout extends LinearLayout implements View.OnClickLis
         linearLayoutInside.removeAllViewsInLayout();
         linearsLayouts.clear();
         int index = 0;
+        LinearLayout.LayoutParams layoutParamsImage = new LinearLayout.LayoutParams(100, 100);
+        layoutParamsImage.width = (int) getResources().getDimension(R.dimen.imageview_width);
+        layoutParamsImage.height = (int) getResources().getDimension(R.dimen.imageview_height);
+
         for (Bitmap image : images) {
             LinearLayout.LayoutParams imParams =
                     new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             LinearLayout linearLayout = new LinearLayout(getContext());
+            linearLayout.setOrientation(HORIZONTAL);
             linearLayout.setLayoutParams(imParams);
 
             ImageView imSex = new ImageView(getContext());
+
+            imSex.setLayoutParams(layoutParamsImage);
+
+            imSex.setScaleType(ImageView.ScaleType.FIT_XY);
             imSex.setImageBitmap(image);
             linearLayout.addView(imSex);
 
@@ -89,17 +98,7 @@ public class ToolTipLinearLayout extends LinearLayout implements View.OnClickLis
         if (toolTip.getColor() != 0) {
             titleView.setTextColor(toolTip.getColorTitle());
         }
-
-        /*if (toolTip.getView() != null) {
-            float offsetX = 0.0f;
-            float offsetY = 0.0f;
-            if (toolTip.getOffset() != null) {
-                offsetX = toolTip.getOffset().x;
-                offsetY = toolTip.getOffset().y;
-            }
-            setX(toolTip.getView().getX() + offsetX);
-            setY(toolTip.getView().getY() + offsetY);
-        }*/
+        
 
         if (!toolTip.getImages().isEmpty())
             addAttributeView(toolTip.getImages(), toolTip.getStrings());
