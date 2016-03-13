@@ -1,6 +1,8 @@
 package com.faren.gw2.gw2applicaton.Builder;
 
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.faren.gw2.gw2applicaton.Tool.FileManagerTool;
 
@@ -14,10 +16,13 @@ import java.util.HashMap;
 
 
 public class DownloadBuilds extends AsyncTask<String, Void, Void> {
-    private HashMap<String,String> builds = new HashMap<>();
+    private HashMap<String, String> builds = new HashMap<>();
     private String path = "";
-    public DownloadBuilds(String path) {
+    private Activity activity;
+
+    public DownloadBuilds(Activity activity, String path) {
         this.path = path;
+        this.activity = activity;
     }
 
     @Override
@@ -30,7 +35,7 @@ public class DownloadBuilds extends AsyncTask<String, Void, Void> {
             case "Daredevil":
                 c = "Thief";
                 break;
-            case "Berseker":
+            case "Berserker":
                 c = "Warrior";
                 break;
             case "Reaper":
@@ -70,12 +75,12 @@ public class DownloadBuilds extends AsyncTask<String, Void, Void> {
                     String save = "{\"posTrait\":[";
                     String address = url.attr("href");
                     System.out.println(address);
-                    Document profession = Jsoup.connect("http://metabattle.com" + address).timeout(10*1000).get();
+                    Document profession = Jsoup.connect("http://metabattle.com" + address).timeout(10 * 1000).get();
 
                     Element number = profession.select("span.number").first();
                     if (number == null || number.text().equals("Not Rated")) continue;
-                    Element title = profession.select("h2.title").first();
-                    String t = connectClasses(title.text().split(" -")[0]);
+                    final Element title = profession.select("h2.title").first();
+                    final String t = connectClasses(title.text().split(" -")[0]);
                     System.out.println("Title " + t);
                     System.out.println("Rate " + number.text());
 
@@ -100,9 +105,16 @@ public class DownloadBuilds extends AsyncTask<String, Void, Void> {
                     }
                     spesName = spesName.substring(0, spesName.length() - 1);
                     save = save.substring(0, save.length() - 1);
-                    save += "], \"professions\":\"" + t+"\",\"spe\":[" + spesName + "]}";
+                    save += "], \"professions\":\"" + t + "\",\"spe\":[" + spesName + "]}";
                     System.out.println(save);
-                    String titleSave = t + "_" + title.text().split(" -")[1].replace("/","").replace("\n","") + "-" + number.text().replace("%","");
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(activity, "Dl : " + t + title.text().split(" -")[1].replace("/", "").replace("\n", ""), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    String titleSave = t + "_" + title.text().split(" -")[1].replace("/", "").replace("\n", "") + "-" + number.text().replace("%", "");
                     FileManagerTool.saveFile(path, titleSave, save);
 
                 }

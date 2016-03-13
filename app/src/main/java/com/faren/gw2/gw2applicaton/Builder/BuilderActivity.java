@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.faren.gw2.gw2applicaton.CallerBack;
 import com.faren.gw2.gw2applicaton.Collection;
@@ -259,11 +260,13 @@ public class BuilderActivity extends AppCompatActivity implements CallerBack {
                     DialogLoadSpe dialogLoadSpe = new DialogLoadSpe();
                     dialogLoadSpe.init(this, getFiles(), this);
                     dialogLoadSpe.show(getFragmentManager(), "dialogLoadFile");
+                } else {
+                    Toast.makeText(this, "There is no files to laod", Toast.LENGTH_LONG).show();
                 }
                 break;
 
             case R.id.action_load_builds:
-                new DownloadBuilds(pathFolder).execute("http://metabattle.com/wiki/Conquest");
+                new DownloadBuilds(this, pathFolder).execute("http://metabattle.com/wiki/Conquest");
             default:
                 in = false;
                 break;
